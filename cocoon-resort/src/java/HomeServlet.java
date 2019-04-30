@@ -53,57 +53,9 @@ public class HomeServlet extends HttpServlet {
 //            out.println("</body>");
 //            out.println("</html>");
 
-            String host = "smtp.gmail.com";
-            final String user = "loyalty.cocoon";//change accordingly  
-            final String password = "Loyalty11Cocoon";//change accordingly  
-
-            String to = "kevin.boghossian@gmail.com";//change accordingly  
-
-            //Get the session object  
-//            Properties props = new Properties();
-//            props.put("mail.smtp.starttls.enable", "true");
-////            props.put("mail.smtp.host", host);
-////            props.put("mail.smtp.user", user);
-////            props.put("mail.smtp.password", password);
-////            props.put("mail.smtp.socketFactory.port", "465");
-////            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-//            props.put("mail.smtp.auth", "true");
-//            props.put("mail.smtp.port", "587");
-            Properties props = new Properties();
-            props.put("mail.smtp.host", "smtp.gmail.com");
-            props.put("mail.smtp.port", "587");
-            props.put("mail.smtp.auth", "true");
-            props.put("mail.smtp.starttls.enable", "true"); //TLS
-
-            Session session = Session.getInstance(props,
-                    new javax.mail.Authenticator() {
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(user, password);
-                }
-            });
-
-            //Compose the message  
-            try {
-                Message message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(user));
-                message.setRecipients(
-                        Message.RecipientType.TO,
-                        InternetAddress.parse(to)
-                );
-                message.setSubject("javatpoint");
-                message.setText("This is simple program of sending email using JavaMail API");
-
-                //send the message  
-//                Transport transport = session.getTransport("smtp");
-//                transport.connect(host, user, password);
-                Transport.send(message);
-
-//                transport.close();
-                System.out.println("message sent successfully...");
-
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            }
+            Email email = new Email();
+            String receiver = "kevin.boghossian@gmail.com";
+            email.send(receiver);
 //////////////////////////////////////////////////////
 //            JsonArrayBuilder builder = Json.createArrayBuilder();
 //
