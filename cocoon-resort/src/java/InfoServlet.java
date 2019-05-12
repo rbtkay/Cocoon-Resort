@@ -14,19 +14,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
-import javax.activation.*;
 import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Robert
  */
-@WebServlet(urlPatterns = {"/HomeServlet"})
-public class HomeServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/InfoServlet"})
+public class InfoServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,54 +34,30 @@ public class HomeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        response.setHeader("Access-Control-Allow-Methods", "GET");
+        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet HomeServlet</title>");
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet HomeServlet at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
 
-//            Email email = new Email();
-//            String receiver = "kevin.boghossian@gmail.com";
-//            email.send(receiver);
-//            System.out.println("Hello World");
-//////////////////////////////////////////////////////
+            HttpSession session = request.getSession();
+            if (session.getAttribute("id") != null) {
+                String id = session.getAttribute("id").toString();
 
-//            HttpSession session = request.getSession();
+                JsonArrayBuilder builder = Json.createArrayBuilder();
 
-//            String id = request.getParameter("id");
-//            session.setAttribute("id", id);
-//            JsonArrayBuilder builder = Json.createArrayBuilder();
-
-//            builder.add(Json.createObjectBuilder()
-//                    .add("message", "hello, " + id));
+                builder.add(Json.createObjectBuilder()
+                        .add("id", id));
 
 //            builder.add(Json.createObjectBuilder().add("name", "kevin"));
-//            JsonArray test = builder.build();
+                JsonArray test = builder.build();
 //
 //            System.out.println(test);
-//            out.print(test);
-//            out.print()
+                out.print(test);
+            } else {
+                out.println("You need to login to enter");
+            }
         }
-
-//        this.numbers();
     }
 
-//    public JsonArray numbers() {
-//        JsonArrayBuilder array = Json.createArrayBuilder();
-//        
-//        Json test = 
-//
-//        return array.build();
-//    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

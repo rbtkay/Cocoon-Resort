@@ -15,7 +15,7 @@ class App extends Component {
   render() {
     console.log(this.state.user);
     return (
-      <Router >
+      <Router>
         <div>
           <Route path={"/home"} component={Home} />
           <Route path={"/user"} component={User} />

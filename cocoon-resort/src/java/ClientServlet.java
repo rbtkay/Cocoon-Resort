@@ -4,8 +4,13 @@
  * and open the template in the editor.
  */
 
+import Classes.Client;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -15,18 +20,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
-import javax.activation.*;
-import javax.servlet.http.HttpSession;
-
 /**
  *
  * @author Robert
  */
-@WebServlet(urlPatterns = {"/HomeServlet"})
-public class HomeServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/ClientServlet"})
+public class ClientServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,56 +36,70 @@ public class HomeServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    PrintWriter out;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        response.setHeader("Access-Control-Allow-Methods", "GET");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet HomeServlet</title>");
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet HomeServlet at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
+        response.setContentType("text/html;charset=UTF-8");
+        out = response.getWriter();
 
-//            Email email = new Email();
-//            String receiver = "kevin.boghossian@gmail.com";
-//            email.send(receiver);
-//            System.out.println("Hello World");
-//////////////////////////////////////////////////////
+        String action = request.getParameter("action");
 
-//            HttpSession session = request.getSession();
+        switch (action) {
+            case "create": {
+                String name = request.getParameter("name");
+                String password = request.getParameter("password");
+                int phone = Integer.parseInt(request.getParameter("phone"));
+                String email = request.getParameter("email");
 
-//            String id = request.getParameter("id");
-//            session.setAttribute("id", id);
-//            JsonArrayBuilder builder = Json.createArrayBuilder();
+                Client client = new Client();
 
-//            builder.add(Json.createObjectBuilder()
-//                    .add("message", "hello, " + id));
+                if (client.create(name, password, phone, email)) {
+                    response.setStatus(201);
+                    out.print("Client Successfully Created");
+                } else {
+                    response.setStatus(401);
+                    out.print("Connection Error");
+                }
+                break;
+            }
+            case "login": {
+                String email = request.getParameter("email");
+                String password = request.getParameter("password");
 
-//            builder.add(Json.createObjectBuilder().add("name", "kevin"));
-//            JsonArray test = builder.build();
-//
-//            System.out.println(test);
-//            out.print(test);
-//            out.print()
+                Client client = new Client();
+
+                if (client.login(email, password)) {
+                    response.setStatus(200);
+                    out.print("Successfully Logged in");
+                } else {
+                    response.setStatus(404);
+                    out.print("Auth Failed");
+                }
+                break;
+            }
+            case "logout": {
+                break;
+            }
+            case "delete": {
+                String email = request.getParameter("email");
+
+                Client client = new Client();
+
+                if (client.delete(email)) {
+                    out.print("Successfully Deleted");
+                } else {
+                    out.print("Failed to Delete Account");
+                }
+                break;
+            }
+            default: {
+                break;
+            }
         }
 
-//        this.numbers();
     }
 
-//    public JsonArray numbers() {
-//        JsonArrayBuilder array = Json.createArrayBuilder();
-//        
-//        Json test = 
-//
-//        return array.build();
-//    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

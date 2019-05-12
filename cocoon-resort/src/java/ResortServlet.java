@@ -4,29 +4,21 @@
  * and open the template in the editor.
  */
 
+import Classes.Resort;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
-import javax.activation.*;
-import javax.servlet.http.HttpSession;
-
 /**
  *
  * @author Robert
  */
-@WebServlet(urlPatterns = {"/HomeServlet"})
-public class HomeServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/ResortServlet"})
+public class ResortServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,56 +29,56 @@ public class HomeServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    PrintWriter out;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        response.setHeader("Access-Control-Allow-Methods", "GET");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet HomeServlet</title>");
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet HomeServlet at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
+        response.setContentType("text/html;charset=UTF-8");
+        out = response.getWriter();
 
-//            Email email = new Email();
-//            String receiver = "kevin.boghossian@gmail.com";
-//            email.send(receiver);
-//            System.out.println("Hello World");
-//////////////////////////////////////////////////////
+        String action = request.getParameter("action");
 
-//            HttpSession session = request.getSession();
+        switch (action) {
+            case "create": {
+                String name = request.getParameter("name");
+                String password = request.getParameter("password");
+                String location = request.getParameter("location");
 
-//            String id = request.getParameter("id");
-//            session.setAttribute("id", id);
-//            JsonArrayBuilder builder = Json.createArrayBuilder();
+                Resort resort = new Resort();
 
-//            builder.add(Json.createObjectBuilder()
-//                    .add("message", "hello, " + id));
+                if (resort.create(name, password, location)) {
+                    response.setStatus(201);
+                    out.print("Resort Successfully Created");
+                } else {
+                    response.setStatus(401);
+                    out.print("Connection Error");
+                }
+                break;
+            }
+            case "login": {
+                String name = request.getParameter("name");
+                String password = request.getParameter("password");
 
-//            builder.add(Json.createObjectBuilder().add("name", "kevin"));
-//            JsonArray test = builder.build();
-//
-//            System.out.println(test);
-//            out.print(test);
-//            out.print()
+                Resort resort = new Resort();
+                System.out.print("here in the servlet");
+
+                if (resort.login(name, password)) {
+                    response.setStatus(200);
+                    out.print("Successfully Logged in");
+                } else {
+                    response.setStatus(404);
+                    out.print("Resort Not Found");
+                }
+                break;
+//                out.print("Successfully Logged in");
+
+            }
+            case "delete": {
+
+            }
         }
-
-//        this.numbers();
     }
 
-//    public JsonArray numbers() {
-//        JsonArrayBuilder array = Json.createArrayBuilder();
-//        
-//        Json test = 
-//
-//        return array.build();
-//    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
