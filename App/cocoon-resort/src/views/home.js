@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import App from '../app/App';
+import homeClass from "../classes/home";
 
 class Home extends Component {
     render() {
@@ -9,8 +10,11 @@ class Home extends Component {
         )
     }
 
-    componentDidMount() {
-        const test = App.getUsername();
+    async componentDidMount() {
+        const home = new homeClass();
+        const test = await home.getHome();
+
+        console.log(test);
     }
 }
 

@@ -8,6 +8,9 @@ package Classes;
 import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.*;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 
 /**
  *
@@ -32,6 +35,7 @@ public class Client {
             prepStmt.setString(4, email);
 
             prepStmt.executeUpdate();
+
             return true;
         } catch (Exception e) {
             return false;
@@ -44,7 +48,8 @@ public class Client {
         }
     }
 
-    public boolean login(String email, String password) {
+    public JsonArray login(String email, String password) {
+//        JsonArray res = new JsonArray();
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
@@ -60,13 +65,22 @@ public class Client {
 
             result = prepStmt.executeQuery();
 
-            if (result.next()) {
-                return true;
-            } else {
-                return false;
+            JsonArrayBuilder builder = Json.createArrayBuilder();
+
+            while (result.next()) {
+                builder.add(Json.createObjectBuilder()
+                        .add("email", result.getString("client_email"))
+                        .add("name", result.getString("client_name")));
             }
+            JsonArray resultJson = builder.build();
+            if (resultJson.isEmpty()) {
+                return null;
+            } else {
+                return resultJson;
+            }
+
         } catch (Exception e) {
-            return false;
+            return null;
         } finally {
             try {
                 con.close();

@@ -7,6 +7,9 @@
 import Classes.Resort;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,7 +36,9 @@ public class ResortServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.setHeader("Access-Control-Allow-Methods", "GET");
         out = response.getWriter();
 
         String action = request.getParameter("action");
@@ -61,13 +66,21 @@ public class ResortServlet extends HttpServlet {
 
                 Resort resort = new Resort();
                 System.out.print("here in the servlet");
+                System.out.print(name);
+                System.out.print(password);
+                System.out.print(resort.login(name, password));
 
-                if (resort.login(name, password)) {
+                JsonArray resultJson = resort.login(name, password);
+                if (resultJson != null) {
                     response.setStatus(200);
-                    out.print("Successfully Logged in");
+                    out.print(resultJson);
                 } else {
                     response.setStatus(404);
-                    out.print("Resort Not Found");
+                    JsonArrayBuilder builder = Json.createArrayBuilder();
+                    builder.add(Json.createObjectBuilder()
+                            .add("message", "Wrong Username or Password"));
+                    JsonArray error = builder.build();
+                    out.print(error);
                 }
                 break;
 //                out.print("Successfully Logged in");
