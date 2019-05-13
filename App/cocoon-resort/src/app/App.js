@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import User from "../views/user";
 import Home from "../views/home";
+import SignUp from '../views/signUp';
 
 class App extends Component {
 
@@ -19,27 +20,10 @@ class App extends Component {
         <div>
           <Route path={"/home"} component={Home} />
           <Route path={"/user"} component={User} />
+          <Route path={"/signUp"} component={SignUp} />
         </div>
       </Router>
     );
   }
 }
-
-
-{/* <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-        </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-        </a>
-        </header>
-      </div> */}
 export default App;
