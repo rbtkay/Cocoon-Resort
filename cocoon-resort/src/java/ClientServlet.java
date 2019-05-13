@@ -40,7 +40,9 @@ public class ClientServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.setHeader("Access-Control-Allow-Methods", "GET");
         out = response.getWriter();
 
         String action = request.getParameter("action");
@@ -69,12 +71,19 @@ public class ClientServlet extends HttpServlet {
 
                 Client client = new Client();
 
-                if (client.login(email, password)) {
+                JsonArray resultJson = client.login(email, password);
+                if (resultJson != null) {
                     response.setStatus(200);
-                    out.print("Successfully Logged in");
+                    System.out.print(response.getStatus());
+
+                    out.print(resultJson);
                 } else {
                     response.setStatus(404);
-                    out.print("Auth Failed");
+                    JsonArrayBuilder builder = Json.createArrayBuilder();
+                    builder.add(Json.createObjectBuilder()
+                            .add("message", "Wrong Username or Password"));
+                    JsonArray error = builder.build();
+                    out.print(error);
                 }
                 break;
             }
@@ -99,6 +108,16 @@ public class ClientServlet extends HttpServlet {
         }
 
     }
+//
+//    public JsonArray toJSON(String s) {
+//        JsonArrayBuilder builder = Json.createArrayBuilder();
+//
+//        builder.add(Json.createObjectBuilder()
+//                .add("message", "hello, " + id));
+//
+//        builder.add(Json.createObjectBuilder().add("name", "kevin"));
+//        JsonArray test = builder.build();
+//    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

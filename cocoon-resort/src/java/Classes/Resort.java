@@ -5,6 +5,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,24 +19,24 @@ import java.sql.ResultSet;
  * @author Robert
  */
 public class Resort {
-    
+
     Connection con;
     PreparedStatement prepStmt;
     ResultSet result;
     PrintWriter out;
-    
+
     public boolean create(String name, String password, String location) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
             prepStmt = con.prepareStatement("insert into resorts_t (resort_name, resort_password, resort_location) values (?,?,?)");
-            
+
             prepStmt.setString(1, name);
             prepStmt.setString(2, password);
             prepStmt.setString(3, location);
-            
+
             prepStmt.executeUpdate();
-            
+
             return true;
         } catch (Exception e) {
             return false;
@@ -45,29 +48,38 @@ public class Resort {
             }
         }
     }
-    
-    public boolean login(String name, String password) {
+
+    public JsonArray login(String name, String password) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
-            
+
             System.out.print("in the class");
             prepStmt = con.prepareStatement("select * from resorts_t where resort_name = ? and resort_password = ?");
-            
+
             prepStmt.setString(1, name);
             prepStmt.setString(2, password);
-            
+
             result = prepStmt.executeQuery();
-            
-            
-            if (result.next()) {
-                return true;
-            } else {
-                return false;
+
+            JsonArrayBuilder builder = Json.createArrayBuilder();
+
+//            if (result.first()) {
+            while (result.next()) {
+                System.out.println("result.next " + result.getString("resort_name"));
+                builder.add(Json.createObjectBuilder()
+                        .add("name", result.getString("resort_name"))
+                );
             }
-            
+            JsonArray resultJson = builder.build();
+
+            if (resultJson.isEmpty()) {
+                return null;
+            } else {
+                return resultJson;
+            }
         } catch (Exception e) {
-            return false;
+            return null;
         } finally {
             try {
                 con.close();

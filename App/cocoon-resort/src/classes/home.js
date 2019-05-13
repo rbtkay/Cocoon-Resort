@@ -2,11 +2,17 @@ import App from '../app/App';
 
 class Home {
     async getHome() {
-        const response = await fetch("http://localhost:8080/cocoon-resort/HomeServlet");
 
-        const res = await response.json();
+        try {
+            const response = await fetch("http://localhost:8080/cocoon-resort/ClientServlet?action=login&name=dse&password=123");
 
-        return res;
+            console.log("result", response.status)
+            const res = await response.json();
+
+            return res;
+        } catch (e) {
+            throw e;
+        }
     }
 }
 
