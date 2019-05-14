@@ -15,7 +15,7 @@ class Welcome extends Component {
 
 
     render() {
-        // const Background = 
+        // const Background =
         return (
             <div>
 
@@ -27,19 +27,7 @@ class Welcome extends Component {
 
                             </Grid.Column>
                             <Grid.Column width='4'>
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
+                                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                                 <Segment raised>
                                     <h1>Book your Resort</h1>
                                     <Form error={this.state.isErrorSearch} onSubmit={this.search}>
@@ -65,29 +53,7 @@ class Welcome extends Component {
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
+                    <br /> <br /> <br /> <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                 </Segment>
 
                 <Segment>
@@ -140,23 +106,12 @@ class Welcome extends Component {
                                     </Card>
                                 </Grid.Column>
                             </Grid>
-                            <br />
-                            <br />
-                            <br />
+                            <br /> <br /> <br />
                             <h1>Introducing Cocoon Resorts</h1>
                             <span>a selection of the best resort in Lebanon</span>
-                            <Segment textAlign='center' style={{ backgroundImage: `url(${image})`, backgroundRepeat: 'no-repeat', backgroundSize: '100%' }}>
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
+                            <Segment textAlign='center' style={{ backgroundImage: `url(${image})`, backgroundRepeat: 'no-repeat', backgroundSize: '100%' }}><br /><br /><br /><br /><br />
                                 <Button color='red'>Search</Button>
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
+                                <br /><br /><br /><br /><br />
                             </Segment>
                             <br />
                             <h1>Most Popular Resorts</h1>
