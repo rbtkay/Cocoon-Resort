@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import 'semantic-ui-css/semantic.min.css';
 
 import User from "../views/user";
 import Home from "../views/home";
 import SignUp from '../views/signUp';
+import Welcome from '../views/welcome';
 
 class App extends Component {
 
@@ -21,6 +23,7 @@ class App extends Component {
           <Route path={"/home"} component={Home} />
           <Route path={"/user"} component={User} />
           <Route path={"/signUp"} component={SignUp} />
+          <Route path={"/welcome"} component={Welcome} />
         </div>
       </Router>
     );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Container, Segment, Message } from 'semantic-ui-react';
-import 'semantic-ui-css/semantic.min.css';
+import Auth from '../classes/auth';
 
 class SignUp extends Component {
 
@@ -99,10 +99,10 @@ class SignUp extends Component {
         )
     }
 
-    handleForm = () => {
+    handleForm = async () => {
         const emailRegEx = new RegExp(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/);
-        const { email, password, confirmPassword } = this.state;
-
+        const { firstName, lastName, email, password, confirmPassword, phone } = this.state;
+        //TODO: is loading for button
         console.log(email)
         console.log(password)
         console.log(confirmPassword)
@@ -128,7 +128,16 @@ class SignUp extends Component {
                 }
             )
         } else {
-            console.log("submitted")
+            const auth = new Auth();
+
+            //TODO: encrypt Password
+            const isCreated = await auth.signUp({ firstName, lastName, email, password, phone });
+
+            if (isCreated === true) {
+                this.setState({ isSuccess: true });
+            } else {
+                this.setState({ isError: true, formError: "Connection Error" }); //TODO: check what kind of error 
+            }
         }
     }
 
