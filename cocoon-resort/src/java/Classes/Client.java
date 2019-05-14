@@ -109,9 +109,4 @@ public class Client {
             }
         }
     }
-
-    public boolean logout(String email) {
-        return false;
-    }
-
 }

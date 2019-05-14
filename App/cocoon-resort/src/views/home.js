@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import App from '../app/App';
 import homeClass from "../classes/home";
+import NavigationBar from '../components/NavigationBar';
 
 class Home extends Component {
     render() {
