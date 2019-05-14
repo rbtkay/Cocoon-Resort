@@ -16,5 +16,35 @@ class Auth {
             throw e;
         }
     }
+
+    async authUser(email, password) {
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=login&email=${email}&password=${password}`);
+
+            if (response.status === 200) {
+                const res = await response.json();
+                return res;
+            } else {
+                return 404;
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async logoutUser() {
+        const cookie = require('../cookie');
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=logout`);
+
+            if (response.status === 200) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
 }
 export default Auth;

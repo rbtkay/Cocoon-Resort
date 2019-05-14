@@ -101,8 +101,12 @@ class NavigationBar extends Component {
         const login = new loginClass();
         const result = await login.logoutUser();
 
-        cookie.deleteCookie();
-        window.location.href = `http://localhost:3000/home`;
+        if (result === true) {
+            cookie.deleteCookie();
+            window.location.href = `http://localhost:3000/welcome`;
+        } else {
+            alert('Connection Error');
+        }
     }
 }
 
