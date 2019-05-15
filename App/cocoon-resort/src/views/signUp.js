@@ -99,6 +99,7 @@ class SignUp extends Component {
         )
     }
 
+
     handleForm = async () => {
         const emailRegEx = new RegExp(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/);
         const { firstName, lastName, email, password, confirmPassword, phone } = this.state;
@@ -107,6 +108,7 @@ class SignUp extends Component {
         console.log(password)
         console.log(confirmPassword)
         this.emptyFieldVerification();
+
 
         if (!emailRegEx.test(email)) {
             this.setState(

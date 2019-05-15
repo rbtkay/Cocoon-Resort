@@ -80,6 +80,12 @@ public class Client {
             }
 
         } catch (Exception e) {
+
+            try {
+                throw e;
+            } catch (Exception err) {
+                System.out.print(e);
+            }
             return null;
         } finally {
             try {

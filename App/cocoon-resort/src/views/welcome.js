@@ -1,24 +1,30 @@
 import React, { Component } from 'react';
 import { Segment, Image, Container, Grid, Form, Item, Card, Button, Message } from 'semantic-ui-react';
+import { DateInput } from 'semantic-ui-calendar-react';
+
+import Navigation from '../components/NavigationBar'
+
 import image from '../static/image1.jpg';
 import image1 from '../static/image2.jpg';
 
-
-
+import Package from '../classes/package';
 
 class Welcome extends Component {
 
     state = {
-        locationOption: [], //TODO: fill from api
-        isErrorSearch: false
+        locationOptions: [{ text: 'no location available yet', value: null }],
+        location: '*',
+        isErrorSearch: false,
+        forError: '',
+        from: '',
+        to: '',
+        guests: 1,
     }
 
-
     render() {
-        // const Background =
         return (
             <div>
-
+                <Navigation></Navigation>
                 <Segment style={{ backgroundImage: `url(${image})`, backgroundRepeat: 'no-repeat', backgroundSize: '100%' }}>
 
                     <Grid>
@@ -27,21 +33,41 @@ class Welcome extends Component {
 
                             </Grid.Column>
                             <Grid.Column width='4'>
-                                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+                                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                                 <Segment raised>
                                     <h1>Book your Resort</h1>
                                     <Form error={this.state.isErrorSearch} onSubmit={this.search}>
-                                        <Form.Select label='Location' options={this.state.locationOptions} placeholder='Anywhere in Lebanon' />
+                                        <Form.Select
+                                            label='Location'
+                                            options={this.state.locationOptions}
+                                            placeholder='Anywhere in Lebanon'
+                                            onClick={event => this.setState({ location: event.target.value })}
+                                            value={this.state.location} />
                                         <Form.Group widths={2}>
-                                            <Form.Input
+                                            <DateInput
+                                                name='from'
                                                 label='from'
                                                 placeholder='from'
+                                                value={this.state.from}
+                                                iconPosition='left'
+                                                onChange={this.handleChange}
                                             />
-                                            <Form.Input label='to' placeholder='to' />
+                                            <DateInput
+                                                name='to'
+                                                label='to'
+                                                placeholder='to'
+                                                value={this.state.to}
+                                                iconPosition='left'
+                                                onChange={this.handleChange}
+                                            />
                                         </Form.Group>
-                                        <Form.Input label='# Guests' placeholder='ex: 4' />
-                                        <Form.Button floated='right' color='red'>Search</Form.Button>
+                                        <Form.Input
+                                            label='# Guests'
+                                            placeholder='ex: 4'
+                                            onChange={event => this.setState({ guests: event.target.value })}
+                                        />
                                         <Message error header='Form Error' content={this.state.formError} />
+                                        <Form.Button floated='right' color='red'>Search</Form.Button>
                                     </Form>
                                     <br />
                                     <br />
@@ -53,7 +79,7 @@ class Welcome extends Component {
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
-                    <br /> <br /> <br /> <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+                    <br /><br /><br /><br /><br /><br /> <br /> <br /> <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                 </Segment>
 
                 <Segment>
@@ -69,7 +95,7 @@ class Welcome extends Component {
                             <Grid columns={3} textAlign='center'>
 
                                 <Grid.Column>
-                                    <Card>
+                                    <Card onClick={() => this.props.history.push('/signUp?category=Beaches')}>
                                         <Grid columns={2}>
                                             <Grid.Column width='7'>
                                                 <Image floated='left' size='small' src={image1} />
@@ -81,7 +107,7 @@ class Welcome extends Component {
                                     </Card>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <Card>
+                                    <Card onClick={() => this.props.history.push('/signUp?category=Mountains')}>
                                         <Grid columns={2}>
                                             <Grid.Column width='7'>
                                                 <Image floated='left' size='small' src={image1} />
@@ -94,7 +120,7 @@ class Welcome extends Component {
 
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <Card>
+                                    <Card onClick={() => this.props.history.push('/signUp?category=Bungalow')}>
                                         <Grid columns={2}>
                                             <Grid.Column width='7'>
                                                 <Image floated='left' size='small' src={image1} />
@@ -131,8 +157,50 @@ class Welcome extends Component {
         )
     }
 
+    async componentDidMount() {
+        this.getLocations();
+    }
+
+    async getLocations() {
+        //get the locations to fill the drop down.
+        const pack = new Package();
+        const locations = await pack.getLocations();
+
+        this.setState({ locationOptions: locations });
+    }
+
+    handleChange = (event, { name, value }) => {
+        if (this.state.hasOwnProperty(name)) {
+            this.setState({ [name]: value });
+        }
+    }
+
     search = () => {
-        //TODO: validate the form and send get request.
+        let { location, isErrorSearch, from, to, guests, formError } = this.state;
+
+        if (guests < 1) {
+            isErrorSearch = true;
+            formError = 'number of guest should be more than 0'
+            this.setState({ isErrorSearch, formError });
+        } else if (from > to) {
+            isErrorSearch = true;
+            formError = 'dates are invalid'
+            console.log(formError)
+            this.setState({ isErrorSearch, formError });
+        } else {
+            // const QueryString = require('query-string');
+
+            // const obj = {
+            //     location: location,
+            //     from: from,
+            //     to: to,
+            //     guest: guests
+            // }
+
+            // const queryS = QueryString.stringify(obj);
+            // this.props.history.push(`/signUp?${queryS}`); 
+            //TODO: redirect to Proper page
+        }
     }
 }
 
