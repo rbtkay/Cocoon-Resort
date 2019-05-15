@@ -73,6 +73,7 @@ class Welcome extends Component {
                                             />
                                         </Form.Group>
                                         <Form.Input
+                                            type='number'
                                             label='# Guests'
                                             placeholder='ex: 4'
                                             onChange={event => this.setState({ guests: event.target.value })}
