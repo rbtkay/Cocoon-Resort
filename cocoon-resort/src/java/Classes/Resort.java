@@ -107,7 +107,8 @@ public class Resort {
             while (result.next()) {
                 System.out.println("result.next " + result.getString("resort_location"));
                 builder.add(Json.createObjectBuilder()
-                        .add("location", result.getString("resort_location"))
+                        .add("text", result.getString("resort_location"))
+                        .add("value", result.getString("resort_location"))
                 );
             }
             JsonArray resultJson = builder.build();

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Dropdown, Select, Grid } from 'semantic-ui-react';
 import { DateInput } from 'semantic-ui-calendar-react';
+import Resort from '../classes/resort';
 
 class Filter extends Component {
 
@@ -63,13 +64,16 @@ class Filter extends Component {
         )
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         /**
          * TODO:
          * get locationOptions from fetch
          * get queryString
          * 
          */
+        const resort = new Resort();
+        const locationOptions = await resort.getLocations();
+        this.setState({ locationOptions });
     }
 }
 export default Filter;
