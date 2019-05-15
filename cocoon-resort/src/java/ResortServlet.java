@@ -43,13 +43,12 @@ public class ResortServlet extends HttpServlet {
 
         String action = request.getParameter("action");
 
+        Resort resort = new Resort();
         switch (action) {
             case "create": {
                 String name = request.getParameter("name");
                 String password = request.getParameter("password");
                 String location = request.getParameter("location");
-
-                Resort resort = new Resort();
 
                 if (resort.create(name, password, location)) {
                     response.setStatus(201);
@@ -64,7 +63,6 @@ public class ResortServlet extends HttpServlet {
                 String name = request.getParameter("name");
                 String password = request.getParameter("password");
 
-                Resort resort = new Resort();
                 System.out.print("here in the servlet");
                 System.out.print(name);
                 System.out.print(password);
@@ -83,11 +81,21 @@ public class ResortServlet extends HttpServlet {
                     out.print(error);
                 }
                 break;
-//                out.print("Successfully Logged in");
-
             }
-            case "delete": {
-
+            case "getLocations": {
+                JsonArray resultJson = resort.getLocations();
+                if (resultJson != null) {
+                    response.setStatus(200);
+                    out.print(resultJson);
+                } else {
+                    response.setStatus(404);
+                    JsonArrayBuilder builder = Json.createArrayBuilder();
+                    builder.add(Json.createObjectBuilder()
+                            .add("message", "No Locations are Available"));
+                    JsonArray error = builder.build();
+                    out.print(error);
+                }
+                break;
             }
         }
     }

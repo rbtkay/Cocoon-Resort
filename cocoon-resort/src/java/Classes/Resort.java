@@ -88,4 +88,44 @@ public class Resort {
             }
         }
     }
+
+    public JsonArray getLocations() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+
+            System.out.print("in the class");
+            prepStmt = con.prepareStatement("select distinct resort_location from resorts_t");
+
+//            prepStmt.setString(1, name);
+//            prepStmt.setString(2, password);
+            result = prepStmt.executeQuery();
+
+            JsonArrayBuilder builder = Json.createArrayBuilder();
+
+//            if (result.first()) {
+            while (result.next()) {
+                System.out.println("result.next " + result.getString("resort_location"));
+                builder.add(Json.createObjectBuilder()
+                        .add("location", result.getString("resort_location"))
+                );
+            }
+            JsonArray resultJson = builder.build();
+
+            if (resultJson.isEmpty()) {
+                return null;
+            } else {
+                return resultJson;
+            }
+        } catch (Exception e) {
+            System.out.print("Error while connecting to the Database" + e);
+            return null;
+        } finally {
+            try {
+                con.close();
+            } catch (Exception e) {
+                System.out.print("Error while closing the connection" + e);
+            }
+        }
+    }
 }
