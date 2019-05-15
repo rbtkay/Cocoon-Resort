@@ -33,7 +33,6 @@ class Auth {
     }
 
     async logoutUser() {
-        const cookie = require('../cookie');
         try {
             const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=logout`);
 

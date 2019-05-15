@@ -12,13 +12,6 @@ class User extends Component {
             </div>
         );
     }
-
-    // async componentDidMount() {
-    //     const test = new homeClass();
-    //
-    //     const result = await test.getHome();
-    //     console.log(result);
-    // }
 }
 
 export default User;

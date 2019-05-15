@@ -8,6 +8,7 @@ import User from "../views/user";
 import Home from "../views/home";
 import SignUp from '../views/signUp';
 import Welcome from '../views/welcome';
+import Explore from '../views/explore';
 
 class App extends Component {
 
@@ -24,6 +25,7 @@ class App extends Component {
           <Route path={"/user"} component={User} />
           <Route path={"/signUp"} component={SignUp} />
           <Route path={"/welcome"} component={Welcome} />
+          <Route path={"/explore"} component={Explore} />
         </div>
       </Router>
     );
