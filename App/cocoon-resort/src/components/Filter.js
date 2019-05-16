@@ -147,7 +147,12 @@ class Filter extends Component {
 
     search = () => {
         console.log(this.state);
-        this.props.filter();
+        const { location, from, to, category, guests } = this.state;
+        const { value } = location;
+
+        const info = { location: value, from, to, category, guests };
+
+        this.props.filter(info);
     }
 }
 export default Filter;

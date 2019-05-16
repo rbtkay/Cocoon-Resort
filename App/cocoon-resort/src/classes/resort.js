@@ -1,7 +1,7 @@
 class Resort {
     async getLocations() {
         try {
-            const response = await fetch(`http://localhost:8080/cocoon-resort/ResortServlet?action=getLocations`);
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ResortServlet?action=readAll`);
 
             // console.log("result", response.status);
             if (response.status === 200) {

@@ -49,7 +49,6 @@ public class Client {
     }
 
     public JsonArray login(String email, String password) {
-//        JsonArray res = new JsonArray();
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");

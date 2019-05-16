@@ -19,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -37,27 +38,27 @@ public class ClientServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     PrintWriter out;
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         response.setHeader("Access-Control-Allow-Methods", "GET");
         out = response.getWriter();
-        
+
         System.out.print("in the servlet");
-        
+
         String action = request.getParameter("action");
-        
+
         switch (action) {
             case "create": {
                 String name = request.getParameter("name");
                 String password = request.getParameter("password");
                 int phone = Integer.parseInt(request.getParameter("phone"));
                 String email = request.getParameter("email");
-                
+
                 Client client = new Client();
-                
+
                 if (client.create(name, password, phone, email)) {
                     response.setStatus(201);
                     out.print("Client Successfully Created");
@@ -70,17 +71,15 @@ public class ClientServlet extends HttpServlet {
             case "login": {
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
-                System.out.println("email" + email);
-                System.out.println("password" + password);
+
                 Client client = new Client();
-                
+
                 JsonArray resultJson = client.login(email, password);
-                
+
                 System.out.print(resultJson);
                 if (resultJson != null) {
                     response.setStatus(200);
-                    System.out.print(response.getStatus());
-                    
+
                     out.print(resultJson);
                 } else {
                     response.setStatus(404);
@@ -97,9 +96,9 @@ public class ClientServlet extends HttpServlet {
             }
             case "delete": {
                 String email = request.getParameter("email");
-                
+
                 Client client = new Client();
-                
+
                 if (client.delete(email)) {
                     out.print("Successfully Deleted");
                 } else {
@@ -111,7 +110,7 @@ public class ClientServlet extends HttpServlet {
                 break;
             }
         }
-        
+
     }
 //
 //    public JsonArray toJSON(String s) {
