@@ -4,25 +4,23 @@
  * and open the template in the editor.
  */
 
-import Classes.Resort;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import Classes.Package;
+import javax.json.JsonArray;
 
 /**
  *
  * @author Robert
  */
-@WebServlet(urlPatterns = {"/ResortServlet"})
-public class ResortServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/PackageServlet"})
+public class PackageServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,65 +35,54 @@ public class ResortServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         response.setHeader("Access-Control-Allow-Methods", "GET");
         out = response.getWriter();
         String action = request.getParameter("action");
 
-        Resort resort = new Resort();
+        System.out.print(action);
+
+        Package pack = new Package();
         switch (action) {
             case "create": {
-                String name = request.getParameter("name");
-                String password = request.getParameter("password");
-                String location = request.getParameter("location");
-                String category = request.getParameter("category");
 
-                if (resort.create(name, password, location, category)) {
-                    response.setStatus(201);
-                    out.print("Resort Successfully Created");
+                System.out.print(action);
+                String name = request.getParameter("name");
+                int resortId = Integer.parseInt(request.getParameter("resortId"));
+                String details = request.getParameter("details");
+                int price = Integer.parseInt(request.getParameter("price"));
+                String from = request.getParameter("from");
+                String to = request.getParameter("to");
+                int guests = Integer.parseInt(request.getParameter("guests"));
+//                String image = request.getParameter("image");
+                if (pack.createPack(name, resortId, details, price, from, to, guests)) {
+                    System.out.print("in the if");
+                    response.setStatus(200);
+                    out.print("package created");
+
                 } else {
                     response.setStatus(401);
-                    out.print("Connection Error");
                 }
+
                 break;
             }
-            case "login": {
-                String name = request.getParameter("name");
-                String password = request.getParameter("password");
+            case "readAll": {
 
-                System.out.print("here in the servlet");
-                System.out.print(name);
-                System.out.print(password);
-                System.out.print(resort.login(name, password));
+                String category = request.getParameter("category");
 
-                JsonArray resultJson = resort.login(name, password);
-                if (resultJson != null) {
-                    response.setStatus(200);
-                    out.print(resultJson);
-                } else {
+                JsonArray result = pack.readAll(category);
+
+                if (result == null) {
                     response.setStatus(404);
-                    JsonArrayBuilder builder = Json.createArrayBuilder();
-                    builder.add(Json.createObjectBuilder()
-                            .add("message", "Wrong Username or Password"));
-                    JsonArray error = builder.build();
-                    out.print(error);
+                } else {
+                    response.setStatus(200);
                 }
+                out.print(result);
+
                 break;
             }
-            case "getLocations": {
-                JsonArray resultJson = resort.getLocations();
-                if (resultJson != null) {
-                    response.setStatus(200);
-                    out.print(resultJson);
-                } else {
-                    response.setStatus(404);
-                    JsonArrayBuilder builder = Json.createArrayBuilder();
-                    builder.add(Json.createObjectBuilder()
-                            .add("message", "No Locations are Available"));
-                    JsonArray error = builder.build();
-                    out.print(error);
-                }
+            case "delete": {
                 break;
             }
         }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Image, Container, Grid, Form, Item, Card, Button, Message } from 'semantic-ui-react';
+import { Segment, Image, Container, Grid, Form, Item, Card, Button, Message, Dropdown } from 'semantic-ui-react';
 import { DateInput } from 'semantic-ui-calendar-react';
 
 import Navigation from '../components/NavigationBar'
@@ -7,24 +7,23 @@ import Navigation from '../components/NavigationBar'
 import image from '../static/image1.jpg';
 import image1 from '../static/image2.jpg';
 
-import Package from '../classes/package';
+import Resort from '../classes/resort';
 
 class Welcome extends Component {
 
     state = {
         locationOptions: [{ text: 'no location available yet', value: null }],
-        location: '*',
+        location: { text: 'Anywhere', value: '*' },
         isErrorSearch: false,
         forError: '',
         from: '',
         to: '',
         guests: 1,
     }
-
     render() {
         return (
             <div>
-                <Navigation></Navigation>
+                <Navigation newResort={this.newResort} />
                 <Segment style={{ backgroundImage: `url(${image})`, backgroundRepeat: 'no-repeat', backgroundSize: '100%' }}>
 
                     <Grid>
@@ -37,12 +36,23 @@ class Welcome extends Component {
                                 <Segment raised>
                                     <h1>Book your Resort</h1>
                                     <Form error={this.state.isErrorSearch} onSubmit={this.search}>
-                                        <Form.Select
-                                            label='Location'
+                                        <Dropdown
+                                            name="location"
+                                            value={this.state.location.value}
+                                            fluid
+                                            search
+                                            selection
+                                            text={this.state.location.text}
                                             options={this.state.locationOptions}
-                                            placeholder='Anywhere in Lebanon'
-                                            onClick={event => this.setState({ location: event.target.value })}
-                                            value={this.state.location} />
+                                            placeholder='Select location'
+                                            onChange={(event, data) => this.setState(
+                                                (
+                                                    {
+                                                        location:
+                                                            { text: data.value, value: data.value }
+                                                    }
+                                                ))}
+                                        />
                                         <Form.Group widths={2}>
                                             <DateInput
                                                 name='from'
@@ -62,6 +72,7 @@ class Welcome extends Component {
                                             />
                                         </Form.Group>
                                         <Form.Input
+                                            type='number'
                                             label='# Guests'
                                             placeholder='ex: 4'
                                             onChange={event => this.setState({ guests: event.target.value })}
@@ -95,7 +106,7 @@ class Welcome extends Component {
                             <Grid columns={3} textAlign='center'>
 
                                 <Grid.Column>
-                                    <Card onClick={() => this.props.history.push('/signUp?category=Beaches')}>
+                                    <Card onClick={() => this.props.history.push('/explore?category=Beaches')}>
                                         <Grid columns={2}>
                                             <Grid.Column width='7'>
                                                 <Image floated='left' size='small' src={image1} />
@@ -107,7 +118,7 @@ class Welcome extends Component {
                                     </Card>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <Card onClick={() => this.props.history.push('/signUp?category=Mountains')}>
+                                    <Card onClick={() => this.props.history.push('/explore?category=Mountains')}>
                                         <Grid columns={2}>
                                             <Grid.Column width='7'>
                                                 <Image floated='left' size='small' src={image1} />
@@ -120,7 +131,7 @@ class Welcome extends Component {
 
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <Card onClick={() => this.props.history.push('/signUp?category=Bungalow')}>
+                                    <Card onClick={() => this.props.history.push('/explore?category=Bungalow')}>
                                         <Grid columns={2}>
                                             <Grid.Column width='7'>
                                                 <Image floated='left' size='small' src={image1} />
@@ -163,10 +174,14 @@ class Welcome extends Component {
 
     async getLocations() {
         //get the locations to fill the drop down.
-        const pack = new Package();
-        const locations = await pack.getLocations();
+        const resort = new Resort();
+        const locations = await resort.getLocations();
 
         this.setState({ locationOptions: locations });
+    }
+
+    newResort = () => {
+        this.props.history.push('/newResort')
     }
 
     handleChange = (event, { name, value }) => {
@@ -177,6 +192,7 @@ class Welcome extends Component {
 
     search = () => {
         let { location, isErrorSearch, from, to, guests, formError } = this.state;
+        // console.log(this.state)
 
         if (guests < 1) {
             isErrorSearch = true;
@@ -188,18 +204,7 @@ class Welcome extends Component {
             console.log(formError)
             this.setState({ isErrorSearch, formError });
         } else {
-            // const QueryString = require('query-string');
-
-            // const obj = {
-            //     location: location,
-            //     from: from,
-            //     to: to,
-            //     guest: guests
-            // }
-
-            // const queryS = QueryString.stringify(obj);
-            // this.props.history.push(`/signUp?${queryS}`); 
-            //TODO: redirect to Proper page
+            this.props.history.push(`/explore?location=${location.value}&from=${from}&to=${to}&guests=${guests}`);
         }
     }
 }
