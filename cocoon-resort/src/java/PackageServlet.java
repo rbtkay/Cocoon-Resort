@@ -41,16 +41,43 @@ public class PackageServlet extends HttpServlet {
         out = response.getWriter();
         String action = request.getParameter("action");
 
+        System.out.print(action);
+
+        Package pack = new Package();
         switch (action) {
             case "create": {
+
+                System.out.print(action);
+                String name = request.getParameter("name");
+                int resortId = Integer.parseInt(request.getParameter("resortId"));
+                String details = request.getParameter("details");
+                int price = Integer.parseInt(request.getParameter("price"));
+                String from = request.getParameter("from");
+                String to = request.getParameter("to");
+                int guests = Integer.parseInt(request.getParameter("guests"));
+//                String image = request.getParameter("image");
+                if (pack.createPack(name, resortId, details, price, from, to, guests)) {
+                    System.out.print("in the if");
+                    response.setStatus(200);
+                    out.print("package created");
+
+                } else {
+                    response.setStatus(401);
+                }
+
                 break;
             }
             case "readAll": {
-                Package pack = new Package();
 
                 String category = request.getParameter("category");
 
                 JsonArray result = pack.readAll(category);
+
+                if (result == null) {
+                    response.setStatus(404);
+                } else {
+                    response.setStatus(200);
+                }
                 out.print(result);
 
                 break;

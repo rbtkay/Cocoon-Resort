@@ -79,15 +79,6 @@ public class Package {
                         )
                 );
             }
-//
-//                return list;
-//                builder.add(Json.createObjectBuilder()
-//                        .add("email", result.)
-//                        .add("email", result.getString("client_email"))
-//                        .add("email", result.getString("client_email"))
-//                        .add("email", result.getString("client_email"))
-//                        .add("name", result.getString("client_name")));
-//            }
             JsonArray resultJson = builder.build();
 
             System.out.print(resultJson);
@@ -112,5 +103,45 @@ public class Package {
                 out.println("Error while Closing to the Database");
             }
         }
+    }
+
+    public boolean createPack(String name, int resortId, String details, int price, String from, String to, int guests) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+
+            prepStmt = con.prepareStatement("insert into packages_t "
+                    + "(package_name, resort_id, package_detail, package_price, package_from, package_to, package_guests) "
+                    + "values (?,?,?,?,?,?,?)");
+            prepStmt.setString(1, name);
+            prepStmt.setInt(2, resortId);
+            prepStmt.setString(3, details);
+            prepStmt.setInt(4, price);
+            prepStmt.setString(5, from);
+            prepStmt.setString(6, to);
+            prepStmt.setInt(7, guests);
+
+            System.out.print("in the class");
+            System.out.print(name);
+
+            prepStmt.executeUpdate();
+
+            return true;
+
+        } catch (Exception e) {
+            try {
+                throw e;
+            } catch (Exception error) {
+                System.out.print(error);
+            }
+        } finally {
+            try {
+                con.close();
+            } catch (Exception err) {
+                out.println("Error while Closing to the Database");
+            }
+        }
+
+        return false;
     }
 }
