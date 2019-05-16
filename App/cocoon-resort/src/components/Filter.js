@@ -32,19 +32,19 @@ class Filter extends Component {
             },
             from: from,
             to: to,
-            category: category,
+            category: category || '',
             guests: guests || 1
         }
 
-        console.log('constructor')
-        console.log(this.state)
+        // console.log('constructor')
+        // console.log(this.state)
     }
 
     render() {
         // const { location, from, to, category, guests } = this.props;
         return (
             <Menu vertical>
-                <Form onSubmit={this.search}>
+                <Form onSubmit={event => this.search}>
                     <Menu.Item>
                         <Grid>
                             <Grid.Row columns='2'>
@@ -52,7 +52,7 @@ class Filter extends Component {
                                     <h3>Filters</h3>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <Button color='red'>Click</Button>
+                                    <Button onClick={this.search} color='red'>Click</Button>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
@@ -121,8 +121,8 @@ class Filter extends Component {
     }
 
     async componentDidMount() {
-        console.log('in the component')
-        console.log(this.state)
+        // console.log('in the component')
+        // console.log(this.state)
 
         const resort = new Resort();
         const locationOptions = await resort.getLocations();
@@ -145,8 +145,9 @@ class Filter extends Component {
         }
     }
 
-    search = () => {
-        console.log(this.state);
+    search = (event) => {
+        event.preventDefault();
+        // console.log(this.state);
         const { location, from, to, category, guests } = this.state;
         const { value } = location;
 

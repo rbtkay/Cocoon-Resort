@@ -36,7 +36,7 @@ public class Package {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
 
-            if (filter == null) {
+            if (filter.isEmpty()) {
                 prepStmt = con.prepareStatement(
                         "SELECT packages_t.*, resorts_t.resort_name, resorts_t.resort_location, resorts_t.resort_category "
                         + "FROM packages_t, resorts_t "

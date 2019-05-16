@@ -49,8 +49,9 @@ public class ResortServlet extends HttpServlet {
                 String name = request.getParameter("name");
                 String password = request.getParameter("password");
                 String location = request.getParameter("location");
+                String category = request.getParameter("category");
 
-                if (resort.create(name, password, location)) {
+                if (resort.create(name, password, location, category)) {
                     response.setStatus(201);
                     out.print("Resort Successfully Created");
                 } else {
@@ -86,7 +87,6 @@ public class ResortServlet extends HttpServlet {
                 JsonArray resultJson = resort.getLocations();
                 if (resultJson != null) {
                     response.setStatus(200);
-
                     out.print(resultJson);
                 } else {
                     response.setStatus(404);

@@ -25,15 +25,16 @@ public class Resort {
     ResultSet result;
     PrintWriter out;
 
-    public boolean create(String name, String password, String location) {
+    public boolean create(String name, String password, String location, String category) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
-            prepStmt = con.prepareStatement("insert into resorts_t (resort_name, resort_password, resort_location) values (?,?,?)");
+            prepStmt = con.prepareStatement("insert into resorts_t (resort_name, resort_password, resort_location, resort_category) values (?,?,?,?)");
 
             prepStmt.setString(1, name);
             prepStmt.setString(2, password);
             prepStmt.setString(3, location);
+            prepStmt.setString(4, category);
 
             prepStmt.executeUpdate();
 

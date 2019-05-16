@@ -15,23 +15,27 @@ class NavigationBar extends Component {
         return (
             <Menu fixed="top" color="green">
                 <MenuItem>
-                    <a href="/home">LOGO</a>
+                    <a href="/we">LOGO</a>
                 </MenuItem>
 
-                <MenuItem style={{marginLeft: '300px'}}>
+                <MenuItem style={{ marginLeft: '300px' }}>
                     <Form>
                         <Form.Input
-                            style={{width: '400px'}}
+                            style={{ width: '400px' }}
                             name='search'
                             value={this.state.search}
                             onChange={event => this.setState({ search: event.target.value })}
                             icon='search'
                             placeholder='Search Resorts'
-                            />
+                        />
                     </Form>
                 </MenuItem>
 
-                <Menu.Menu position = 'right'>
+                <MenuItem>
+                    <Button onClick={this.props.newResort}>Show us Your Resort</Button>
+                </MenuItem>
+
+                <Menu.Menu position='right'>
                     {this.renderMenu()}
                 </Menu.Menu>
             </Menu>
@@ -48,14 +52,14 @@ class NavigationBar extends Component {
     renderMenu = () => {
         if (this.state.name) {
             return (
-                <Menu.Menu position = 'right'>
+                <Menu.Menu position='right'>
                     <Dropdown text={`Hello ${this.state.name}`} className='item'>
                         <Dropdown.Menu>
                             <Dropdown.Item>
                                 <Icon name='settings' /><a href='/settings' className='black'>Settings</a>
                             </Dropdown.Item>
                             <Dropdown.Item>
-                                <Icon name='map signs'/><a href='/reservations'>Reservations</a>
+                                <Icon name='map signs' /><a href='/reservations'>Reservations</a>
                             </Dropdown.Item>
                             <Dropdown.Item onClick={this.logout}>
                                 <Icon name='log out' />Logout
@@ -66,10 +70,10 @@ class NavigationBar extends Component {
             )
         } else {
             return (
-                <Menu.Menu position = 'right'>
+                <Menu.Menu position='right'>
 
                     <MenuItem>
-                        <Login isLoginOpen={this.state.isLoginOpen} loginClose={this.loginClose} handleLogin={this.handleLogin}/>
+                        <Login isLoginOpen={this.state.isLoginOpen} loginClose={this.loginClose} handleLogin={this.handleLogin} />
                         <Button icon='sign-in' secondary inverted onClick={this.onClick} content='Log In'></Button>
                     </MenuItem>
 

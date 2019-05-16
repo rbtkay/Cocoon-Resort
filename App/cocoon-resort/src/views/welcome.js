@@ -20,11 +20,10 @@ class Welcome extends Component {
         to: '',
         guests: 1,
     }
-    // this.setState({ location: data })
     render() {
         return (
             <div>
-                <Navigation></Navigation>
+                <Navigation newResort={this.newResort} />
                 <Segment style={{ backgroundImage: `url(${image})`, backgroundRepeat: 'no-repeat', backgroundSize: '100%' }}>
 
                     <Grid>
@@ -179,6 +178,10 @@ class Welcome extends Component {
         const locations = await resort.getLocations();
 
         this.setState({ locationOptions: locations });
+    }
+
+    newResort = () => {
+        this.props.history.push('/newResort')
     }
 
     handleChange = (event, { name, value }) => {

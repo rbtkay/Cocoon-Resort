@@ -6,32 +6,55 @@ import Package from '../classes/package';
 
 class Explore extends Component {
 
-    state = {
+    constructor(props) {
+        super(props);
 
+        const queryString = require('query-string');
+
+        const info = queryString.parse(this.props.location.search)
+
+        // console.log(info);
+
+        info['category'] = info['category'] ? info['category'] : '';
+
+        this.state = {
+            info: info
+        }
     }
 
+
     render() {
-        const queryString = require('query-string');
-        const info = queryString.parse(this.props.location.search)
-        console.log(info)
+        // console.log(this.state.info)
         return (
             <div>
                 <NavigationBar />
                 <br />
                 <br />
                 <br />
-                <Filter info={info} filter={this.filterPackages} />
+                <Filter info={this.state.info} filter={this.filterPackages} />
             </div>
         )
     }
 
-    async filterPackages(info) {
-        console.log("in the parents");
+    async componentDidMount() {
         const pack = new Package();
 
-        const result = await pack.getFilteredPackages(info);
+        const { category } = this.state.info.category;
+        const result = await pack.readAll(category);
 
-        // console.log(result);
+        // console.log(this.state);
+
+        // this.filterPackages({});
+    }
+
+    filterPackages = (info) => { //is called from the filter component
+        // console.log("in the parents");
+        const { location, from, to, category, guests } = info;
+
+        // console.log("in explore");
+        // console.log(this.state);
+
+        this.setState(({ location, from, to, category, guests }), () => console.log(this.state));
     }
 }
 

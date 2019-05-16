@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Container, Segment, Message } from 'semantic-ui-react';
-import Auth from '../classes/auth';
+import Auth from '../../classes/auth';
 
 class SignUp extends Component {
 
