@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 
 import User from "../views/user";
-import Home from "../views/home";
+import Home from "../views/resort/home";
 import SignUp from '../views/customer/signUp';
 import Welcome from '../views/welcome';
 import Explore from '../views/explore';

@@ -3,11 +3,22 @@ import App from '../app/App';
 import homeClass from "../classes/home";
 import NavigationBar from '../components/NavigationBar';
 
+const Test = (props) => {
+    return (
+        <div>Robert, {props.name}</div>
+    )
+}
+
 class Home extends Component {
     render() {
         // const user = App.getUsername();
         return (
-            <h1>Home of {/* {{/* user */}} */}</h1>
+            <div>
+                <h1>Home of {/* {{/* user */}} */}</h1>
+
+
+                <Test name="kevin" />
+            </div>
         )
     }
 
