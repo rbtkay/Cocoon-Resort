@@ -4,23 +4,22 @@
  * and open the template in the editor.
  */
 
+import Classes.Reservation;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.json.JsonArray;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Classes.Package;
-import javax.json.JsonArray;
-
 /**
  *
  * @author Robert
  */
-@WebServlet(urlPatterns = {"/PackageServlet"})
-public class PackageServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/ReservationServlet"})
+public class ReservationServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,37 +38,35 @@ public class PackageServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         response.setHeader("Access-Control-Allow-Methods", "GET");
         out = response.getWriter();
-        String action = request.getParameter("action");
 
+        String action = request.getParameter("action");
         System.out.print(action);
 
-        Package pack = new Package();
+        Reservation reservation = new Reservation();
+
         switch (action) {
             case "create": {
-                String name = request.getParameter("name");
+
+                int packId = Integer.parseInt(request.getParameter("packId"));
+                int clientId = Integer.parseInt(request.getParameter("clientId"));
                 int resortId = Integer.parseInt(request.getParameter("resortId"));
-                String details = request.getParameter("details");
-                int price = Integer.parseInt(request.getParameter("price"));
+                int quantity = Integer.parseInt(request.getParameter("quantity"));
                 String from = request.getParameter("from");
                 String to = request.getParameter("to");
-                int guests = Integer.parseInt(request.getParameter("guests"));
-//                String image = request.getParameter("image");
 
-                if (pack.createPack(name, resortId, details, price, from, to, guests)) {
-                    System.out.print("in the if");
+                if (reservation.create(packId, clientId, resortId, quantity, from, to)) {
                     response.setStatus(200);
-                    out.print("package created");
+                    out.print("Reservation Done");
                 } else {
                     response.setStatus(401);
                     out.print("Error");
                 }
-
                 break;
             }
             case "readAll": {
-                String category = request.getParameter("category");
+//                String category = request.getParameter("category");
 
-                JsonArray result = pack.readAll(category);
+                JsonArray result = reservation.readAll();
 
                 if (result == null) {
                     response.setStatus(404);

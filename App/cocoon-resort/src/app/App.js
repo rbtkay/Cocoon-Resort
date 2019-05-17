@@ -23,7 +23,7 @@ class App extends Component {
       <Router>
         <div>
           <Route path={"/resort/newResort"} component={NewResort} />
-          <Route path={"/home"} component={Home} />
+          <Route path={"/resort/home"} component={Home} />
           <Route path={"/user"} component={User} />
           <Route path={"/signUp"} component={SignUp} />
           <Route path={"/welcome"} component={Welcome} />
