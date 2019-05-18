@@ -13,14 +13,14 @@ import NewResort from '../views/resort/newResort';
 
 class App extends Component {
 
-    state = {
-        user: ""
-    }
+  state = {
+    user: ""
+  }
 
-    render() {
-        console.log(this.state.user);
-        return (
-            <Router>
+  render() {
+    console.log(this.state.user);
+    return (
+      <Router>
         <div>
           <Route path={"/resort/newResort"} component={NewResort} />
           <Route path={"/resort/home"} component={Home} />
@@ -30,7 +30,7 @@ class App extends Component {
           <Route path={"/explore"} component={Explore} />
         </div>
       </Router>
-        );
-    }
+    );
+  }
 }
 export default App;
