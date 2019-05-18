@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 
 import User from "../views/user";
-import Home from "../views/home";
+import Home from "../views/resort/home";
 import SignUp from '../views/customer/signUp';
 import Welcome from '../views/welcome';
 import Explore from '../views/explore';
@@ -25,7 +25,7 @@ class App extends Component {
         <div>
           <Route path={"/resort/newResort"} component={NewResort} />
           <Route path={"/resort/index"} component={ResortIndex} />
-          <Route path={"/home"} component={Home} />
+          <Route path={"/resort/home"} component={Home} />
           <Route path={"/user"} component={User} />
           <Route path={"/signUp"} component={SignUp} />
           <Route path={"/welcome"} component={Welcome} />
