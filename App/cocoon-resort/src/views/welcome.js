@@ -181,7 +181,7 @@ class Welcome extends Component {
     }
 
     newResort = () => {
-        this.props.history.push('/newResort')
+        this.props.history.push('/resort/newResort')
     }
 
     handleChange = (event, { name, value }) => {

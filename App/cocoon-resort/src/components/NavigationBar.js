@@ -15,7 +15,7 @@ class NavigationBar extends Component {
         return (
             <Menu fixed="top" color="green">
                 <MenuItem>
-                    <a href="/we">LOGO</a>
+                    <a href="/welcome">LOGO</a>
                 </MenuItem>
 
                 <MenuItem style={{ marginLeft: '300px' }}>
