@@ -70,11 +70,8 @@ class Home extends Component {
     }
 
     updatePackage = async (state) => {
-        console.log('zi update state', state);
         const pack = new PackageClass();
         const result = await pack.updatePackage(state.id, state.name, state.details, state.price, state.from, state.to, state.capacity);
-
-        console.log('le result', result);
     }
 }
 

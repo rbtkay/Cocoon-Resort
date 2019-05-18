@@ -54,7 +54,7 @@ class Explore extends Component {
         // console.log("in explore");
         // console.log(this.state);
 
-        this.setState(({ location, from, to, category, guests }), () => console.log(this.state));
+        this.setState({ location, from, to, category, guests });
     }
 }
 
