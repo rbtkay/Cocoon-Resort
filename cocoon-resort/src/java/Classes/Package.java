@@ -191,4 +191,42 @@ public class Package {
         }
         return null;
     }
+
+    public boolean updatePack(int id, String name, String details, int price, String from, String to, int capacity) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+
+            prepStmt = con.prepareStatement("update packages_t set package_name = ?, package_detail = ?, package_price = ?, "
+                    + "package_from = ?, package_to = ?, package_capacity = ? where package_id = ?");
+
+            prepStmt.setString(1, name);
+            prepStmt.setString(2, details);
+            prepStmt.setInt(3, price);
+            prepStmt.setString(4, from);
+            prepStmt.setString(5, to);
+            prepStmt.setInt(6, capacity);
+            prepStmt.setInt(7, id);
+
+            System.out.println(id);
+            System.out.println(name);
+            System.out.println(details);
+            System.out.println(price);
+            System.out.println(from);
+            System.out.println(to);
+            System.out.println(capacity);
+
+            prepStmt.executeUpdate();
+            return true;
+        } catch (Exception ex) {
+            System.out.print(ex);
+            return false;
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                System.out.print("Error while closing con" + ex);
+            }
+        }
+    }
 }

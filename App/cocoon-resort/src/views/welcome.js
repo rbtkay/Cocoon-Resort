@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Image, Container, Grid, Form, Item, Card, Button, Message, Dropdown } from 'semantic-ui-react';
+import { Segment, Image, Grid, Form, Card, Button, Message, Dropdown } from 'semantic-ui-react';
 import { DateInput } from 'semantic-ui-calendar-react';
 
 import Navigation from '../components/NavigationBar'
@@ -187,7 +187,8 @@ class Welcome extends Component {
     handleChange = (event, { name, value }) => {
         if (this.state.hasOwnProperty(name)) {
             this.setState({
-                [name]: value });
+                [name]: value
+            });
         }
     }
 

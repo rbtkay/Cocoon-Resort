@@ -101,7 +101,7 @@ class SignUp extends Component {
 
 
     handleForm = async () => {
-        const emailRegEx = new RegExp(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/);
+        const emailRegEx = new RegExp(/^([a-zA-Z0-9_]+)@([a-zA-Z0-9_]+)\.([a-zA-Z]{2,5})$/);
         const { firstName, lastName, email, password, confirmPassword, phone } = this.state;
         //TODO: is loading for button
         console.log(email)
@@ -111,24 +111,20 @@ class SignUp extends Component {
 
 
         if (!emailRegEx.test(email)) {
-            this.setState(
-                {
-                    isError: true,
-                    formError: "Invalid Email Address",
-                    isEmail: true
-                }
-            );
+            this.setState({
+                isError: true,
+                formError: "Invalid Email Address",
+                isEmail: true
+            });
         }
         if (password !== confirmPassword) {
             console.log("in the if")
-            this.setState(
-                {
-                    isError: true,
-                    formError: "Password don't match",
-                    isPassword: true,
-                    isConfirm: true
-                }
-            )
+            this.setState({
+                isError: true,
+                formError: "Password don't match",
+                isPassword: true,
+                isConfirm: true
+            })
         } else {
             const auth = new Auth();
 
@@ -138,7 +134,7 @@ class SignUp extends Component {
             if (isCreated === true) {
                 this.setState({ isSuccess: true });
             } else {
-                this.setState({ isError: true, formError: "Connection Error" }); //TODO: check what kind of error 
+                this.setState({ isError: true, formError: "Connection Error" }); //TODO: check what kind of error
             }
         }
     }
