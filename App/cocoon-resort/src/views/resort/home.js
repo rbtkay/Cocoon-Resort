@@ -30,7 +30,7 @@ class Home extends Component {
 
     // constructor(props) {
     //     super(props)
-        
+
     // }
 
     state = {
@@ -51,7 +51,7 @@ class Home extends Component {
                     </Grid.Column>
                     <Grid.Column width={8}>
                         <Item.Group itemsPerRow={4}>
-                            {/* <ListPackages packages={this.state.packages} /> */}
+                            <ListPackages packages={this.state.packages} />
                         </Item.Group>
 
                         <Segment textAlign='center'>
@@ -73,11 +73,11 @@ class Home extends Component {
         const packages = await pack.filterByResort(1);
 
 
-        console.log(packages);
+        console.log('packages', packages);
+        console.log('reservations', reservations);
 
-        this.setState({ reservations })
 
-        this.setState({ name: 'kevin' });
+        this.setState({ reservations, packages });
     }
 }
 

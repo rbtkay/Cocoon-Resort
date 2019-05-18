@@ -73,7 +73,7 @@ public class Package {
                                 .add("pPrice", result.getString("package_price"))
                                 .add("pFrom", result.getString("package_from"))
                                 .add("pTo", result.getString("package_to"))
-                                .add("pGuests", result.getString("package_guests"))
+                                .add("pCapacity", result.getString("package_capacity"))
                                 .add("pImage", result.getString("package_image"))
                                 .add("pReserved", result.getString("package_isReserved"))
                                 .add("rName", result.getString("resort_name"))
@@ -163,12 +163,14 @@ public class Package {
             while (result.next()) {
                 builder.add(Json.createObjectBuilder()
                         .add("id", String.valueOf(result.getInt("package_id")))
-                        .add("Name", result.getString("package_name"))
-                        .add("Detail", result.getString("package_detail"))
-                        .add("Price", result.getString("package_price"))
-                        .add("From", result.getString("package_from"))
-                        .add("To", result.getString("package_to"))
-                        .add("Image", result.getString("package_image")));
+                        .add("name", result.getString("package_name"))
+                        .add("details", result.getString("package_detail"))
+                        .add("price", result.getString("package_price"))
+                        .add("from", result.getString("package_from"))
+                        .add("to", result.getString("package_to"))
+                        .add("image", result.getString("package_image"))
+                        .add("capacity", result.getString("package_capacity"))
+                        .add("isReserved", result.getBoolean("package_isReserved")));
             }
 
             JsonArray resultJson = builder.build();
