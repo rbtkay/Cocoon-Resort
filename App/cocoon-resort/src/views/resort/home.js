@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import PackageComp from '../../components/Package';
+import ResortPack from '../../components/ResortPack';
 import Profile from '../../components/Profile';
 import { Card, Input } from 'semantic-ui-react';
 
 import Reservation from '../../classes/reservation';
+import Package from '../../components/Package';
 
 const ListPackages = (props) => {
     if (props.packages.length < 1) {
@@ -11,9 +12,9 @@ const ListPackages = (props) => {
             <h3>No Packages</h3>
         )
     } else {
-        props.packages.map(item => {
+        return props.packages.map(item => {
             return (
-                <PackageComp info={item} />
+                <Package info={item} />
             )
         })
     }
@@ -44,17 +45,7 @@ class Home extends Component {
 
         console.log(packages);
 
-        const info = {
-            name: 'lala',
-            resortName: 'asd',
-            details: 'no description',
-            price: 'NA',
-            from: '*',
-            to: '*',
-            guests: 1,
-            isReserved: false
-        }
-        this.setState({ info })
+        this.setState({ packages })
     }
 }
 
