@@ -5,7 +5,7 @@ import { Item, Input, Grid, Button, Segment } from 'semantic-ui-react';
 
 import Reservation from '../../classes/reservation';
 import Package from '../../components/Package';
-import VendorNavBar from '../../components/VendorNavBar';
+import VendorNavBar from '../../components/ResortNavBar';
 
 const ListPackages = (props) => {
     if (props.packages.length < 1) {
@@ -56,7 +56,7 @@ class Home extends Component {
     }
 
     async componentDidMount() {
-        const reservation = new Reservation();
+        const packageObj = new Package();
 
         const packages = await reservation.readAll();
 
