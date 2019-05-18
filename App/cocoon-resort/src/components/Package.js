@@ -15,7 +15,7 @@ class Package extends Component {
 
         const { name, resortName, details, price, from, to, guests, isReserved } = this.props.info;
 
-        
+
 
         this.state = {
             isResort: isResort || false,
@@ -59,18 +59,27 @@ class Package extends Component {
         } else {
             return (
                 <Item>
-                    <Item.Image size='small' src={comingSoonPng} />
+                    <Item.Image src={comingSoonPng} size='small' />
                     <Item.Content>
-                        <Item.Header>{this.state.pack}</Item.Header>
+                        <Item.Header>{this.state.name}</Item.Header>
                         <Item.Meta>
-                            <span>{this.state.client}</span>
+                            <span>{this.state.resortName}</span>
                         </Item.Meta>
                         <Item.Description>
-                            <p>{this.state.details}</p>
-                            <b>from: {this.state.reservation['from']}</b><br />
-                            <b>to: {this.state.reservation['to']}</b>
+                            {this.state.details}
+                            <Grid>
+                                <Grid.Row columns={2}>
+                                    <Grid.Column width='7'>
+                                        Price: {this.state.price}
+                                    </Grid.Column>
+                                    <Grid.Column width='7'>
+                                        # Guests: {this.state.guests}
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
                         </Item.Description>
                     </Item.Content>
+                    {/* <Button floated='right'>View</Button> */}
                 </Item>
             )
         }

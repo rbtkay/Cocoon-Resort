@@ -35,7 +35,8 @@ class Home extends Component {
 
     state = {
         info: {}, //for client package
-        reservation: [] //for resort package
+        reservation: [], //for resort package
+        packages: []
     }
 
     render() {
@@ -50,7 +51,7 @@ class Home extends Component {
                         <Profile />
                     </Grid.Column>
                     <Grid.Column width={8}>
-                        <Item.Group itemsPerRow={4}>
+                        <Item.Group>
                             <ListPackages packages={this.state.packages} />
                         </Item.Group>
 
