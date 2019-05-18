@@ -46,16 +46,27 @@ public class PackageServlet extends HttpServlet {
         Package pack = new Package();
         switch (action) {
             case "create": {
+                String test = request.getParameter("from");
+                System.out.print(test);
+//                System.out.print(request.getParameter("to"));
                 String name = request.getParameter("name");
                 int resortId = Integer.parseInt(request.getParameter("resortId"));
                 String details = request.getParameter("details");
                 int price = Integer.parseInt(request.getParameter("price"));
-                String from = request.getParameter("from");
-                String to = request.getParameter("to");
-                int guests = Integer.parseInt(request.getParameter("guests"));
-//                String image = request.getParameter("image");
-
-                if (pack.createPack(name, resortId, details, price, from, to, guests)) {
+                String from = String.valueOf(request.getParameter("from"));
+                String to = String.valueOf(request.getParameter("to"));
+                int capacity = Integer.parseInt(request.getParameter("capacity"));
+//
+//                System.out.print(name);
+//                System.out.print(resortId);
+//                System.out.print(details);
+//                System.out.print(price);
+//                System.out.print(from);
+//                System.out.print(to);
+//                System.out.print(capacity);
+////                String image = request.getParameter("image");
+//
+                if (pack.createPack(name, resortId, details, price, from, to, capacity)) {
                     System.out.print("in the if");
                     response.setStatus(200);
                     out.print("package created");
@@ -63,7 +74,8 @@ public class PackageServlet extends HttpServlet {
                     response.setStatus(401);
                     out.print("Error");
                 }
-
+//                String kevin = "18-02-2019";
+//                System.out.print(kevin);
                 break;
             }
             case "readAll": {
@@ -85,17 +97,17 @@ public class PackageServlet extends HttpServlet {
             }
             case "readByResortID": {
                 int id = Integer.parseInt(request.getParameter("id"));
-                
+
                 JsonArray result;
                 result = pack.readByResortID(id);
-                
+
                 if (result == null) {
                     response.setStatus(404);
                 } else {
                     response.setStatus(200);
                 }
                 out.print(result);
-                
+
                 break;
             }
         }

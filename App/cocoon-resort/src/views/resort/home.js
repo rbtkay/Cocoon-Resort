@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import ResortPack from '../../components/ResortPack';
 import Profile from '../../components/Profile';
-import { Item, Input, Grid, Button, Segment } from 'semantic-ui-react';
+import { Item, Input, Grid, Button, Segment, Modal } from 'semantic-ui-react';
 
 import Reservation from '../../classes/reservation';
 import Package from '../../components/Package';
@@ -9,8 +9,6 @@ import VendorNavBar from '../../components/ResortNavBar';
 
 
 import PackageClass from '../../classes/package';
-
-import App from '../../app/App';
 
 const ListPackages = (props) => {
     if (props.packages.length < 1) {
@@ -27,11 +25,6 @@ const ListPackages = (props) => {
 }
 
 class Home extends Component {
-
-    // constructor(props) {
-    //     super(props)
-
-    // }
 
     state = {
         info: {}, //for client package
@@ -56,7 +49,7 @@ class Home extends Component {
                         </Item.Group>
 
                         <Segment textAlign='center'>
-                            <Button color='green'>Add new Package</Button>
+                            <Button onClick={this.addPackage} color='green'>Add new Package</Button>
                         </Segment>
                     </Grid.Column>
                     <Grid.Column width={4}>
@@ -79,6 +72,10 @@ class Home extends Component {
 
 
         this.setState({ reservations, packages });
+    }
+
+    addPackage = () => {
+        this.props.history.push(`/resort/newPackage`);
     }
 }
 

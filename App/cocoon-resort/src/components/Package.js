@@ -79,7 +79,9 @@ class Package extends Component {
                             </Grid>
                         </Item.Description>
                     </Item.Content>
-                    {/* <Button floated='right'>View</Button> */}
+
+                    <Button floated='right' color='red'>Delete</Button>
+                    <Button floated='right' color='blue'>Update</Button>
                 </Item>
             )
         }
