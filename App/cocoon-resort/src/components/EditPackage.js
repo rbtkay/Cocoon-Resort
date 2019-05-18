@@ -75,7 +75,7 @@ class EditPackage extends Component {
                                 value={this.state.details}
                                 onChange={event => this.setState({details: event.target.value})} />
                         </Form.Field>
-                        
+
                         <Form.Group widths='2'>
                             <Form.Button
                                 onClick={this.props.handleClose}
@@ -105,6 +105,7 @@ class EditPackage extends Component {
     handleSubmit = () => {
         console.log('state sending', this.state);
         this.props.updatePackage(this.state);
+        this.props.updateDisplay(this.state);
     }
 
 }

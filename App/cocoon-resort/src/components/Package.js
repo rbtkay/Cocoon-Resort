@@ -58,7 +58,7 @@ class Package extends Component {
             )
         } else {
             return (<>
-                <Item key={this.state.id} onClick={this.handleOpen}>
+                <Item key={this.state.id} onClick={this.handleOpen} updateDisplay={this.props.updateDisplay}>
                     <Item.Image src={comingSoonPng} size='small' />
                     <Item.Content>
                         <Item.Header>{this.state.name}</Item.Header>
@@ -79,7 +79,7 @@ class Package extends Component {
                             </Grid>
                         </Item.Description>
                     </Item.Content>
-                </Item> < EditPackage info = { this.state } isOpen = { this.state.isOpen } handleClose = { this.handleClose } updatePackage = { this.props.updatePackage }
+                </Item> < EditPackage info = { this.state } isOpen = { this.state.isOpen } handleClose = { this.handleClose } updatePackage = { this.props.updatePackage } updateDisplay = { this.updateDisplay }
                 /> < / >
             );
         }
@@ -90,6 +90,12 @@ class Package extends Component {
     }
     handleClose = () => {
         this.setState({ isOpen: false });
+    }
+
+    updateDisplay = async (state) => {
+        const { id, name, capacity, price, from, to, description } = state;
+        this.setState({ id, name, capacity, price, from, to, description, isOpen: false });
+        console.log('updateDisplay: ', state);
     }
 }
 
