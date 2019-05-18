@@ -15,7 +15,7 @@ const ListPackages = (props) => {
     } else {
         return props.packages.map(item => {
             return (
-                <Package key={item.id} info={item} isResort={true} updatePackage={props.updatePackage}/>
+                <Package key={item.id} info={item} isResort={true} updatePackage={props.updatePackage} />
             )
         })
     }
@@ -70,15 +70,8 @@ class Home extends Component {
     }
 
     updatePackage = async (state) => {
-        console.log('zi update state', state);
         const pack = new PackageClass();
         const result = await pack.updatePackage(state.id, state.name, state.details, state.price, state.from, state.to, state.capacity);
-
-        if (result) {
-            this.setState({ isOpen: false });
-        } else {
-            // this.setState({ errorMessage: 'Something went wrong...' });
-        }
     }
 }
 

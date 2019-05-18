@@ -25,8 +25,6 @@ class Home extends Component {
     async componentDidMount() {
         const home = new homeClass();
         const test = await home.getHome();
-
-        console.log(test);
     }
 }
 

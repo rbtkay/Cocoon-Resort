@@ -203,7 +203,6 @@ class Welcome extends Component {
         } else if (from > to) {
             isErrorSearch = true;
             formError = 'dates are invalid'
-            console.log(formError)
             this.setState({ isErrorSearch, formError });
         } else {
             this.props.history.push(`/explore?location=${location.value}&from=${from}&to=${to}&guests=${guests}`);
