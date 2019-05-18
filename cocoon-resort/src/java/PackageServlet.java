@@ -83,6 +83,21 @@ public class PackageServlet extends HttpServlet {
             case "delete": {
                 break;
             }
+            case "readByResortID": {
+                int id = Integer.parseInt(request.getParameter("id"));
+                
+                JsonArray result;
+                result = pack.readByResortID(id);
+                
+                if (result == null) {
+                    response.setStatus(404);
+                } else {
+                    response.setStatus(200);
+                }
+                out.print(result);
+                
+                break;
+            }
         }
     }
 
