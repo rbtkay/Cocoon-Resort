@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 // import ResortPack from '../../components/ResortPack';
 import Profile from '../../components/Profile';
-import { Item, Input, Grid, Button, Segment } from 'semantic-ui-react';
-
+import { Item, Grid, Button, Segment } from 'semantic-ui-react';
 import Reservation from '../../classes/reservation';
 import Package from '../../components/Package';
-import VendorNavBar from '../../components/ResortNavBar';
-
-
+import ResortNavBar from '../../components/ResortNavBar';
 import PackageClass from '../../classes/package';
-
-import App from '../../app/App';
 
 const ListPackages = (props) => {
     if (props.packages.length < 1) {
@@ -20,7 +15,7 @@ const ListPackages = (props) => {
     } else {
         return props.packages.map(item => {
             return (
-                <Package info={item} isResort={true} />
+                <Package key={item.id} info={item} isResort={true} updatePackage={props.updatePackage}/>
             )
         })
     }
@@ -36,23 +31,21 @@ class Home extends Component {
     state = {
         info: {}, //for client package
         reservation: [], //for resort package
-        packages: []
+        packages: [],
     }
 
     render() {
         return (
             <div>
-                <VendorNavBar />
-                <br />
-                <br />
-                <br />
+                <ResortNavBar />
+                <br /><br /><br />
                 <Grid columns={3}>
                     <Grid.Column width={4}>
                         <Profile />
                     </Grid.Column>
                     <Grid.Column width={8}>
                         <Item.Group>
-                            <ListPackages packages={this.state.packages} />
+                            <ListPackages packages={this.state.packages} updatePackage={this.updatePackage}/>
                         </Item.Group>
 
                         <Segment textAlign='center'>
@@ -73,12 +66,19 @@ class Home extends Component {
         const reservations = await reservation.readAll();
         const packages = await pack.filterByResort(1);
 
-
-        console.log('packages', packages);
-        console.log('reservations', reservations);
-
-
         this.setState({ reservations, packages });
+    }
+
+    updatePackage = async (state) => {
+        console.log('zi update state', state);
+        const pack = new PackageClass();
+        const result = await pack.updatePackage(state.id, state.name, state.details, state.price, state.from, state.to, state.capacity);
+
+        if (result) {
+            this.setState({ isOpen: false });
+        } else {
+            // this.setState({ errorMessage: 'Something went wrong...' });
+        }
     }
 }
 
