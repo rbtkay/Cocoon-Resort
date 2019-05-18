@@ -9,9 +9,14 @@ class Package extends Component {
 
         const isResort = this.props.isResort || false;
 
-        const { name, resortName, details, price, from, to, guests, isReserved } = this.props.info;
+        if (isResort === true) {
+            console.log(props)
+        }
+
+        const { name, resortName, details, price, from, to, guests, isReserved, client, reservation } = this.props.info;
 
         this.state = {
+            isResort: isResort || false,
             name: name || '',
             resortName: resortName || '',
             details: details || 'no description',
@@ -19,7 +24,10 @@ class Package extends Component {
             from: from || '*',
             to: to || '*',
             guests: guests || 1,
-            isReserved: isReserved || false
+            isReserved: isReserved || false,
+            client: client || '',
+            pack: props.info.package || '',
+            reservation: reservation || {}
         }
     }
     render() {
@@ -52,27 +60,18 @@ class Package extends Component {
         } else {
             return (
                 <Item>
-                    <Item.Image src={comingSoonPng} />
+                    <Item.Image size='small' src={comingSoonPng} />
                     <Item.Content>
-                        <Item.Header>{this.state.name}</Item.Header>
+                        <Item.Header>{this.state.pack}</Item.Header>
                         <Item.Meta>
-                            <span>{this.state.resortName}</span>
+                            <span>{this.state.client}</span>
                         </Item.Meta>
                         <Item.Description>
-                            {this.state.details}
-                            <Grid>
-                                <Grid.Row columns={2}>
-                                    <Grid.Column width='7'>
-                                        Price: {this.state.price}
-                                    </Grid.Column>
-                                    <Grid.Column width='7'>
-                                        # Guests: {this.state.guests}
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
+                            <p>{this.state.details}</p>
+                            <b>from: {this.state.reservation['from']}</b><br />
+                            <b>to: {this.state.reservation['to']}</b>
                         </Item.Description>
                     </Item.Content>
-                    <Button floated='right'>View</Button>
                 </Item>
             )
         }

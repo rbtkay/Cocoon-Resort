@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import ResortPack from '../../components/ResortPack';
+// import ResortPack from '../../components/ResortPack';
 import Profile from '../../components/Profile';
-import { Card, Input } from 'semantic-ui-react';
+import { Item, Input, Grid, Button, Segment } from 'semantic-ui-react';
 
 import Reservation from '../../classes/reservation';
 import Package from '../../components/Package';
+import VendorNavBar from '../../components/VendorNavBar';
 
 const ListPackages = (props) => {
     if (props.packages.length < 1) {
@@ -14,7 +15,7 @@ const ListPackages = (props) => {
     } else {
         return props.packages.map(item => {
             return (
-                <Package info={item} />
+                <Package info={item} isResort={true} />
             )
         })
     }
@@ -23,17 +24,33 @@ const ListPackages = (props) => {
 class Home extends Component {
 
     state = {
-        info: {},
-        packages: []
+        info: {}, //for client package
+        packages: [] //for resort package
     }
 
     render() {
         return (
             <div>
-                <Profile />
-                <Card.Group itemsPerRow={4}>
-                    <ListPackages packages={this.state.packages} />
-                </Card.Group>
+                <VendorNavBar />
+                <br />
+                <br />
+                <br />
+                <Grid columns={3}>
+                    <Grid.Column width={4}>
+                        <Profile />
+                    </Grid.Column>
+                    <Grid.Column width={8}>
+                        <Item.Group itemsPerRow={4}>
+                            <ListPackages packages={this.state.packages} />
+                        </Item.Group>
+
+                        <Segment textAlign='center'>
+                            <Button color='green'>Add new Package</Button>
+                        </Segment>
+                    </Grid.Column>
+                    <Grid.Column width={4}>
+                    </Grid.Column>
+                </Grid>
             </div>
         )
     }
