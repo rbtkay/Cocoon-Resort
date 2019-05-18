@@ -186,7 +186,8 @@ class Welcome extends Component {
 
     handleChange = (event, { name, value }) => {
         if (this.state.hasOwnProperty(name)) {
-            this.setState({ [name]: value });
+            this.setState({
+                [name]: value });
         }
     }
 

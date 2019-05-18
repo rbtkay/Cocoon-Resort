@@ -4,6 +4,7 @@ import Login from '../components/Login';
 import loginClass from '../classes/auth';
 const cookie = require('../cookie');
 
+
 class NavigationBar extends Component {
     state = {
         name: '',
