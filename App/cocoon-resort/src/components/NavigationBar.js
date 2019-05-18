@@ -4,6 +4,7 @@ import Login from '../components/Login';
 import loginClass from '../classes/auth';
 const cookie = require('../cookie');
 
+
 class NavigationBar extends Component {
     state = {
         name: '',
@@ -15,7 +16,7 @@ class NavigationBar extends Component {
         return (
             <Menu fixed="top" color="green">
                 <MenuItem>
-                    <a href="/we">LOGO</a>
+                    <a href="/welcome">LOGO</a>
                 </MenuItem>
 
                 <MenuItem style={{ marginLeft: '300px' }}>

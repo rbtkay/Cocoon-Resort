@@ -144,4 +144,29 @@ public class Package {
 
         return false;
     }
+    
+//    public JsonArray readByResortID(int id) {
+//        try {
+//            Class.forName("com.mysql.jdbc.Driver");
+//            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+//            
+//            prepStmt = con.prepareStatement("select * from packages_t where packages_t.resort_id = ?");
+//            prepStmt.setInt(1, id);
+//            
+//            result = prepStmt.executeQuery();
+//            
+//            JsonArrayBuilder builder = Json.createArrayBuilder();
+//            ResultSetMetaData resultMeta = result.getMetaData();
+//            
+//            ArrayList list = new ArrayList();
+//            while (result.next()) {
+//                builder.add(Json.createObjectBuilder()
+//                    .add(result.getString("package_name"), Json.createObjectBuilder()
+//                    .add))
+//            }
+//            
+//        } catch (Exception ex) {
+//            
+//        }
+//    }
 }

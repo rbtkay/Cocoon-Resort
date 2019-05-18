@@ -10,19 +10,21 @@ import SignUp from '../views/customer/signUp';
 import Welcome from '../views/welcome';
 import Explore from '../views/explore';
 import NewResort from '../views/resort/newResort';
+import ResortIndex from '../views/resort/index';
 
 class App extends Component {
 
-  state = {
-    user: ""
-  }
+    state = {
+        user: ""
+    }
 
-  render() {
-    console.log(this.state.user);
-    return (
-      <Router>
+    render() {
+        console.log(this.state.user);
+        return (
+            <Router>
         <div>
           <Route path={"/resort/newResort"} component={NewResort} />
+          <Route path={"/resort/index"} component={ResortIndex} />
           <Route path={"/home"} component={Home} />
           <Route path={"/user"} component={User} />
           <Route path={"/signUp"} component={SignUp} />
@@ -30,7 +32,7 @@ class App extends Component {
           <Route path={"/explore"} component={Explore} />
         </div>
       </Router>
-    );
-  }
+        );
+    }
 }
 export default App;
