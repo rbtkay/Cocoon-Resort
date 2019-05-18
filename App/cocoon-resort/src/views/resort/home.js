@@ -7,6 +7,7 @@ import Reservation from '../../classes/reservation';
 import Package from '../../components/Package';
 import VendorNavBar from '../../components/ResortNavBar';
 
+
 import PackageClass from '../../classes/package';
 
 import App from '../../app/App';
@@ -65,10 +66,12 @@ class Home extends Component {
     }
 
     async componentDidMount() {
+
         const reservation = new Reservation();
         const pack = new PackageClass();
         const reservations = await reservation.readAll();
         const packages = await pack.filterByResort(1);
+
 
         console.log(packages);
 
