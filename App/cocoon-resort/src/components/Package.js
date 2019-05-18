@@ -13,7 +13,9 @@ class Package extends Component {
             console.log(props)
         }
 
-        const { name, resortName, details, price, from, to, guests, isReserved, client, reservation } = this.props.info;
+        const { name, resortName, details, price, from, to, guests, isReserved } = this.props.info;
+
+        
 
         this.state = {
             isResort: isResort || false,
@@ -25,9 +27,6 @@ class Package extends Component {
             to: to || '*',
             guests: guests || 1,
             isReserved: isReserved || false,
-            client: client || '',
-            pack: props.info.package || '',
-            reservation: reservation || {}
         }
     }
     render() {

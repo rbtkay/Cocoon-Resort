@@ -25,6 +25,18 @@ class Package {
             return true;
         }
     }
+
+    async filterByResort(id) {
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=readByResortID&id=${id}`)
+            if (response.ok) {
+                const result = await response.json();
+                return result;
+            }
+        } catch (e) {
+            throw e;
+        }
+    }
 }
 
 export default Package;

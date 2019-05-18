@@ -5,7 +5,11 @@ import { Item, Input, Grid, Button, Segment } from 'semantic-ui-react';
 
 import Reservation from '../../classes/reservation';
 import Package from '../../components/Package';
-import VendorNavBar from '../../components/VendorNavBar';
+import VendorNavBar from '../../components/ResortNavBar';
+
+import PackageClass from '../../classes/package';
+
+import App from '../../app/App';
 
 const ListPackages = (props) => {
     if (props.packages.length < 1) {
@@ -23,9 +27,14 @@ const ListPackages = (props) => {
 
 class Home extends Component {
 
+    // constructor(props) {
+    //     super(props)
+        
+    // }
+
     state = {
         info: {}, //for client package
-        packages: [] //for resort package
+        reservation: [] //for resort package
     }
 
     render() {
@@ -41,7 +50,7 @@ class Home extends Component {
                     </Grid.Column>
                     <Grid.Column width={8}>
                         <Item.Group itemsPerRow={4}>
-                            <ListPackages packages={this.state.packages} />
+                            {/* <ListPackages packages={this.state.packages} /> */}
                         </Item.Group>
 
                         <Segment textAlign='center'>
@@ -57,12 +66,15 @@ class Home extends Component {
 
     async componentDidMount() {
         const reservation = new Reservation();
-
-        const packages = await reservation.readAll();
+        const pack = new PackageClass();
+        const reservations = await reservation.readAll();
+        const packages = await pack.filterByResort(1);
 
         console.log(packages);
 
-        this.setState({ packages })
+        this.setState({ reservations })
+
+        this.setState({ name: 'kevin' });
     }
 }
 
