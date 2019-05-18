@@ -11,8 +11,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -145,28 +148,44 @@ public class Package {
         return false;
     }
     
-//    public JsonArray readByResortID(int id) {
-//        try {
-//            Class.forName("com.mysql.jdbc.Driver");
-//            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
-//            
-//            prepStmt = con.prepareStatement("select * from packages_t where packages_t.resort_id = ?");
-//            prepStmt.setInt(1, id);
-//            
-//            result = prepStmt.executeQuery();
-//            
-//            JsonArrayBuilder builder = Json.createArrayBuilder();
-//            ResultSetMetaData resultMeta = result.getMetaData();
-//            
-//            ArrayList list = new ArrayList();
-//            while (result.next()) {
-//                builder.add(Json.createObjectBuilder()
-//                    .add(result.getString("package_name"), Json.createObjectBuilder()
-//                    .add))
-//            }
-//            
-//        } catch (Exception ex) {
-//            
-//        }
-//    }
+    public JsonArray readByResortID(int id){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+            
+            prepStmt = con.prepareStatement("select * from packages_t where packages_t.resort_id = ?");
+            prepStmt.setInt(1, id);
+            
+            result = prepStmt.executeQuery();
+            
+            JsonArrayBuilder builder = Json.createArrayBuilder();
+            
+            while (result.next()) {
+                builder.add(Json.createObjectBuilder()
+                    .add(result.getString("package_name"), Json.createObjectBuilder()
+                        .add("Detail", result.getString("package_detail"))
+                        .add("Price", result.getString("package_price"))
+                        .add("From", result.getString("package_from"))
+                        .add("To", result.getString("package_to"))
+                        .add("Image", result.getString("package_image"))));
+            }
+            
+            JsonArray resultJson = builder.build();
+            if (resultJson.isEmpty()) {
+                return null;
+            } else {
+                System.out.print(resultJson);
+                return resultJson;
+            }
+        } catch (Exception ex) {
+            System.out.print(ex);
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                System.out.print(ex);
+            }
+        }
+        return null;
+    }
 }
