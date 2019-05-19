@@ -66,7 +66,7 @@ class Package extends Component {
                             <span>{this.state.resortName}</span>
                         </Item.Meta>
                         <Item.Description>
-                            { this.state.details }
+                            {this.state.details}
                             <Grid>
                                 <Grid.Row columns={2}>
                                     <Grid.Column width='7'>
@@ -83,8 +83,8 @@ class Package extends Component {
                     <Button floated='right' color='red'>Delete</Button>
                     <Button floated='right' color='blue'>Update</Button>
                 </Item>
-                < EditPackage info = { this.state } isOpen = { this.state.isOpen } handleClose = { this.handleClose } updatePackage = { this.props.updatePackage } updateDisplay = { this.updateDisplay }
-                /> < / >
+                <EditPackage info={this.state} isOpen={this.state.isOpen} handleClose={this.handleClose} updatePackage={this.props.updatePackage} updateDisplay={this.updateDisplay}
+                /> </>
             );
 
         }
