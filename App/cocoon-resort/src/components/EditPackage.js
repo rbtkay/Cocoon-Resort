@@ -7,7 +7,6 @@ class EditPackage extends Component {
     constructor(props) {
         super(props);
 
-        console.log('package props', props);
         let { id, name, details, price, from, to, capacity, isOpen } = this.props.info;
 
         this.state = {
@@ -52,6 +51,7 @@ class EditPackage extends Component {
                         </Form.Group>
 
                         <Form.Group widths='2' inline>
+                            // TODO: Handle the dates correctly, set date format
                             <DateInput
                                 name='from'
                                 label='Starting Date'
@@ -103,7 +103,6 @@ class EditPackage extends Component {
     }
 
     handleSubmit = () => {
-        console.log('state sending', this.state);
         this.props.updatePackage(this.state);
         this.props.updateDisplay(this.state);
     }

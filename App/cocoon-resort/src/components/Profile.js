@@ -5,7 +5,6 @@ import comingSoonPng from '../static/default_product_image.jpg';
 
 const Reservation = (props) => {
     const { name, reservations } = props;
-    console.log(reservations)
 
     if (reservations === undefined) {
         return (

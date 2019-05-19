@@ -1,8 +1,25 @@
 import React, { Component } from 'react';
 import NavigationBar from '../components/NavigationBar';
+import { Grid, Segment, Card } from 'semantic-ui-react';
 import Filter from '../components/Filter';
+import PackageClass from '../classes/package';
+import PackageComponent from '../components/Package';
 
-// import Package from '../classes/package';
+const ListPackages = (props) => {
+    if (props.packages.length < 1) {
+        return (
+            <h3>No packages found... :(</h3>
+        );
+    } else {
+        return props.packages.map(item => {
+            console.log('zi item', item);
+            return (
+                <PackageComponent key={item.id} info={item} isResort={false} />
+            );
+        });
+    }
+}
+
 
 class Explore extends Component {
 
@@ -13,12 +30,13 @@ class Explore extends Component {
 
         const info = queryString.parse(this.props.location.search)
 
-        // console.log(info);
+        console.log(info);
 
         info['category'] = info['category'] ? info['category'] : '';
 
         this.state = {
-            info: info
+            info: info,
+            packages: []
         }
     }
 
@@ -28,22 +46,30 @@ class Explore extends Component {
         return (
             <div>
                 <NavigationBar />
-                <br />
-                <br />
-                <br />
-                <Filter info={this.state.info} filter={this.filterPackages} />
+                <br /><br /><br /><br />
+                <Grid>
+                    <Grid.Column width={3}>
+                        <Filter info={this.state.info} filter={this.filterPackages} />
+                    </Grid.Column>
+                    <Grid.Column width={11}>
+                        <Segment>
+                            <Card.Group itemsPerRow='4'>
+                                <ListPackages packages={this.state.packages} />
+                            </Card.Group>
+                        </Segment>
+                    </Grid.Column>
+                </Grid>
             </div>
         )
     }
 
     async componentDidMount() {
-        // const pack = new Package();
+        const pack = new PackageClass();
 
-        // const { category } = this.state.info.category;
-        // const result = await pack.readAll(category);
+        const { category } = this.state.info.category;
+        const result = await pack.readAll(category);
 
-        // console.log(this.state);
-
+        this.setState({ packages: result })
         // this.filterPackages({});
     }
 
@@ -51,8 +77,7 @@ class Explore extends Component {
         // console.log("in the parents");
         const { location, from, to, category, guests } = info;
 
-        // console.log("in explore");
-        // console.log(this.state);
+        console.log("in explore", this.state);
 
         this.setState({ location, from, to, category, guests });
     }

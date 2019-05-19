@@ -8,6 +8,7 @@ class Package {
             //TODO: create Package Servlet!!
             if (response.status === 200) {
                 const result = await response.json();
+                console.log(result);
                 return result;
             } else {
                 return 404;
