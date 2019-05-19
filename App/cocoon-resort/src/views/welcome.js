@@ -159,7 +159,7 @@ class Welcome extends Component {
                             <h1>Introducing Cocoon Resorts</h1>
                             <span>a selection of the best resort in Lebanon</span>
                             <Segment textAlign='center' style={{ backgroundImage: `url(${image})`, backgroundRepeat: 'no-repeat', backgroundSize: '100%' }}><br /><br /><br /><br /><br />
-                                <Button color='red'>Search</Button>
+                                <Button color='red' onClick={() => this.props.history.push('/resort')}>Search</Button>
                                 <br /><br /><br /><br /><br />
                             </Segment>
                             <br />

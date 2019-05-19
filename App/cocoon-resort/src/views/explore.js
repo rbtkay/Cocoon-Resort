@@ -3,22 +3,22 @@ import NavigationBar from '../components/NavigationBar';
 import { Grid, Segment, Card } from 'semantic-ui-react';
 import Filter from '../components/Filter';
 import PackageClass from '../classes/package';
-import PackageComponent from '../components/Package';
+import ListPackages from '../components/ListPackages';
 
-const ListPackages = (props) => {
-    if (props.packages.length < 1) {
-        return (
-            <h3>No packages found... :(</h3>
-        );
-    } else {
-        return props.packages.map(item => {
-            console.log('zi item', item);
-            return (
-                <PackageComponent key={item.id} info={item} isResort={false} />
-            );
-        });
-    }
-}
+// const ListPackages = (props) => {
+//     if (props.packages.length < 1) {
+//         return (
+//             <h3>No packages found... :(</h3>
+//         );
+//     } else {
+//         return props.packages.map(item => {
+//             console.log('zi item', item);
+//             return (
+//                 <PackageComponent key={item.id} info={item} isResort={false} />
+//             );
+//         });
+//     }
+// }
 
 
 class Explore extends Component {
@@ -32,7 +32,8 @@ class Explore extends Component {
 
         console.log(info);
 
-        info['category'] = info['category'] ? info['category'] : '';
+        info['from'] = info['from'] ? info['from'] : '';
+        info['to'] = info['to'] ? info['to'] : '';
 
         this.state = {
             info: info,
@@ -54,7 +55,7 @@ class Explore extends Component {
                     <Grid.Column width={11}>
                         <Segment>
                             <Card.Group itemsPerRow='4'>
-                                <ListPackages packages={this.state.packages} />
+                                <ListPackages packages={this.state.packages} isResort={false} />
                             </Card.Group>
                         </Segment>
                     </Grid.Column>
@@ -66,8 +67,8 @@ class Explore extends Component {
     async componentDidMount() {
         const pack = new PackageClass();
 
-        const { category } = this.state.info.category;
-        const result = await pack.readAll(category);
+        const { from, to } = this.state.info;
+        const result = await pack.filterByDate(from, to);
 
         this.setState({ packages: result })
         // this.filterPackages({});

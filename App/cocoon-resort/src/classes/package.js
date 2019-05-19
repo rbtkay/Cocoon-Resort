@@ -33,6 +33,8 @@ class Package {
             if (response.ok) {
                 const result = await response.json();
                 return result;
+            } else {
+                return 404;
             }
         } catch (e) {
             throw e;

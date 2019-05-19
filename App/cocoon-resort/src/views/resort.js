@@ -32,7 +32,6 @@ class Resort extends Component {
         const queryString = require('query-string');
         const info = queryString.parse(this.props.location.search)
 
-        console.log(info['category']);
 
         this.state = {
             category: info['category'] ? info['category'] : 'World',
@@ -69,9 +68,8 @@ class Resort extends Component {
 
         const { category } = this.state;
 
-        console.log("category");
-        console.log(category);
-        const result = await resort.readAll(category);
+        const categorySend = category === "World" ? '' : category;
+        const result = await resort.readAll(categorySend);
 
         console.log(result);
 
