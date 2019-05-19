@@ -4,7 +4,6 @@ class Home {
         try {
             const response = await fetch("http://localhost:8080/cocoon-resort/ClientServlet?action=login&name=dse&password=123");
 
-            console.log("result", response.status)
             const res = await response.json();
 
             return res;
