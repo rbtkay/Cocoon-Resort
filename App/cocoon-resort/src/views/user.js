@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import homeClass from '../classes/home';
+// import homeClass from '../classes/home';
 import NavigationBar from '../components/NavigationBar';
 
 class User extends Component {

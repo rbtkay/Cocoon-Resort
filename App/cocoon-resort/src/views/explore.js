@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import NavigationBar from '../components/NavigationBar';
 import Filter from '../components/Filter';
 
-import Package from '../classes/package';
+// import Package from '../classes/package';
 
 class Explore extends Component {
 
@@ -37,10 +37,10 @@ class Explore extends Component {
     }
 
     async componentDidMount() {
-        const pack = new Package();
+        // const pack = new Package();
 
-        const { category } = this.state.info.category;
-        const result = await pack.readAll(category);
+        // const { category } = this.state.info.category;
+        // const result = await pack.readAll(category);
 
         // console.log(this.state);
 
@@ -54,7 +54,7 @@ class Explore extends Component {
         // console.log("in explore");
         // console.log(this.state);
 
-        this.setState(({ location, from, to, category, guests }), () => console.log(this.state));
+        this.setState({ location, from, to, category, guests });
     }
 }
 

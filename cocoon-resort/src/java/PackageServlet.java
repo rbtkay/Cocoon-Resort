@@ -110,6 +110,30 @@ public class PackageServlet extends HttpServlet {
 
                 break;
             }
+            case "updatePackage": {
+                int id = Integer.parseInt(request.getParameter("id"));
+                String name = request.getParameter("name");
+                String details = request.getParameter("details");
+                int price = Integer.parseInt(request.getParameter("price"));
+                String from = request.getParameter("from");
+                String to = request.getParameter("to");
+                int capacity = Integer.parseInt(request.getParameter("capacity"));
+                
+                System.out.println(id);
+                System.out.println(name);
+                System.out.println(details);
+                System.out.println(price);
+                System.out.println(from);
+                System.out.println(to);
+                System.out.println(capacity);
+                if (pack.updatePack(id, name, details, price, from, to, capacity)) {
+                    response.setStatus(200);
+                    out.println("Package Modified Successfully");
+                } else {
+                    response.setStatus(401);
+                }
+                break;
+            }
         }
     }
 

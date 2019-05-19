@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Image, Container, Grid, Form, Item, Card, Button, Message, Dropdown } from 'semantic-ui-react';
+import { Segment, Image, Grid, Form, Card, Button, Message, Dropdown } from 'semantic-ui-react';
 import { DateInput } from 'semantic-ui-calendar-react';
 
 import Navigation from '../components/NavigationBar'
@@ -219,7 +219,6 @@ class Welcome extends Component {
         } else if (fromDate > toDate) {
             isErrorSearch = true;
             formError = 'dates are invalid'
-            console.log(formError)
             this.setState({ isErrorSearch, formError });
         } else {
             this.props.history.push(`/explore?location=${location.value}&from=${from}&to=${to}&guests=${guests}`);

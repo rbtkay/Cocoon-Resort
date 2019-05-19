@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Menu, Dropdown, Select, Grid, Form, Button } from 'semantic-ui-react';
+import { Menu, Dropdown, Grid, Form, Button } from 'semantic-ui-react';
 import { DateInput } from 'semantic-ui-calendar-react';
 import NumericInput from 'react-numeric-input';
 
@@ -143,7 +143,8 @@ class Filter extends Component {
 
     handleDateChange = (event, { name, value }) => {
         if (this.state.hasOwnProperty(name)) {
-            this.setState({ [name]: value });
+            this.setState({
+                [name]: value });
         }
     }
 

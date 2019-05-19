@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Menu, MenuItem, Dropdown, Icon, Button } from 'semantic-ui-react';
+import { Menu, MenuItem, Dropdown, Icon } from 'semantic-ui-react';
 import cookie from '../cookie';
 
-class VendorNavBar extends Component {
+class ResortNavBar extends Component {
 
     state = {
         name: ''
@@ -40,4 +40,4 @@ class VendorNavBar extends Component {
     }
 }
 
-export default VendorNavBar;
+export default ResortNavBar;

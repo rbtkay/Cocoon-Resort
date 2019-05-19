@@ -37,6 +37,20 @@ class Package {
             throw e;
         }
     }
+
+    async updatePackage(id, name, details, price, from, to, capacity) {
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=updatePackage&id=${id}&name=${name}&details=${details}&price=${price}&from=${from}&to=${to}&capacity=${capacity}`);
+
+            if (response.ok) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
 }
 
 export default Package;
