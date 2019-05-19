@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2019 at 12:29 AM
+-- Generation Time: May 19, 2019 at 12:21 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -28,12 +28,12 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `clients_t` (
   `client_id` int(11) NOT NULL,
-  `client_name` varchar(500) NOT NULL,
-  `client_password` varchar(200) NOT NULL,
+  `client_name` varchar(500) CHARACTER SET latin1 NOT NULL,
+  `client_password` varchar(200) CHARACTER SET latin1 NOT NULL,
   `client_phone` int(11) NOT NULL,
-  `client_email` varchar(200) NOT NULL,
+  `client_email` varchar(200) CHARACTER SET latin1 NOT NULL,
   `client_isVerified` bit(1) DEFAULT b'0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `clients_t`
@@ -53,22 +53,27 @@ CREATE TABLE `packages_t` (
   `package_id` int(11) NOT NULL,
   `package_name` varchar(200) NOT NULL DEFAULT 'unknown',
   `resort_id` int(11) DEFAULT NULL,
-  `package_detail` varchar(500) DEFAULT NULL,
+  `package_detail` varchar(500) CHARACTER SET latin1 DEFAULT NULL,
   `package_price` int(11) NOT NULL,
-  `package_from` varchar(500) NOT NULL,
-  `package_to` varchar(500) DEFAULT NULL,
-  `package_guests` int(11) NOT NULL DEFAULT '1',
+  `package_from` date DEFAULT '1990-01-01',
+  `package_to` date DEFAULT '3000-01-01',
+  `package_capacity` int(11) NOT NULL DEFAULT '1',
   `package_image` varchar(200) NOT NULL DEFAULT '/default',
   `package_isReserved` bit(1) NOT NULL DEFAULT b'0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `packages_t`
 --
 
-INSERT INTO `packages_t` (`package_id`, `package_name`, `resort_id`, `package_detail`, `package_price`, `package_from`, `package_to`, `package_guests`, `package_image`, `package_isReserved`) VALUES
-(1, 'unknown', 1, 'a la montagne a cheval', 200, '', '', 1, '', b'0'),
-(2, 'Weekend', 1, 'well well', 100, '', '', 2, '/default', b'0');
+INSERT INTO `packages_t` (`package_id`, `package_name`, `resort_id`, `package_detail`, `package_price`, `package_from`, `package_to`, `package_capacity`, `package_image`, `package_isReserved`) VALUES
+(1, '\0unknown', 1, 'a la montagne a cheval', 200, '1990-01-01', '3000-01-01', 1, '', b'0'),
+(2, '\0Weekend', 1, 'well well', 100, '1990-01-01', '3000-01-01', 2, '/default', b'0'),
+(3, 'test', 1, 'lalala', 200, '1990-01-01', '3000-01-01', 2, '/default', b'0'),
+(4, 'test2', 1, 'lalala', 200, '1990-01-01', '3000-01-01', 2, '/default', b'0'),
+(5, 'le bon test', 1, 'ceci est un bon test', 200, '1990-01-01', '3000-01-01', 0, '/default', b'0'),
+(6, 'final test', 1, 'this is hopefully the last test', 400, '1990-01-01', '3000-01-01', 0, '/default', b'0'),
+(7, 'qwer', 1, 'this is hahah', 300, '2019-05-27', '2019-05-31', 20, '/default', b'0');
 
 -- --------------------------------------------------------
 
@@ -82,9 +87,9 @@ CREATE TABLE `reservations_t` (
   `client_id` int(11) DEFAULT NULL,
   `resort_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
-  `reservation_from` varchar(200) DEFAULT NULL,
-  `reservation_to` varchar(200) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `reservation_from` varchar(200) CHARACTER SET latin1 DEFAULT NULL,
+  `reservation_to` varchar(200) CHARACTER SET latin1 DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `reservations_t`
@@ -101,11 +106,11 @@ INSERT INTO `reservations_t` (`reservation_id`, `package_id`, `client_id`, `reso
 
 CREATE TABLE `resorts_t` (
   `resort_id` int(11) NOT NULL,
-  `resort_name` varchar(100) NOT NULL,
-  `resort_password` varchar(200) NOT NULL,
-  `resort_location` varchar(100) NOT NULL,
-  `resort_category` varchar(200) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `resort_name` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `resort_password` varchar(200) CHARACTER SET latin1 NOT NULL,
+  `resort_location` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `resort_category` varchar(200) CHARACTER SET latin1 DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `resorts_t`
@@ -157,7 +162,7 @@ ALTER TABLE `clients_t`
 -- AUTO_INCREMENT for table `packages_t`
 --
 ALTER TABLE `packages_t`
-  MODIFY `package_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `package_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `reservations_t`
 --
