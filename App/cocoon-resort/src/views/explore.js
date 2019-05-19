@@ -12,7 +12,6 @@ const ListPackages = (props) => {
         );
     } else {
         return props.packages.map(item => {
-            console.log('zi item', item);
             return (
                 <PackageComponent key={item.id} info={item} isResort={false} />
             );
@@ -20,9 +19,7 @@ const ListPackages = (props) => {
     }
 }
 
-
 class Explore extends Component {
-
     constructor(props) {
         super(props);
 
@@ -30,31 +27,36 @@ class Explore extends Component {
 
         const info = queryString.parse(this.props.location.search)
 
-        console.log(info);
+        console.log('ziinfoinfo');
 
         info['category'] = info['category'] ? info['category'] : '';
+        info['from'] = info['from'] || '';
+        info['to'] = info['to'] || '';
 
         this.state = {
             info: info,
-            packages: []
-        }
+            allPackages: [],
+            filteredPackages: [],
+            filter: {
+
+            },
+        };
     }
 
 
     render() {
-        // console.log(this.state.info)
         return (
             <div>
                 <NavigationBar />
                 <br /><br /><br /><br />
                 <Grid>
                     <Grid.Column width={3}>
-                        <Filter info={this.state.info} filter={this.filterPackages} />
+                        <Filter info={this.state.info} filter={this.setFilteredPackages} />
                     </Grid.Column>
                     <Grid.Column width={11}>
                         <Segment>
                             <Card.Group itemsPerRow='4'>
-                                <ListPackages packages={this.state.packages} />
+                                <ListPackages packages={this.state.filteredPackages} />
                             </Card.Group>
                         </Segment>
                     </Grid.Column>
@@ -66,20 +68,49 @@ class Explore extends Component {
     async componentDidMount() {
         const pack = new PackageClass();
 
-        const { category } = this.state.info.category;
-        const result = await pack.readAll(category);
-
-        this.setState({ packages: result })
-        // this.filterPackages({});
+        const { filter } = this.state.filter;
+        let result;
+        result = await pack.filterByDate(this.state.info.from, this.state.info.to);
+        this.setState({ allPackages: result, filteredPackages: result })
     }
 
-    filterPackages = (info) => { //is called from the filter component
-        // console.log("in the parents");
+    filterPackages = async (filter) => {
+        const { location, from, to, category, guests } = filter;
+
+        let allPackages = [];
+        if (from || to) {
+            const pack = new PackageClass();
+            const result = await pack.filterByDate(from, to);
+            allPackages = result;
+        } else {
+            allPackages = this.state.allPackages;
+
+        }
+        let filteredPackages = allPackages;
+        if (category !== "") {
+            filteredPackages = filteredPackages.filter((item) => {
+                return item['category'] === category;
+            })
+        }
+        if (location !== undefined) {
+            filteredPackages = filteredPackages.filter((item) => {
+                return item['location'] === location;
+            })
+        }
+        if (guests > 1) {
+            filteredPackages = filteredPackages.filter((item) => {
+                return item['capacity'] >= guests;
+            })
+        }
+        this.setState({ filteredPackages, allPackages });
+    }
+
+    setFilteredPackages = (info) => { //is called from the filter component
         const { location, from, to, category, guests } = info;
 
-        console.log("in explore", this.state);
-
-        this.setState({ location, from, to, category, guests });
+        console.log('info in setFilteredPackages', info);
+        let filteredPackages = this.filterPackages(info);
+        this.setState({ filter: info });
     }
 }
 

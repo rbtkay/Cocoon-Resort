@@ -8,7 +8,6 @@ class Package {
             //TODO: create Package Servlet!!
             if (response.status === 200) {
                 const result = await response.json();
-                console.log(result);
                 return result;
             } else {
                 return 404;
@@ -47,6 +46,23 @@ class Package {
                 return true;
             } else {
                 return false;
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async filterByDate(from, to) {
+        from = from || '1970-01-01';
+        to = to || '2050-01-01';
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=filterByDate&start=${from}&end=${to}`);
+
+            if (response.ok) {
+                const result = await response.json();
+                return result;
+            } else {
+                return [];
             }
         } catch (err) {
             throw err;
