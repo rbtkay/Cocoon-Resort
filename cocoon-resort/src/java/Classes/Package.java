@@ -36,12 +36,14 @@ public class Package {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
 
-            prepStmt = con.prepareStatement("SELECT packages_t.*, resorts_t.resort_id, resorts_t.resort_name, resorts_t.resort_location, resorts_t.resort_category from packages_t, resorts_t where( ((packages_t.package_from BETWEEN ? and ?) OR (packages_t.package_to BETWEEN ? and ?)) and packages_t.resort_id = resorts_t.resort_id)");
+            prepStmt = con.prepareStatement("SELECT packages_t.*, resorts_t.resort_id, resorts_t.resort_name, resorts_t.resort_location, resorts_t.resort_category "
+                    + "from packages_t, resorts_t "
+                    + "where packages_t.package_id not in"
+                    + "(select packages_t.package_id from packages_t where ((packages_t.package_from > ?) OR (packages_t.package_to < ?))) "
+                    + "and packages_t.resort_id = resorts_t.resort_id");   
 
-            prepStmt.setString(1, start);
-            prepStmt.setString(2, end);
-            prepStmt.setString(3, start);
-            prepStmt.setString(4, end);
+            prepStmt.setString(1, end);
+            prepStmt.setString(2, start);
 
             result = prepStmt.executeQuery();
 

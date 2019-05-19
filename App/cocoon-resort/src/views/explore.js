@@ -3,7 +3,21 @@ import NavigationBar from '../components/NavigationBar';
 import { Grid, Segment, Card } from 'semantic-ui-react';
 import Filter from '../components/Filter';
 import PackageClass from '../classes/package';
-import ListPackages from '../components/ListPackages';
+import PackageComponent from '../components/Package';
+
+const ListPackages = (props) => {
+    if (props.packages.length < 1) {
+        return (
+            <h3>No packages found... :(</h3>
+        );
+    } else {
+        return props.packages.map(item => {
+            return (
+                <PackageComponent key={item.id} info={item} isResort={false} />
+            );
+        });
+    }
+}
 
 class Explore extends Component {
     constructor(props) {
@@ -13,10 +27,11 @@ class Explore extends Component {
 
         const info = queryString.parse(this.props.location.search)
 
+        console.log('ziinfoinfo');
+
         info['category'] = info['category'] ? info['category'] : '';
         info['from'] = info['from'] || '';
         info['to'] = info['to'] || '';
-
 
         this.state = {
             info: info,
@@ -41,7 +56,7 @@ class Explore extends Component {
                     <Grid.Column width={11}>
                         <Segment>
                             <Card.Group itemsPerRow='4'>
-                                <ListPackages packages={this.state.filteredPackages} isResort={false} />
+                                <ListPackages packages={this.state.filteredPackages} />
                             </Card.Group>
                         </Segment>
                     </Grid.Column>
@@ -52,6 +67,7 @@ class Explore extends Component {
 
     async componentDidMount() {
         const pack = new PackageClass();
+
         const { filter } = this.state.filter;
         let result;
         result = await pack.filterByDate(this.state.info.from, this.state.info.to);
@@ -60,15 +76,10 @@ class Explore extends Component {
 
     filterPackages = async (filter) => {
         const { location, from, to, category, guests } = filter;
-        let allPackages = [];
-        if (from || to) {
-            const pack = new PackageClass();
-            const result = await pack.filterByDate(from, to);
-            allPackages = result;
-        } else {
-            allPackages = this.state.allPackages;
 
-        }
+        const pack = new PackageClass();
+        const allPackages = await pack.filterByDate(from, to);
+
         let filteredPackages = allPackages;
         if (category !== "") {
             filteredPackages = filteredPackages.filter((item) => {
