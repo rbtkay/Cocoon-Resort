@@ -134,20 +134,23 @@ public class Resort {
     public JsonArray readAll(String filter) {
 
         System.out.print("in the Resort class");
+        System.out.print(filter);
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
 
             if (filter.isEmpty()) {
-                prepStmt = con.prepareStatement(
-                        "SELECT resorts_t.* FROM resorts_t");
+                prepStmt = con.prepareStatement("SELECT resorts_t.*, "
+                        + "(SELECT COUNT(packages_t.package_id) as COUNT from packages_t where packages_t.resort_id = resorts_t.resort_id)"
+                        + " as packCount FROM resorts_t");
 
             } else {
                 System.out.print(filter);
-                prepStmt = con.prepareStatement("SELECT resorts_t.*"
+                prepStmt = con.prepareStatement("SELECT resorts_t.*, "
+                        + "(SELECT COUNT(packages_t.package_id) as COUNT from packages_t where packages_t.resort_id = resorts_t.resort_id) as packCount "
                         + "FROM resorts_t "
-                        + "WHERE resorts_t.resort_category = ?");
+                        + "where resorts_t.resort_category = ?");
                 prepStmt.setString(1, filter);
             }
 
@@ -160,9 +163,11 @@ public class Resort {
 
             while (result.next()) {
                 builder.add(Json.createObjectBuilder()
+                        .add("id", result.getString("resort_id"))
                         .add("name", result.getString("resort_name"))
                         .add("location", result.getString("resort_location"))
                         .add("category", result.getString("resort_category"))
+                        .add("count", result.getString("packCount"))
                 );
             }
 

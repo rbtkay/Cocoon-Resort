@@ -118,7 +118,7 @@ class Welcome extends Component {
                             <Grid columns={3} textAlign='center'>
 
                                 <Grid.Column>
-                                    <Card onClick={() => this.props.history.push('/explore?category=Beaches')}>
+                                    <Card onClick={() => this.props.history.push('/resort?category=Beaches')}>
                                         <Grid columns={2}>
                                             <Grid.Column width='7'>
                                                 <Image floated='left' size='small' src={image1} />
@@ -130,7 +130,7 @@ class Welcome extends Component {
                                     </Card>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <Card onClick={() => this.props.history.push('/explore?category=Mountains')}>
+                                    <Card onClick={() => this.props.history.push('/resort?category=Mountains')}>
                                         <Grid columns={2}>
                                             <Grid.Column width='7'>
                                                 <Image floated='left' size='small' src={image1} />
@@ -143,7 +143,7 @@ class Welcome extends Component {
 
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <Card onClick={() => this.props.history.push('/explore?category=Bungalow')}>
+                                    <Card onClick={() => this.props.history.push('/resort?category=Bungalow')}>
                                         <Grid columns={2}>
                                             <Grid.Column width='7'>
                                                 <Image floated='left' size='small' src={image1} />
