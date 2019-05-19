@@ -18,8 +18,8 @@ class Package {
         }
     }
 
-    async createPackage(name, resortId, details, price, from, to, guests) {
-        const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=create&name=${name}&resortId=${resortId}&details=${details}&price=${price}&from=${from}&to=${to}&guests=${guests}`);
+    async createPackage(name, resortId, details, price, from, to, capacity, image) {
+        const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=create&name=${name}&resortId=${resortId}&details=${details}&price=${price}&from=${from}&to=${to}&capacity=${capacity}&image=${image}`);
 
         if (response.ok) {
             return true;

@@ -1,3 +1,5 @@
+package Classes;
+
 
 import java.util.Properties;
 import javax.mail.Message;
@@ -21,11 +23,12 @@ public class Email {
 
     public void send(String receiver) {
         String host = "smtp.gmail.com";
-        final String sender = "loyalty.cocoon";//change accordingly  
-        final String password = "Loyalty11Cocoon";//change accordingly  
+        final String sender = "loyalty.cocoon";//change accordingly
+        final String password = "Loyalty111Cocoon";//change accordingly
 
-//        String to = "kevin.boghossian@gmail.com";//change accordingly  
+        System.out.print(receiver);
 
+//        String to = "caroline.bergqvist11@gmail.com";//change accordingly  
         //Get the session object  
 //            Properties props = new Properties();
 //            props.put("mail.smtp.starttls.enable", "true");
@@ -61,8 +64,8 @@ public class Email {
             message.setText("This is simple program of sending email using JavaMail API");
 
             //send the message  
-//                Transport transport = session.getTransport("smtp");
-//                transport.connect(host, user, password);
+//            Transport transport = session.getTransport("smtp");
+//            transport.connect(host, user, password);
             Transport.send(message);
 
 //                transport.close();

@@ -10,6 +10,7 @@ import SignUp from '../views/customer/signUp';
 import Welcome from '../views/welcome';
 import Explore from '../views/explore';
 import NewResort from '../views/resort/newResort';
+import NewPackage from '../views/resort/newPackage';
 
 class App extends Component {
 
@@ -24,6 +25,7 @@ class App extends Component {
         <div>
           <Route path={"/resort/newResort"} component={NewResort} />
           <Route path={"/resort/home"} component={Home} />
+          <Route path={"/resort/newPackage"} component={NewPackage} />
           <Route path={"/user"} component={User} />
           <Route path={"/customer/signUp"} component={SignUp} />
           <Route path={"/welcome"} component={Welcome} />

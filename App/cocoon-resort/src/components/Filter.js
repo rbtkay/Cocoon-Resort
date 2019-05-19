@@ -76,6 +76,7 @@ class Filter extends Component {
                             iconPosition='left'
                             value={this.state.from || ''}
                             onChange={this.handleDateChange}
+                            dateFormat='YYYY-MM-DD'
                         />
                     </Menu.Item>
                     <Menu.Item>
@@ -87,6 +88,7 @@ class Filter extends Component {
                             iconPosition='left'
                             value={this.state.to || ''}
                             onChange={this.handleDateChange}
+                            dateFormat='YYYY-MM-DD'
                         />
                     </Menu.Item>
                     <Menu.Item>

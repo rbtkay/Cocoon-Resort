@@ -23,11 +23,6 @@ const ListPackages = (props) => {
 
 class Home extends Component {
 
-    // constructor(props) {
-    //     super(props)
-
-    // }
-
     state = {
         info: {}, //for client package
         reservation: [], //for resort package
@@ -49,7 +44,7 @@ class Home extends Component {
                         </Item.Group>
 
                         <Segment textAlign='center'>
-                            <Button color='green'>Add new Package</Button>
+                            <Button onClick={this.addPackage} color='green'>Add new Package</Button>
                         </Segment>
                     </Grid.Column>
                     <Grid.Column width={4}>
@@ -69,9 +64,14 @@ class Home extends Component {
         this.setState({ reservations, packages });
     }
 
+
+    addPackage = () => {
+        this.props.history.push(`/resort/newPackage`);
+    }
     updatePackage = async (state) => {
         const pack = new PackageClass();
         const result = await pack.updatePackage(state.id, state.name, state.details, state.price, state.from, state.to, state.capacity);
+
     }
 }
 

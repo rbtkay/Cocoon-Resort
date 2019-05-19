@@ -11,14 +11,22 @@ import Resort from '../classes/resort';
 
 class Welcome extends Component {
 
-    state = {
-        locationOptions: [{ text: 'no location available yet', value: null }],
-        location: { text: 'Anywhere', value: '*' },
-        isErrorSearch: false,
-        forError: '',
-        from: '',
-        to: '',
-        guests: 1,
+    constructor() {
+        super();
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        const date = new Date().toLocaleDateString('en-GB', options);
+        const d = date.replace(/\//g, '-');
+
+        this.state = {
+            locationOptions: [{ text: 'no location available yet', value: null }],
+            location: { text: 'Anywhere', value: '*' },
+            isErrorSearch: false,
+            forError: '',
+            from: '',
+            to: '',
+            guests: 1,
+            now: d
+        }
     }
     render() {
         return (
@@ -58,17 +66,21 @@ class Welcome extends Component {
                                                 name='from'
                                                 label='from'
                                                 placeholder='from'
+                                                minDate={this.state.now}
                                                 value={this.state.from}
                                                 iconPosition='left'
                                                 onChange={this.handleChange}
+                                                dateFormat='YYYY-MM-DD'
                                             />
                                             <DateInput
                                                 name='to'
                                                 label='to'
                                                 placeholder='to'
+                                                minDate={this.state.from}
                                                 value={this.state.to}
                                                 iconPosition='left'
                                                 onChange={this.handleChange}
+                                                dateFormat='YYYY-MM-DD'
                                             />
                                         </Form.Group>
                                         <Form.Input
@@ -196,11 +208,15 @@ class Welcome extends Component {
         let { location, isErrorSearch, from, to, guests, formError } = this.state;
         // console.log(this.state)
 
+
+        const fromDate = new Date(from.split('-')[2], from.split('-')[1], from.split('-')[0]);
+        const toDate = new Date(to.split('-')[2], to.split('-')[1], to.split('-')[0]);
+
         if (guests < 1) {
             isErrorSearch = true;
             formError = 'number of guest should be more than 0'
             this.setState({ isErrorSearch, formError });
-        } else if (from > to) {
+        } else if (fromDate > toDate) {
             isErrorSearch = true;
             formError = 'dates are invalid'
             this.setState({ isErrorSearch, formError });

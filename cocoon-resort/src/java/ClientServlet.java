@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import Classes.Email;
 import Classes.Client;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -46,6 +47,7 @@ public class ClientServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Methods", "GET");
         out = response.getWriter();
 
+        Client client = new Client();
         System.out.print("in the servlet");
 
         String action = request.getParameter("action");
@@ -56,8 +58,6 @@ public class ClientServlet extends HttpServlet {
                 String password = request.getParameter("password");
                 int phone = Integer.parseInt(request.getParameter("phone"));
                 String email = request.getParameter("email");
-
-                Client client = new Client();
 
                 if (client.create(name, password, phone, email)) {
                     response.setStatus(201);
@@ -72,16 +72,17 @@ public class ClientServlet extends HttpServlet {
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
 
-                Client client = new Client();
-
                 JsonArray resultJson = client.login(email, password);
 
                 System.out.print(resultJson);
                 if (resultJson != null) {
                     response.setStatus(200);
+                    Email sendEmail = new Email();
+                    sendEmail.send(email);
 
                     out.print(resultJson);
                 } else {
+
                     response.setStatus(404);
                     JsonArrayBuilder builder = Json.createArrayBuilder();
                     builder.add(Json.createObjectBuilder()
@@ -96,9 +97,6 @@ public class ClientServlet extends HttpServlet {
             }
             case "delete": {
                 String email = request.getParameter("email");
-
-                Client client = new Client();
-
                 if (client.delete(email)) {
                     out.print("Successfully Deleted");
                 } else {

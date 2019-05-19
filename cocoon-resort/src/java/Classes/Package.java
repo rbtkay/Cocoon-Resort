@@ -108,13 +108,13 @@ public class Package {
         }
     }
 
-    public boolean createPack(String name, int resortId, String details, int price, String from, String to, int guests) {
+    public boolean createPack(String name, int resortId, String details, int price, String from, String to, int capacity) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
 
             prepStmt = con.prepareStatement("insert into packages_t "
-                    + "(package_name, resort_id, package_detail, package_price, package_from, package_to, package_guests) "
+                    + "(package_name, resort_id, package_detail, package_price, package_from, package_to, package_capacity) "
                     + "values (?,?,?,?,?,?,?)");
             prepStmt.setString(1, name);
             prepStmt.setInt(2, resortId);
@@ -122,7 +122,8 @@ public class Package {
             prepStmt.setInt(4, price);
             prepStmt.setString(5, from);
             prepStmt.setString(6, to);
-            prepStmt.setInt(7, guests);
+            prepStmt.setInt(7, capacity);
+//            prepStmt.setString(8, image);
 
             System.out.print("in the class");
             System.out.print(name);
