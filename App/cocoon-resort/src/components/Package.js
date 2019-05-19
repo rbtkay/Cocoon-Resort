@@ -14,7 +14,9 @@ class Package extends Component {
             console.log(props)
         }
 
-        const { id, name, resortName, details, price, from, to, capacity, isReserved } = this.props.info;
+        const { id, name, resortName, details, price, from, to, capacity, isReserved } = props.info;
+
+        console.log(props);
 
         this.state = {
             id: id || -1,
@@ -32,7 +34,7 @@ class Package extends Component {
     render() {
         if (this.state.isResort === false) {
             return (
-                <Card>
+                <Card key={this.state.id}>
                     <Image src={comingSoonPng} />
                     <Card.Content>
                         <Card.Header>{this.state.name}</Card.Header>
@@ -82,9 +84,9 @@ class Package extends Component {
 
                     <Button floated='right' color='red'>Delete</Button>
                     <Button floated='right' color='blue'>Update</Button>
-                </Item>
-                <EditPackage info={this.state} isOpen={this.state.isOpen} handleClose={this.handleClose} updatePackage={this.props.updatePackage} updateDisplay={this.updateDisplay}
-                /> </>
+                </Item> <
+                EditPackage info = { this.state } isOpen = { this.state.isOpen } handleClose = { this.handleClose } updatePackage = { this.props.updatePackage } updateDisplay = { this.updateDisplay }
+                /> </ >
             );
 
         }

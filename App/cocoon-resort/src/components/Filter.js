@@ -6,23 +6,10 @@ import NumericInput from 'react-numeric-input';
 import Resort from '../classes/resort';
 
 class Filter extends Component {
-
-
-
     constructor(props) {
         super(props);
 
         const { location, from, to, category, guests } = this.props.info;
-
-        // this.state = {
-        //     locationOptions: [],
-        //     location: 'anywhere in Lebanon',
-        //     from: '',
-        //     to: '',
-        //     category: 'Category',
-        //     guests: 1
-        // }
-
 
         this.state = {
             locationOptions: [],
@@ -35,13 +22,9 @@ class Filter extends Component {
             category: category || '',
             guests: guests || 1
         }
-
-        // console.log('constructor')
-        // console.log(this.state)
     }
 
     render() {
-        // const { location, from, to, category, guests } = this.props;
         return (
             <Menu vertical>
                 <Form onSubmit={event => this.search}>
@@ -123,9 +106,6 @@ class Filter extends Component {
     }
 
     async componentDidMount() {
-        // console.log('in the component')
-        // console.log(this.state)
-
         const resort = new Resort();
         const locationOptions = await resort.getLocations();
 
@@ -133,7 +113,6 @@ class Filter extends Component {
     }
 
     handleGuests = (event) => {
-        console.log("handling" + event);
         this.setState({ guests: event });
     }
 
@@ -144,16 +123,15 @@ class Filter extends Component {
     handleDateChange = (event, { name, value }) => {
         if (this.state.hasOwnProperty(name)) {
             this.setState({
-                [name]: value });
+                [name]: value
+            });
         }
     }
 
     search = (event) => {
         event.preventDefault();
-        // console.log(this.state);
         const { location, from, to, category, guests } = this.state;
         const { value } = location;
-
         const info = { location: value, from, to, category, guests };
 
         this.props.filter(info);
