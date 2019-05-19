@@ -47,13 +47,11 @@ class newPackage extends Component {
                                         label='price'
                                         value={this.state.price}
                                         onChange={event => this.setState({ price: event.target.value, isError: false, formError: '', isName: false })}
-                                        error={this.state.price}
                                     />
                                     <Form.Input
                                         label='capacity'
                                         value={this.state.capacity}
                                         onChange={event => this.setState({ capacity: event.target.value, isError: false, formError: '', isName: false })}
-                                        error={this.state.capacity}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -78,6 +76,7 @@ class newPackage extends Component {
                                         value={this.state.from}
                                         iconPosition='left'
                                         onChange={this.handleChange}
+                                        dateFormat='YYYY-MM-DD'
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -89,6 +88,7 @@ class newPackage extends Component {
                                         value={this.state.to}
                                         iconPosition='left'
                                         onChange={this.handleChange}
+                                        dateFormat='YYYY-MM-DD'
                                     />
                                 </Form.Field>
                             </Form.Group>

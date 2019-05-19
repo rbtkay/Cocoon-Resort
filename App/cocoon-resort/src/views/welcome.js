@@ -22,7 +22,7 @@ class Welcome extends Component {
             location: { text: 'Anywhere', value: '*' },
             isErrorSearch: false,
             forError: '',
-            from: d,
+            from: '',
             to: '',
             guests: 1,
             now: d
@@ -70,6 +70,7 @@ class Welcome extends Component {
                                                 value={this.state.from}
                                                 iconPosition='left'
                                                 onChange={this.handleChange}
+                                                dateFormat='YYYY-MM-DD'
                                             />
                                             <DateInput
                                                 name='to'
@@ -79,6 +80,7 @@ class Welcome extends Component {
                                                 value={this.state.to}
                                                 iconPosition='left'
                                                 onChange={this.handleChange}
+                                                dateFormat='YYYY-MM-DD'
                                             />
                                         </Form.Group>
                                         <Form.Input
