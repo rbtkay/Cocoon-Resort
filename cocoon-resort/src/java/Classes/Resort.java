@@ -130,4 +130,65 @@ public class Resort {
             }
         }
     }
+
+    public JsonArray readAll(String filter) {
+
+        System.out.print("in the Resort class");
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+
+            if (filter.isEmpty()) {
+                prepStmt = con.prepareStatement(
+                        "SELECT resorts_t.* FROM resorts_t");
+
+            } else {
+                System.out.print(filter);
+                prepStmt = con.prepareStatement("SELECT resorts_t.*"
+                        + "FROM resorts_t "
+                        + "WHERE resorts_t.resort_category = ?");
+                prepStmt.setString(1, filter);
+            }
+
+            result = prepStmt.executeQuery();
+
+            System.out.print("result");
+            System.out.print(result);
+
+            JsonArrayBuilder builder = Json.createArrayBuilder();
+
+            while (result.next()) {
+                builder.add(Json.createObjectBuilder()
+                        .add("name", result.getString("resort_name"))
+                        .add("location", result.getString("resort_location"))
+                        .add("category", result.getString("resort_category"))
+                );
+            }
+
+            JsonArray resultJson = builder.build();
+
+            System.out.print(resultJson);
+            if (resultJson.isEmpty()) {
+                return null;
+            } else {
+                return resultJson;
+            }
+
+        } catch (Exception e) {
+
+            try {
+                throw e;
+            } catch (Exception err) {
+                System.out.print(e);
+            }
+            return null;
+        } finally {
+            try {
+                con.close();
+            } catch (Exception e) {
+                out.println("Error while Closing to the Database");
+            }
+        }
+    }
 }

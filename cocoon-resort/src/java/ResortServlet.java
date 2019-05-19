@@ -98,6 +98,20 @@ public class ResortServlet extends HttpServlet {
                 }
                 break;
             }
+            case "readAll": {
+                String category = request.getParameter("category");
+                
+                JsonArray result = resort.readAll(category);
+                
+                if (result == null) {
+                    response.setStatus(404);
+                } else {
+                    response.setStatus(200);
+                }
+                out.print(result);
+                
+                break;
+            }
         }
     }
 
