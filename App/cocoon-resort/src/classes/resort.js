@@ -28,6 +28,21 @@ class Resort {
             return false;
         }
     }
+
+    async readAll(category) {
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ResortServlet?action=readAll&category=${category}`);
+
+            if (response.ok) {
+                const result = response.json();
+                return result;
+            } else {
+                return [];
+            }
+        } catch (e) {
+            return 502;
+        }
+    }
 }
 
 export default Resort;
