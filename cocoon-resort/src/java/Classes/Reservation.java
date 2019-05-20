@@ -25,18 +25,16 @@ public class Reservation {
     ResultSet result;
     PrintWriter out;
 
-    public boolean create(int packId, int clientId, int resortId, int quantity, String from, String to) {
+    public boolean create(int packId, int clientId, int resortId, int quantity) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
-            prepStmt = con.prepareStatement("insert into reservations_t (package_id, client_id, resort_id, quantity, reservation_from, reservation_to) values (?,?,?,?,?,?)");
+            prepStmt = con.prepareStatement("insert into reservations_t (package_id, client_id, resort_id, quantity) values (?,?,?,?)");
 
             prepStmt.setInt(1, packId);
             prepStmt.setInt(2, clientId);
             prepStmt.setInt(3, resortId);
             prepStmt.setInt(4, quantity);
-            prepStmt.setString(5, from);
-            prepStmt.setString(6, to);
 
             prepStmt.executeUpdate();
 

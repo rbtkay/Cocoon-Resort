@@ -72,17 +72,15 @@ public class ClientServlet extends HttpServlet {
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
 
+                System.out.println("email" + email);
+                System.out.println("password" + password);
+
                 JsonArray resultJson = client.login(email, password);
 
-                System.out.print(resultJson);
                 if (resultJson != null) {
                     response.setStatus(200);
-                    Email sendEmail = new Email();
-                    sendEmail.send(email);
-
                     out.print(resultJson);
                 } else {
-
                     response.setStatus(404);
                     JsonArrayBuilder builder = Json.createArrayBuilder();
                     builder.add(Json.createObjectBuilder()
