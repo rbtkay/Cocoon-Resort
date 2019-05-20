@@ -1,16 +1,35 @@
 import React, { Component } from 'react';
 import { Menu, MenuItem, Button, Dropdown, Form, Icon } from 'semantic-ui-react';
 import Login from '../components/Login';
+import { Redirect } from 'react-router';
+
 import loginClass from '../classes/auth';
 const cookie = require('../cookie');
 
 
+const BtnComp = (props) => {
+    if (props.isAuth === true) {
+        return <Button onClick={props.viewReservation}>Check Your Reservation</Button>
+    } else {
+        return <Button color='brown' onClick={props.newResort}>Show us Your Resort</Button>
+    }
+}
+
+
 class NavigationBar extends Component {
-    state = {
-        name: '',
-        search: '',
-        isLoginOpen: false
-    };
+
+    constructor(props) {
+        super(props);
+
+        console.log(localStorage.getItem('auth'));
+        this.state = {
+            isAuth: localStorage.getItem('auth') === "test" ? true : false,
+            name: '',
+            search: '',
+            isLoginOpen: false
+        };
+
+    }
 
     render() {
         return (
@@ -33,7 +52,7 @@ class NavigationBar extends Component {
                 </MenuItem>
 
                 <MenuItem>
-                    <Button onClick={this.props.newResort}>Show us Your Resort</Button>
+                    <BtnComp isAuth={this.state.isAuth} newResort={this.props.newResort} viewReservation={this.viewReservation} />
                 </MenuItem>
 
                 <Menu.Menu position='right'>
@@ -45,6 +64,7 @@ class NavigationBar extends Component {
 
     async componentDidMount() {
         let name = cookie.getCookie('name');
+        console.log(this.state)
         if (name) {
             this.setState({ name });
         }
@@ -94,8 +114,16 @@ class NavigationBar extends Component {
     handleLogin = (email, name) => {
         cookie.setCookie('email', email, 100);
         cookie.setCookie('name', name, 100);
+        //TODO: get the jwt and store it in localStorage
+        localStorage.setItem("auth", "test");
         this.loginClose();
         this.setState({ name });
+    }
+
+    viewReservation = () => {
+        return (
+            <Redirect to='/viewReservation' />
+        )
     }
 
     loginClose = () => {
@@ -106,6 +134,7 @@ class NavigationBar extends Component {
         const login = new loginClass();
         const result = await login.logoutUser();
 
+        //TODO: Delete jwt from localStorage
         if (result === true) {
             cookie.deleteCookie();
             window.location.href = `http://localhost:3000/welcome`;

@@ -17,8 +17,6 @@ class Reservation {
     async create(packId, clientId, resortId, quantity, from, to) {
         const response = await fetch(`http://localhost:8080/cocoon-resort/ReservationServlet?action=create&$packId=${packId}&clientId${clientId}$resortId=${resortId}&quantity=${quantity}&from=${from}&to=${to}`);
         if (response.ok) {
-            // const result = response.json();
-            // return result;
             return true;
         } else {
             return false;

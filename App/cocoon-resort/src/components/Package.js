@@ -55,7 +55,7 @@ class Package extends Component {
                             </Grid>
                         </Card.Description>
                     </Card.Content>
-                    <Button floated='right'>View</Button>
+                    <Button floated='right' onClick={this.view}>View</Button>
                 </Card>
             )
         } else {
@@ -84,9 +84,8 @@ class Package extends Component {
 
                     <Button floated='right' color='red'>Delete</Button>
                     <Button floated='right' color='blue'>Update</Button>
-                </Item> <
-                EditPackage info = { this.state } isOpen = { this.state.isOpen } handleClose = { this.handleClose } updatePackage = { this.props.updatePackage } updateDisplay = { this.updateDisplay }
-                /> </ >
+                </Item> <EditPackage info={this.state} isOpen={this.state.isOpen} handleClose={this.handleClose} updatePackage={this.props.updatePackage} updateDisplay={this.updateDisplay}
+                /> </>
             );
 
         }
@@ -103,6 +102,11 @@ class Package extends Component {
         const { id, name, capacity, price, from, to, description } = state;
         this.setState({ id, name, capacity, price, from, to, description, isOpen: false });
         console.log('updateDisplay: ', state);
+    }
+
+    view = () => {
+        const { id } = this.state;
+        this.props.viewPack(id);
     }
 }
 

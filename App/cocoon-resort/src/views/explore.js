@@ -3,21 +3,7 @@ import NavigationBar from '../components/NavigationBar';
 import { Grid, Segment, Card } from 'semantic-ui-react';
 import Filter from '../components/Filter';
 import PackageClass from '../classes/package';
-import PackageComponent from '../components/Package';
-
-const ListPackages = (props) => {
-    if (props.packages.length < 1) {
-        return (
-            <h3>No packages found... :(</h3>
-        );
-    } else {
-        return props.packages.map(item => {
-            return (
-                <PackageComponent key={item.id} info={item} isResort={false} />
-            );
-        });
-    }
-}
+import ListPackages from '../components/ListPackages';
 
 class Explore extends Component {
     constructor(props) {
@@ -56,7 +42,7 @@ class Explore extends Component {
                     <Grid.Column width={11}>
                         <Segment>
                             <Card.Group itemsPerRow='4'>
-                                <ListPackages packages={this.state.filteredPackages} />
+                                <ListPackages packages={this.state.filteredPackages} viewPack={this.viewPack} isResort={false} />
                             </Card.Group>
                         </Segment>
                     </Grid.Column>
@@ -105,6 +91,10 @@ class Explore extends Component {
         console.log('info in setFilteredPackages', info);
         let filteredPackages = this.filterPackages(info);
         this.setState({ filter: info });
+    }
+
+    viewPack = (id) => {
+        this.props.history.push(`/viewPackage?id=${id}`);
     }
 }
 

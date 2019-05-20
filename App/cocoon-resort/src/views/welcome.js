@@ -109,7 +109,6 @@ class Welcome extends Component {
                     <Grid columns={3}>
 
                         <Grid.Column width='1'>
-
                         </Grid.Column>
 
                         <Grid.Column width='14'>

@@ -70,6 +70,21 @@ class Package {
             throw err;
         }
     }
+
+    async readOne(id) {
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=readByRes${id}`);
+
+            if (response.ok) {
+                const result = await response.json();
+                return result;
+            } else {
+                return 404;
+            }
+        } catch (e) {
+            throw e;
+        }
+    }
 }
 
 export default Package;
