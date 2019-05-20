@@ -51,10 +51,13 @@ public class ReservationServlet extends HttpServlet {
                 int clientId = Integer.parseInt(request.getParameter("clientId"));
                 int resortId = Integer.parseInt(request.getParameter("resortId"));
                 int quantity = Integer.parseInt(request.getParameter("quantity"));
-                String from = request.getParameter("from");
-                String to = request.getParameter("to");
+                
+                System.out.print(packId);
+                System.out.print(clientId);
+                System.out.print(resortId);
+                System.out.print(quantity);
 
-                if (reservation.create(packId, clientId, resortId, quantity, from, to)) {
+                if (reservation.create(packId, clientId, resortId, quantity)) {
                     response.setStatus(200);
                     out.print("Reservation Done");
                 } else {

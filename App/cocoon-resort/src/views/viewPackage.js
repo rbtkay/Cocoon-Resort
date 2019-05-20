@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PackageClass from '../classes/package';
 import { Segment, ImageGroup, Image, Grid, Button, Icon } from 'semantic-ui-react';
-
+import NumericInput from 'react-numeric-input';
 
 import Mountains from '../static/Mountains.jpg'
 import Beaches from '../static/Beaches.jpg'
@@ -24,6 +24,35 @@ import Reservation from '../classes/reservation';
 //     }
 // }
 
+const ReserveBtn = (props) => {
+    if (props.guests < props.capacity) {
+        return (
+            <Segment textAlign='center'>
+                <Grid columns={2}>
+                    <Grid.Column verticalAlign='middle'>
+                        <NumericInput
+                            name='guests'
+                            min={1}
+                            value={props.numPeople}
+                            onChange={props.handleGuests}
+                        />
+                    </Grid.Column>
+                    <Grid.Column>
+                        <Button color='blue' onClick={props.reserve}>Reserve</Button>
+                    </Grid.Column>
+                </Grid>
+
+            </Segment>
+        )
+    } else {
+        return (
+            <Segment textAlign='center'>
+                <Button color='blue'>Cancel Reservation</Button>
+            </Segment>
+        )
+    }
+}
+
 class viewPackage extends Component {
 
     constructor(props) {
@@ -36,7 +65,19 @@ class viewPackage extends Component {
 
         this.state = {
             id: id,
-            images: [Mountains, Beaches, Forests]
+            images: [Mountains, Beaches, Forests],
+            name: '',
+            resortName: '',
+            details: '',
+            price: '',
+            location: '',
+            from: '',
+            to: '',
+            image: '',
+            capacity: '',
+            isReserved: false,
+            numPeople: 1,
+            guests: 0
         }
     }
 
@@ -49,11 +90,6 @@ class viewPackage extends Component {
                 <br />
                 <br />
                 <br />
-                {/* <Segment>
-                    <ImageGroup size='large'>
-                        <ListImages images={this.state.images} />
-                    </ImageGroup>
-                </Segment> */}
 
                 <Grid>
                     <Grid.Row columns={2}>
@@ -77,33 +113,34 @@ class viewPackage extends Component {
                         <Grid.Column>
                             <Segment>
 
-                                <h2>Pacakge Name (resort name)</h2>
-                                <p>
-                                    vjs;kjnsfvjaner;vahvj.an;oajemgcrjv
-                                    ergv
-                                    esrves'tgvkjsm
-                                    seg eth
-                                    srth rtfnrdyndtyfndtyndfs
-                            </p>
+                                <h2>{this.state.name} ({this.state.resortName})</h2>
+                                <p>{this.state.details}</p>
                                 <h3>Dates:</h3>
                                 <Grid columns={4}>
                                     <Grid.Column width={2}></Grid.Column>
                                     <Grid.Column width={6}>
-                                        <b>From: </b> <p>1990-02-25</p>
+                                        <b>From: </b> <p>{this.state.from}</p>
                                     </Grid.Column>
                                     <Grid.Column width={6}>
-                                        <b>To: </b> <p>1990-02-25</p>
+                                        <b>To: </b> <p>{this.state.to}</p>
                                     </Grid.Column>
                                     <Grid.Column width={2}></Grid.Column>
                                 </Grid>
-                                <h3>Location: </h3>
-                                <h3>Price: $ </h3>
 
+                                <Grid columns={2}>
+                                    <Grid.Column>
+                                        <h3>Location: {this.state.location} </h3>
+                                        <h3>Price: $ {this.state.price}</h3>
+                                    </Grid.Column>
+                                    <Grid.Column>
+                                        <h4>Capacity</h4>
+                                        {this.state.guests}/{this.state.capacity}
+
+                                    </Grid.Column>
+                                </Grid>
 
                             </Segment>
-                            <Segment textAlign='center'>
-                                <Button color='blue' onClick={this.reserve}>Reserve</Button>
-                            </Segment>
+                            <ReserveBtn isReserved={this.state.isReserved} reserve={this.reserve} guests={this.state.guests} capacity={this.state.capacity} numPeople={this.state.numPeople} handleGuests={this.handleGuests} />
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
@@ -118,17 +155,33 @@ class viewPackage extends Component {
         } else {
             const pack = new PackageClass();
             const result = await pack.readOne(id);
+            //TODO: get the images
             console.log(result);
-            //TODO: get the actual result from api
+            const { name, resortName, location, details, price, from, to, image, guests, capacity, isReserved, resortId } = result[0];
+
+            this.setState({
+                name, resortName, location, resortId, details, price, from, to, image, guests, capacity, isReserved
+            })
         }
     }
 
-    reserve = () => {
+    //TODO: cancel reservation
+    reserve = async () => {
         const reservation = new Reservation();
 
-        if (reservation.create()) {
+        console.log("this.state");
+        console.log(this.state);
+
+        const clientId = 2;
+
+        const { id, resortId, numPeople } = this.state
+        if (reservation.create(id, clientId, resortId, numPeople)) {
             this.setState({ isReserved: true });
-        }
+        };
+    }
+
+    handleGuests = (event) => {
+        this.setState({ numPeople: event })
     }
 }
 export default viewPackage;

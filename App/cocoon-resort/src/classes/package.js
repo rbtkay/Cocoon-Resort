@@ -73,7 +73,7 @@ class Package {
 
     async readOne(id) {
         try {
-            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=readByRes${id}`);
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=readOne&id=${id}`);
 
             if (response.ok) {
                 const result = await response.json();

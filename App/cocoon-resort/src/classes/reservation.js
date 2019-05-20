@@ -14,9 +14,9 @@ class Reservation {
         }
     }
 
-    async create(packId, clientId, resortId, quantity, from, to) {
-        const response = await fetch(`http://localhost:8080/cocoon-resort/ReservationServlet?action=create&$packId=${packId}&clientId${clientId}$resortId=${resortId}&quantity=${quantity}&from=${from}&to=${to}`);
-        if (response.ok) {
+    async create(packId, clientId, resortId, quantity) {
+        const response = await fetch(`http://localhost:8080/cocoon-resort/ReservationServlet?action=create&packId=${packId}&clientId=${clientId}&resortId=${resortId}&quantity=${quantity}`);
+        if (response.status === 200) {
             return true;
         } else {
             return false;
