@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 
-import Classes.Reservation;
+import Classes.Client;
 import Classes.Email;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.json.JsonArray;
+import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,10 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Robert
+ * @author user
  */
-@WebServlet(urlPatterns = {"/ReservationServlet"})
-public class ReservationServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/AuthServlet"})
+public class AuthServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,55 +31,45 @@ public class ReservationServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    PrintWriter out;
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         response.setHeader("Access-Control-Allow-Methods", "GET");
-        out = response.getWriter();
+        PrintWriter out = response.getWriter();
 
         String action = request.getParameter("action");
-        System.out.print(action);
-
-        Reservation reservation = new Reservation();
 
         switch (action) {
-            case "create": {
-                int packId = Integer.parseInt(request.getParameter("packId"));
-                int clientId = Integer.parseInt(request.getParameter("clientId"));
-                int resortId = Integer.parseInt(request.getParameter("resortId"));
-                int quantity = Integer.parseInt(request.getParameter("quantity"));
-
-                if (reservation.create(packId, clientId, resortId, quantity)) {
+            case "forgot": {
+                String email = request.getParameter("email");
+                Client client = new Client();
+                if (client.exists(email)) {
+                    Random rand = new Random();
+                    int randomNumber = rand.nextInt(9000) + 1000;
+                    Email emailObj = new Email();
+                    emailObj.send("forgot", email, randomNumber, 0, 0);
                     response.setStatus(200);
-                    Email sendEmail = new Email();
-                    sendEmail.send("receipt", "", clientId, resortId, packId);
-                    out.print("Reservation Done");
+                    out.print(randomNumber);
                 } else {
-                    response.setStatus(401);
-                    out.print("Error");
-                }
-                break;
-            }
-            case "readAll": {
-//                String category = request.getParameter("category");
-
-                JsonArray result = reservation.readAll();
-
-                if (result == null) {
                     response.setStatus(404);
-                } else {
-                    response.setStatus(200);
                 }
-                out.print(result);
-
                 break;
             }
-            case "delete": {
+            case "resetPassword": {
+                String email = request.getParameter("email");
+                String password = request.getParameter("password");
+                Client client = new Client();
+                
+                if (client.resetPassword(email, password)) {
+                    response.setStatus(200);
+                } else {
+                    response.setStatus(404);
+                }
                 break;
             }
+            default:
+                break;
         }
     }
 

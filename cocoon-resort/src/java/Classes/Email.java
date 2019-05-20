@@ -20,13 +20,14 @@ import javax.mail.internet.MimeMessage;
  * @author Robert
  */
 public class Email {
-    public void send(String type, int customer, int resort, int pack) {
+
+    Lib lib = new Lib();
+    Client client = new Client();
+
+    public void send(String type, String customerEmail, int customer, int resort, int pack) {
         String host = "smtp.gmail.com";
         final String sender = "loyalty.cocoon";//change accordingly
         final String password = "Loyalty111Cocoon";//change accordingly
-        
-        Lib lib = new Lib();
-        String[] mailInfo = lib.mailInfo(customer, resort, pack);
 
 //        String to = "caroline.bergqvist11@gmail.com";//change accordingly  
         //Get the session object  
@@ -47,37 +48,47 @@ public class Email {
 
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(sender, password);
-            }
-        });
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(sender, password);
+                    }
+                });
 
         //Compose the message
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(sender));
-            message.setRecipients(
-                    Message.RecipientType.TO,
-                    InternetAddress.parse(mailInfo[0])
-            );
-            
+            String toAddress = "";
+            String returnString = "";
             switch (type) {
                 case "receipt": {
+                    String[] mailInfo = lib.mailInfo(customer, resort, pack);
+                    toAddress = mailInfo[0];
                     message.setSubject("Thank You for Reserving from " + mailInfo[1]);
-                    String textToSend = "<h2>Below are your trip details for " + mailInfo[2] + "</h2><hr />";
-                    textToSend += "Reservation for " + mailInfo[7] + "<br />";
-                    textToSend += "Starting: " + mailInfo[5] + "<br />";
-                    textToSend += "Ending: " + mailInfo[6] + "<br />";
-                    textToSend += "Price: " + mailInfo[4] + "<br />";
-                    textToSend += "<h3>Package Description:</h3>";
-                    textToSend += mailInfo[3];
-                    message.setContent(textToSend, "text/html");
-                    
+                    returnString = "<h2>Below are your trip details for " + mailInfo[2] + "</h2><hr />";
+                    returnString += "Reservation for " + mailInfo[7] + "<br />";
+                    returnString += "Starting: " + mailInfo[5] + "<br />";
+                    returnString += "Ending: " + mailInfo[6] + "<br />";
+                    returnString += "Price: " + mailInfo[4] + "<br />";
+                    returnString += "<h3>Package Description:</h3>";
+                    returnString += mailInfo[3];
+                    break;
+                }
+                case "forgot": {
+                    message.setSubject("Password Reset");
+                    toAddress = customerEmail;
+                    returnString = "<h2>Password Resetted Successfully!</h2> <br />";
+                    returnString += "Your password has been reset, if you did not make that request, reply to that email.";
+                    returnString += "<h3>Your reset code is: " + customer + "</h3>";
                     break;
                 }
                 default:
                     break;
             }
+            message.setContent(returnString, "text/html");
+            message.setRecipients(
+                    Message.RecipientType.TO,
+                    InternetAddress.parse(toAddress)
+            );
 //            message.setText("Below are your reservation info from " + mailInfo[1]);
 
             //send the message  
@@ -91,5 +102,20 @@ public class Email {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+    }
+
+    public String composeMessage(String type, int customer, int resort, int pack) {
+        String returnString = "";
+        switch (type) {
+            case "receipt": {
+
+            }
+            case "forgot": {
+
+            }
+            default:
+                break;
+        }
+        return returnString;
     }
 }
