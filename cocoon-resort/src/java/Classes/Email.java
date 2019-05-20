@@ -1,6 +1,6 @@
 package Classes;
 
-
+import Classes.Lib;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -20,13 +20,13 @@ import javax.mail.internet.MimeMessage;
  * @author Robert
  */
 public class Email {
-
-    public void send(String receiver) {
+    public void send(String type, int customer, int resort, int pack) {
         String host = "smtp.gmail.com";
         final String sender = "loyalty.cocoon";//change accordingly
         final String password = "Loyalty111Cocoon";//change accordingly
-
-        System.out.print(receiver);
+        
+        Lib lib = new Lib();
+        String[] mailInfo = lib.mailInfo(customer, resort, pack);
 
 //        String to = "caroline.bergqvist11@gmail.com";//change accordingly  
         //Get the session object  
@@ -58,10 +58,27 @@ public class Email {
             message.setFrom(new InternetAddress(sender));
             message.setRecipients(
                     Message.RecipientType.TO,
-                    InternetAddress.parse(receiver)
+                    InternetAddress.parse(mailInfo[0])
             );
-            message.setSubject("javatpoint");
-            message.setText("This is simple program of sending email using JavaMail API");
+            
+            switch (type) {
+                case "receipt": {
+                    message.setSubject("Thank You for Reserving from " + mailInfo[1]);
+                    String textToSend = "<h2>Below are your trip details for " + mailInfo[2] + "</h2><hr />";
+                    textToSend += "Reservation for " + mailInfo[7] + "<br />";
+                    textToSend += "Starting: " + mailInfo[5] + "<br />";
+                    textToSend += "Ending: " + mailInfo[6] + "<br />";
+                    textToSend += "Price: " + mailInfo[4] + "<br />";
+                    textToSend += "<h3>Package Description:</h3>";
+                    textToSend += mailInfo[3];
+                    message.setContent(textToSend, "text/html");
+                    
+                    break;
+                }
+                default:
+                    break;
+            }
+//            message.setText("Below are your reservation info from " + mailInfo[1]);
 
             //send the message  
 //            Transport transport = session.getTransport("smtp");

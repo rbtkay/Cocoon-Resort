@@ -40,6 +40,7 @@ class Login extends Component {
                             />
 
                         <Message error header="Oops!" content={this.state.errorMessage} />
+                        <a href='/forgotPassword'>Forgot Password?</a>
                         <Form.Button
                             positive
                             loading={this.state.loading}

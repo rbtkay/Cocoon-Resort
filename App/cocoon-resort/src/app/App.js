@@ -14,17 +14,18 @@ import NewResort from '../views/resort/newResort';
 import NewPackage from '../views/resort/newPackage';
 import Resort from '../views/resort';
 import ViewResort from '../views/viewResort';
+import ForgotPassword from '../views/forgotPassword';
 
 class App extends Component {
 
-  state = {
-    user: ""
-  }
+    state = {
+        user: ""
+    }
 
-  render() {
-    console.log(this.state.user);
-    return (
-      <Router>
+    render() {
+        console.log(this.state.user);
+        return (
+            <Router>
         <div>
           <Route path={"/resort/newResort"} exac component={NewResort} />
           <Route path={"/resort/home"} exac component={Home} />
@@ -35,10 +36,11 @@ class App extends Component {
           <Route path={"/customer/signUp"} component={SignUp} />
           <Route path={"/welcome"} component={Welcome} />
           <Route path={"/explore"} component={Explore} />
+          <Route path={"/forgotPassword"} component={ForgotPassword} />
           <Route path={"/home"} component={Test} />
         </div>
       </Router>
-    );
-  }
+        );
+    }
 }
 export default App;

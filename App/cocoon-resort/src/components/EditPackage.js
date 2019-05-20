@@ -51,7 +51,7 @@ class EditPackage extends Component {
                         </Form.Group>
 
                         <Form.Group widths='2' inline>
-                            // TODO: Handle the dates correctly, set date format
+                            {/* TODO: Handle the dates correctly, set date format*/}
                             <DateInput
                                 name='from'
                                 label='Starting Date'
