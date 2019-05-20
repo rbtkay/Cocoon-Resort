@@ -47,7 +47,7 @@ const ReserveBtn = (props) => {
     } else {
         return (
             <Segment textAlign='center'>
-                <Button color='blue'>Cancel Reservation</Button>
+                <h3>Package Full</h3>
             </Segment>
         )
     }
@@ -165,7 +165,6 @@ class viewPackage extends Component {
         }
     }
 
-    //TODO: cancel reservation
     reserve = async () => {
         const reservation = new Reservation();
 

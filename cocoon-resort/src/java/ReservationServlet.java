@@ -51,7 +51,7 @@ public class ReservationServlet extends HttpServlet {
                 int clientId = Integer.parseInt(request.getParameter("clientId"));
                 int resortId = Integer.parseInt(request.getParameter("resortId"));
                 int quantity = Integer.parseInt(request.getParameter("quantity"));
-                
+
                 System.out.print(packId);
                 System.out.print(clientId);
                 System.out.print(resortId);
@@ -82,6 +82,19 @@ public class ReservationServlet extends HttpServlet {
             }
             case "delete": {
                 break;
+            }
+            case "readByCustomer": {
+
+                int id = Integer.parseInt(request.getParameter("id"));
+                JsonArray result = reservation.getReservationByCustomer(id);
+
+                if (result == null) {
+                    response.setStatus(404);
+                } else {
+                    response.setStatus(200);
+                }
+                out.print(result);
+
             }
         }
     }

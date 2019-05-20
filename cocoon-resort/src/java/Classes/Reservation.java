@@ -88,4 +88,47 @@ public class Reservation {
         }
         return null;
     }
+
+    public JsonArray getReservationByCustomer(int id) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+            prepStmt = con.prepareStatement("select reservations_t.*, clients_t.client_name, packages_t.*, resorts_t.resort_name, resorts_t.resort_location from reservations_t, clients_t, packages_t,resorts_t"
+                    + " where reservations_t.client_id = clients_t.client_id "
+                    + "and reservations_t.package_id = packages_t.package_id "
+                    + "and resorts_t.resort_id = reservations_t.resort_id "
+                    + "and reservations_t.client_id = ?");
+
+            prepStmt.setInt(1, id);
+            result = prepStmt.executeQuery();
+
+            JsonArrayBuilder builder = Json.createArrayBuilder();
+            while (result.next()) {
+                builder.add(Json.createObjectBuilder()
+                        .add("reservationId", result.getInt("reservation_id"))
+                        .add("packId", result.getInt("package_id"))
+                        .add("clientName", result.getString("client_name"))
+                        .add("packName", result.getString("package_name"))
+                        .add("resortId", result.getInt("resort_id"))
+                        .add("packDetails", result.getString("package_detail"))
+                        .add("packPrice", result.getInt("package_price"))
+                        .add("packFrom", result.getString("package_from"))
+                        .add("packTo", result.getString("package_to"))
+                        .add("resortName", result.getString("resort_name"))
+                        .add("resortLocation", result.getString("resort_location"))
+                );
+            }
+
+            JsonArray resultJson = builder.build();
+
+            return resultJson;
+        } catch (Exception e) {
+            try {
+                System.out.print("Error while throwing! " + e);
+            } catch (Exception err) {
+                System.out.print("Error while throwing! " + err);
+            }
+        }
+        return null;
+    }
 }

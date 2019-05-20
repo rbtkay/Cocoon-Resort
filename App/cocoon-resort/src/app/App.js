@@ -15,6 +15,7 @@ import NewPackage from '../views/resort/newPackage';
 import Resort from '../views/resort';
 import ViewResort from '../views/viewResort';
 import viewPackage from '../views/viewPackage';
+import viewReservation from '../views/customer/viewReservation';
 
 class App extends Component {
 
@@ -31,6 +32,7 @@ class App extends Component {
           <Route path={"/resort/home"} exac component={Home} />
           <Route path={"/resort/newPackage"} exac component={NewPackage} />
           <Route path={"/viewResort"} exac component={ViewResort} />
+          <Route path={"/customer/viewReservation"} exac component={viewReservation} />
           <Route path={"/viewPackage"} exac component={viewPackage} />
           <Route path={"/resort"} exac component={Resort} />
           <Route path={"/user"} component={User} />
