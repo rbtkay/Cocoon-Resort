@@ -19,7 +19,7 @@ class Welcome extends Component {
 
         this.state = {
             locationOptions: [{ text: 'no location available yet', value: null }],
-            location: { text: 'Anywhere', value: '*' },
+            location: { text: 'Anywhere', value: '' },
             isErrorSearch: false,
             forError: '',
             from: '',
@@ -224,7 +224,7 @@ class Welcome extends Component {
             localStorage.setItem("from", from);
             localStorage.setItem("to", to);
             localStorage.setItem("guests", guests);
-            this.props.history.push(`/explore?location=${location.value}&from=${from}&to=${to}&guests=${guests}`);
+            this.props.history.push(`/explore`);
         }
     }
 }
