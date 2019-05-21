@@ -8,6 +8,8 @@ package Classes;
 import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -113,5 +115,53 @@ public class Client {
                 out.println("Error while Closing to the Database");
             }
         }
+    }
+    
+    public boolean exists(String email) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+            prepStmt = con.prepareStatement("select client_email from clients_t where client_email = ?");
+            prepStmt.setString(1, email);
+            
+            result = prepStmt.executeQuery();
+            if (result.first()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        }
+        return false;
+    }
+    
+    public boolean resetPassword(String email, String password) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+            
+            prepStmt = con.prepareStatement("update clients_t set client_password = ? where client_email = ?");
+            prepStmt.setString(1, password);
+            prepStmt.setString(2, email);
+            
+            prepStmt.executeUpdate();
+            return true;
+        } catch (Exception ex) {
+            System.out.println(ex);
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        }
+        return false;
     }
 }

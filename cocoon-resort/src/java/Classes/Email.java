@@ -1,6 +1,6 @@
 package Classes;
 
-
+import Classes.Lib;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -21,12 +21,13 @@ import javax.mail.internet.MimeMessage;
  */
 public class Email {
 
-    public void send(String receiver) {
+    Lib lib = new Lib();
+    Client client = new Client();
+
+    public void send(String type, String customerEmail, int customer, int resort, int pack) {
         String host = "smtp.gmail.com";
         final String sender = "loyalty.cocoon";//change accordingly
         final String password = "Loyalty111Cocoon";//change accordingly
-
-        System.out.print(receiver);
 
 //        String to = "caroline.bergqvist11@gmail.com";//change accordingly  
         //Get the session object  
@@ -47,21 +48,48 @@ public class Email {
 
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(sender, password);
-            }
-        });
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(sender, password);
+                    }
+                });
 
         //Compose the message
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(sender));
+            String toAddress = "";
+            String returnString = "";
+            switch (type) {
+                case "receipt": {
+                    String[] mailInfo = lib.mailInfo(customer, resort, pack);
+                    toAddress = mailInfo[0];
+                    message.setSubject("Thank You for Reserving from " + mailInfo[1]);
+                    returnString = "<h2>Below are your trip details for " + mailInfo[2] + "</h2><hr />";
+                    returnString += "Reservation for " + mailInfo[7] + "<br />";
+                    returnString += "Starting: " + mailInfo[5] + "<br />";
+                    returnString += "Ending: " + mailInfo[6] + "<br />";
+                    returnString += "Price: " + mailInfo[4] + "<br />";
+                    returnString += "<h3>Package Description:</h3>";
+                    returnString += mailInfo[3];
+                    break;
+                }
+                case "forgot": {
+                    message.setSubject("Password Reset");
+                    toAddress = customerEmail;
+                    returnString = "<h2>Password Resetted Successfully!</h2> <br />";
+                    returnString += "Your password has been reset, if you did not make that request, reply to that email.";
+                    returnString += "<h3>Your reset code is: " + customer + "</h3>";
+                    break;
+                }
+                default:
+                    break;
+            }
+            message.setContent(returnString, "text/html");
             message.setRecipients(
                     Message.RecipientType.TO,
-                    InternetAddress.parse(receiver)
+                    InternetAddress.parse(toAddress)
             );
-            message.setSubject("javatpoint");
-            message.setText("This is simple program of sending email using JavaMail API");
+//            message.setText("Below are your reservation info from " + mailInfo[1]);
 
             //send the message  
 //            Transport transport = session.getTransport("smtp");
@@ -74,5 +102,20 @@ public class Email {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+    }
+
+    public String composeMessage(String type, int customer, int resort, int pack) {
+        String returnString = "";
+        switch (type) {
+            case "receipt": {
+
+            }
+            case "forgot": {
+
+            }
+            default:
+                break;
+        }
+        return returnString;
     }
 }

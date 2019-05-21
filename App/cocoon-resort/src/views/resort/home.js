@@ -14,6 +14,7 @@ const ListPackages = (props) => {
         )
     } else {
         return props.packages.map(item => {
+            console.log('item.id', item.id);
             return (
                 <Package key={item.id} info={item} isResort={true} updatePackage={props.updatePackage} />
             )
@@ -58,10 +59,18 @@ class Home extends Component {
 
         const reservation = new Reservation();
         const pack = new PackageClass();
-        const reservations = await reservation.readAll();
+        // const reservations = await reservation.readAll();
         const packages = await pack.filterByResort(1);
 
-        this.setState({ reservations, packages });
+        packages.map((pack) => {
+            console.log('le pack', pack);
+        })
+
+        const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?packageId=7`);
+
+
+
+        // this.setState({ reservations, packages });
     }
 
 
@@ -71,7 +80,6 @@ class Home extends Component {
     updatePackage = async (state) => {
         const pack = new PackageClass();
         const result = await pack.updatePackage(state.id, state.name, state.details, state.price, state.from, state.to, state.capacity);
-
     }
 }
 

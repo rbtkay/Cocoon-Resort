@@ -51,7 +51,7 @@ class EditPackage extends Component {
                         </Form.Group>
 
                         <Form.Group widths='2' inline>
-                            // TODO: Handle the dates correctly, set date format
+                            {/* TODO: Handle the dates correctly, set date format*/}
                             <DateInput
                                 name='from'
                                 label='Starting Date'
@@ -104,7 +104,7 @@ class EditPackage extends Component {
 
     handleSubmit = () => {
         this.props.updatePackage(this.state);
-        this.props.updateDisplay(this.state);
+        this.props.updatedisplay(this.state);
     }
 
 }

@@ -5,6 +5,7 @@
  */
 
 import Classes.Reservation;
+import Classes.Email;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.json.JsonArray;
@@ -46,19 +47,15 @@ public class ReservationServlet extends HttpServlet {
 
         switch (action) {
             case "create": {
-
                 int packId = Integer.parseInt(request.getParameter("packId"));
                 int clientId = Integer.parseInt(request.getParameter("clientId"));
                 int resortId = Integer.parseInt(request.getParameter("resortId"));
                 int quantity = Integer.parseInt(request.getParameter("quantity"));
 
-                System.out.print(packId);
-                System.out.print(clientId);
-                System.out.print(resortId);
-                System.out.print(quantity);
-
                 if (reservation.create(packId, clientId, resortId, quantity)) {
                     response.setStatus(200);
+                    Email sendEmail = new Email();
+                    sendEmail.send("receipt", "", clientId, resortId, packId);
                     out.print("Reservation Done");
                 } else {
                     response.setStatus(401);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Button } from 'semantic-ui-react';
+import { Input, Button, Form } from 'semantic-ui-react';
 import App from '../app/App';
 import homeClass from "../classes/home";
 import NavigationBar from '../components/NavigationBar';
@@ -15,7 +15,8 @@ class Home extends Component {
     state = {
         name: '',
         file: '',
-        imagePreviewUrl: ''
+        imagePreviewUrl: '',
+        fileName: ''
     }
 
     render() {
@@ -23,18 +24,17 @@ class Home extends Component {
         return (
             <div>
                 <h1>Home of {/* {{/* user */}} */}</h1>
-                <Input
-                    type='text'
-                    value={this.state.name}
-                    onChange={event => this.setState({ name: event.target.value})}
-                    />
+                <Input type='file' id='fileName' name='fileName' onChange={event => this.setState({ fileName: event.target.value})} />
+                <Input type='button' value='upload' onClick={this.onClick}/>
 
-                <Input type='file' onChange={event => this.handleImageChange(event)} />
-                <Button onClick={this.onClick} />
                 <Test name="kevin" />
             </div>
         )
     }
+    // <Form action='http://localhost:8080/cocoon-resort/UploadDownloadFileServlet' method="post" encType="multipart/form-data">
+    //     <Input type='file' name='fileName' />
+    //     <Input type='submit' value='upload'/>
+    // </Form>
     //
     // handleImageChange = (event) => {
     //     let reader = new FileReader();
@@ -51,45 +51,57 @@ class Home extends Component {
     //     console.log('alo?', file);
     // }
 
-    handleImageChange = async (event) => {
-        let file = event.target.files[0];
-        this.setState({ file });
-        // const files = Array.from(event.target.files);
-        // this.setState({ upload})
-        // console.log(files);
+    // handleImageChange = async (event) => {
+
+    // const files = Array.from(event.target.files);
+    // this.setState({ upload})
+    // console.log(files);
 
 
-        // files.forEach((file, i) => {
-        //     formData.append(i, file)
-        //     console.log(formData);
-        // });
+    // files.forEach((file, i) => {
+    //     formData.append(i, file)
+    //     console.log(formData);
+    // });
 
-    }
+    // }
 
-    onClick = async () => {
-        const { file } = this.state;
-        let formData = new FormData();
-
-        formData.append('file', file);
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        }
-
-        console.log(formData);
+    onClick = async (event) => {
         try {
-            console.log('file', file);
-            const response = await fetch(`http://localhost:8080/cocoon-resort/TestServlet`, {
+            const fileName = document.getElementById('fileName').files[0];
+            console.log(fileName);
+
+            let formData = new FormData();
+            formData.append('fileName', fileName);
+
+            const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?packageId=7`, {
                 method: 'POST',
-                headers: new Headers({
-                    "content-type": "multipart/form-data; boundary='boundary'"
-                }),
-                body: { formData }
+                body: formData
             });
+
+            console.log('successfully sent');
         } catch (err) {
             throw err;
         }
+        // const { file } = this.state;
+        // let formData = new FormData();
+        //
+        // formData.append('file', file);
+        // const config = {
+        //     headers: {
+        //         'content-type': 'multipart/form-data'
+        //     }
+        // }
+        //
+        // console.log(formData);
+        // try {
+        //     console.log('file', file);
+        //     const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?fileName=kevin`, {
+        //         method: 'POST',
+        //         body: file
+        //     });
+        // } catch (err) {
+        //     throw err;
+        // }
         // const data = this.state.imagePreviewUrl.split(',')[1];
         // let raw = window.atob(data);
         // let rawLength = raw.length;

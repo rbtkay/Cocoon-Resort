@@ -14,35 +14,40 @@ import NewResort from '../views/resort/newResort';
 import NewPackage from '../views/resort/newPackage';
 import Resort from '../views/resort';
 import ViewResort from '../views/viewResort';
+
 import viewPackage from '../views/viewPackage';
 import viewReservation from '../views/customer/viewReservation';
+import ForgotPassword from '../views/forgotPassword';
 
 class App extends Component {
 
-  state = {
-    user: ""
-  }
+    state = {
+        user: ""
+    }
 
-  render() {
-    console.log(this.state.user);
-    return (
-      <Router>
+    render() {
+        console.log(this.state.user);
+        return (
+            <Router>
         <div>
-          <Route path={"/resort/newResort"} exac component={NewResort} />
-          <Route path={"/resort/home"} exac component={Home} />
-          <Route path={"/resort/newPackage"} exac component={NewPackage} />
-          <Route path={"/viewResort"} exac component={ViewResort} />
-          <Route path={"/customer/viewReservation"} exac component={viewReservation} />
-          <Route path={"/viewPackage"} exac component={viewPackage} />
-          <Route path={"/resort"} exac component={Resort} />
+
+          <Route path={"/resort/newResort"} exact component={NewResort} />
+          <Route path={"/resort/home"} exact component={Home} />
+          <Route path={"/resort/newPackage"} exact component={NewPackage} />
+          <Route path={"/viewResort"} exact component={ViewResort} />
+          <Route path={"/customer/viewReservation"} exact component={viewReservation} />
+          <Route path={"/viewPackage"} exact component={viewPackage} />
+          <Route path={"/resort"} exact component={Resort} />
+
           <Route path={"/user"} component={User} />
           <Route path={"/customer/signUp"} component={SignUp} />
           <Route path={"/welcome"} component={Welcome} />
           <Route path={"/explore"} component={Explore} />
+          <Route path={"/forgotPassword"} component={ForgotPassword} />
           <Route path={"/home"} component={Test} />
         </div>
       </Router>
-    );
-  }
+        );
+    }
 }
 export default App;

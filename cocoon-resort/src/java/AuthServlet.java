@@ -4,30 +4,23 @@
  * and open the template in the editor.
  */
 
-import Classes.Email;
 import Classes.Client;
+import Classes.Email;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
+import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Robert
+ * @author user
  */
-@WebServlet(urlPatterns = {"/ClientServlet"})
-public class ClientServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/AuthServlet"})
+public class AuthServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,86 +31,47 @@ public class ClientServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    PrintWriter out;
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         response.setHeader("Access-Control-Allow-Methods", "GET");
-        out = response.getWriter();
-
-        Client client = new Client();
-        System.out.print("in the servlet");
+        PrintWriter out = response.getWriter();
 
         String action = request.getParameter("action");
 
         switch (action) {
-            case "create": {
-                String name = request.getParameter("name");
-                String password = request.getParameter("password");
-                int phone = Integer.parseInt(request.getParameter("phone"));
+            case "forgot": {
                 String email = request.getParameter("email");
-
-                if (client.create(name, password, phone, email)) {
-                    response.setStatus(201);
-                    out.print("Client Successfully Created");
-                } else {
-                    response.setStatus(401);
-                    out.print("Connection Error");
-                }
-                break;
-            }
-            case "login": {
-                String email = request.getParameter("email");
-                String password = request.getParameter("password");
-
-                System.out.println("email" + email);
-                System.out.println("password" + password);
-
-                JsonArray resultJson = client.login(email, password);
-
-                if (resultJson != null) {
+                Client client = new Client();
+                if (client.exists(email)) {
+                    Random rand = new Random();
+                    int randomNumber = rand.nextInt(9000) + 1000;
+                    Email emailObj = new Email();
+                    emailObj.send("forgot", email, randomNumber, 0, 0);
                     response.setStatus(200);
-                    out.print(resultJson);
+                    out.print(randomNumber);
                 } else {
                     response.setStatus(404);
-                    JsonArrayBuilder builder = Json.createArrayBuilder();
-                    builder.add(Json.createObjectBuilder()
-                            .add("message", "Wrong Username or Password"));
-                    JsonArray error = builder.build();
-                    out.print(error);
                 }
                 break;
             }
-            case "logout": {
-                break;
-            }
-            case "delete": {
+            case "resetPassword": {
                 String email = request.getParameter("email");
-                if (client.delete(email)) {
-                    out.print("Successfully Deleted");
+                String password = request.getParameter("password");
+                Client client = new Client();
+                
+                if (client.resetPassword(email, password)) {
+                    response.setStatus(200);
                 } else {
-                    out.print("Failed to Delete Account");
+                    response.setStatus(404);
                 }
                 break;
             }
-            default: {
+            default:
                 break;
-            }
         }
-
     }
-//
-//    public JsonArray toJSON(String s) {
-//        JsonArrayBuilder builder = Json.createArrayBuilder();
-//
-//        builder.add(Json.createObjectBuilder()
-//                .add("message", "hello, " + id));
-//
-//        builder.add(Json.createObjectBuilder().add("name", "kevin"));
-//        JsonArray test = builder.build();
-//    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
