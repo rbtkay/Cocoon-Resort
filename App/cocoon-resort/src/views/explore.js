@@ -78,9 +78,9 @@ class Explore extends Component {
         const { location, from, to, category, guests } = filter;
 
         const pack = new PackageClass();
-        const allPackages = await pack.filterByDate(from, to);
+        // const allPackages = await pack.filterByDate(from, to);
 
-        let filteredPackages = allPackages;
+        let filteredPackages = this.state.allPackages;
         if (category !== "") {
             filteredPackages = filteredPackages.filter((item) => {
                 return item['category'] === category;
@@ -96,7 +96,7 @@ class Explore extends Component {
                 return item['capacity'] >= guests;
             })
         }
-        this.setState({ filteredPackages, allPackages });
+        this.setState({ filteredPackages });
     }
 
     setFilteredPackages = (info) => { //is called from the filter component

@@ -27,11 +27,11 @@ class App extends Component {
         return (
             <Router>
         <div>
-          <Route path={"/resort/newResort"} exac component={NewResort} />
-          <Route path={"/resort/home"} exac component={Home} />
-          <Route path={"/resort/newPackage"} exac component={NewPackage} />
-          <Route path={"/viewResort"} exac component={ViewResort} />
-          <Route path={"/resort"} exac component={Resort} />
+          <Route path={"/resort/newResort"} exact component={NewResort} />
+          <Route path={"/resort/home"} exact component={Home} />
+          <Route path={"/resort/newPackage"} exact component={NewPackage} />
+          <Route path={"/viewResort"} exact component={ViewResort} />
+          <Route path={"/resort"} exact component={Resort} />
           <Route path={"/user"} component={User} />
           <Route path={"/customer/signUp"} component={SignUp} />
           <Route path={"/welcome"} component={Welcome} />
