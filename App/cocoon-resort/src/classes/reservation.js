@@ -15,18 +15,44 @@ class Reservation {
     }
 
     async create(packId, clientId, resortId, quantity) {
-        const response = await fetch(`http://localhost:8080/cocoon-resort/ReservationServlet?action=create&$packId=${packId}&clientId${clientId}$resortId=${resortId}&quantity=${quantity}`);
-        if (response.ok) {
-            // const result = response.json();
-            // return result;
-            return true;
-        } else {
-            return false;
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ReservationServlet?action=create&packId=${packId}&clientId=${clientId}&resortId=${resortId}&quantity=${quantity}`);
+            if (response.status === 200) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (e) {
+            throw e;
         }
-    } catch(e) {
-        throw e;
     }
 
+    async readAllByCustomer(id) {
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ReservationServlet?action=readByCustomer&id=${id}`);
+            if (response.status === 200) {
+                const result = response.json();
+                return result;
+            } else {
+                return null;
+            }
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    async cancel(id, packId, quantity) {
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ReservationServlet?action=cancel&id=${id}&packId=${packId}&quantity=${quantity}&`)
+            if (response.status === 200) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (e) {
+            throw e;
+        }
+    }
 }
 
 export default Reservation;

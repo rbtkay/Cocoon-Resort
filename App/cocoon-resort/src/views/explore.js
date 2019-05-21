@@ -3,43 +3,41 @@ import NavigationBar from '../components/NavigationBar';
 import { Grid, Segment, Card } from 'semantic-ui-react';
 import Filter from '../components/Filter';
 import PackageClass from '../classes/package';
-import PackageComponent from '../components/Package';
-
-const ListPackages = (props) => {
-    if (props.packages.length < 1) {
-        return (
-            <h3>No packages found... :(</h3>
-        );
-    } else {
-        return props.packages.map(item => {
-            return (
-                <PackageComponent key={item.id} info={item} isResort={false} />
-            );
-        });
-    }
-}
+import ListPackages from '../components/ListPackages';
 
 class Explore extends Component {
     constructor(props) {
         super(props);
 
-        const queryString = require('query-string');
+        // const queryString = require('query-string');
 
-        const info = queryString.parse(this.props.location.search)
+        // const info = queryString.parse(this.props.location.search)
 
         console.log('ziinfoinfo');
 
-        info['category'] = info['category'] ? info['category'] : '';
-        info['from'] = info['from'] || '';
-        info['to'] = info['to'] || '';
+        // info['category'] = info['category'] ? info['category'] : '';
+        // info['from'] = info['from'] || '';
+        // info['to'] = info['to'] || '';
+
+        const info = {
+            location: localStorage.getItem("location") || '',
+            from: localStorage.getItem("from") || '',
+            to: localStorage.getItem("to") || '',
+            guests: localStorage.getItem("guests") || 1,
+            category: ''
+        }
+
+        console.log({ info })
+
+        localStorage.removeItem("location");
+        localStorage.removeItem("from");
+        localStorage.removeItem("to");
+        localStorage.removeItem("guests");
 
         this.state = {
             info: info,
             allPackages: [],
             filteredPackages: [],
-            filter: {
-
-            },
         };
     }
 
@@ -56,7 +54,7 @@ class Explore extends Component {
                     <Grid.Column width={11}>
                         <Segment>
                             <Card.Group itemsPerRow='4'>
-                                <ListPackages packages={this.state.filteredPackages} />
+                                <ListPackages packages={this.state.filteredPackages} viewPack={this.viewPack} isResort={false} />
                             </Card.Group>
                         </Segment>
                     </Grid.Column>
@@ -68,25 +66,30 @@ class Explore extends Component {
     async componentDidMount() {
         const pack = new PackageClass();
 
-        const { filter } = this.state.filter;
+        // const { info } = this.state;
+
+        //TODO: check if the it is the first load, if it is search based on localStorage else get Data from searchComp
         let result;
-        result = await pack.filterByDate(this.state.info.from, this.state.info.to);
-        this.setState({ allPackages: result, filteredPackages: result })
+        // result = await pack.filterByDate(this.state.info.from, this.state.info.to);
+        // this.setState(({ allPackages: result, filteredPackages: result })
+        this.setFilteredPackages(this.state.info)
     }
 
-    filterPackages = async (filter) => {
+    setFilteredPackages = async (filter) => { //is called from the filter component
         const { location, from, to, category, guests } = filter;
+
+        console.log(filter)
 
         const pack = new PackageClass();
         // const allPackages = await pack.filterByDate(from, to);
 
-        let filteredPackages = this.state.allPackages;
-        if (category !== "") {
+        let filteredPackages = allPackages;
+        if (category !== '') {
             filteredPackages = filteredPackages.filter((item) => {
                 return item['category'] === category;
             })
         }
-        if (location !== undefined) {
+        if (location !== '') {
             filteredPackages = filteredPackages.filter((item) => {
                 return item['location'] === location;
             })
@@ -96,15 +99,19 @@ class Explore extends Component {
                 return item['capacity'] >= guests;
             })
         }
-        this.setState({ filteredPackages });
+        this.setState({ filteredPackages, allPackages, filter });
     }
 
-    setFilteredPackages = (info) => { //is called from the filter component
-        const { location, from, to, category, guests } = info;
+    // setFilteredPackages = (info) => {
+    //     const { location, from, to, category, guests } = info;
 
-        console.log('info in setFilteredPackages', info);
-        let filteredPackages = this.filterPackages(info);
-        this.setState({ filter: info });
+    //     console.log('info in setFilteredPackages', info);
+    //     let filteredPackages = this.filterPackages(info);
+    //     this.setState({ filter: info });
+    // }
+
+    viewPack = (id) => {
+        this.props.history.push(`/viewPackage?id=${id}`);
     }
 }
 

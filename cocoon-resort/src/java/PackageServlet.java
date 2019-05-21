@@ -32,7 +32,7 @@ public class PackageServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     PrintWriter out;
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -40,9 +40,9 @@ public class PackageServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Methods", "GET");
         out = response.getWriter();
         String action = request.getParameter("action");
-        
+
         System.out.print(action);
-        
+
         Package pack = new Package();
         switch (action) {
             case "create": {
@@ -81,12 +81,12 @@ public class PackageServlet extends HttpServlet {
             case "filterByDate": {
                 String start = request.getParameter("start");
                 String end = request.getParameter("end");
-                
+
                 System.out.print("start");
                 System.out.print(start);
                 System.out.print("end");
                 System.out.print(end);
-                
+
                 JsonArray result = pack.filterByDate(start, end);
                 if (result == null) {
                     response.setStatus(404);
@@ -98,16 +98,16 @@ public class PackageServlet extends HttpServlet {
             }
             case "readAll": {
                 String category = request.getParameter("category");
-                
+
                 JsonArray result = pack.readAll(category);
-                
+
                 if (result == null) {
                     response.setStatus(404);
                 } else {
                     response.setStatus(200);
                 }
                 out.print(result);
-                
+
                 break;
             }
             case "delete": {
@@ -115,17 +115,17 @@ public class PackageServlet extends HttpServlet {
             }
             case "readByResortID": {
                 int id = Integer.parseInt(request.getParameter("id"));
-                
+
                 JsonArray result;
                 result = pack.readByResortID(id);
-                
+
                 if (result == null) {
                     response.setStatus(404);
                 } else {
                     response.setStatus(200);
                 }
                 out.print(result);
-                
+
                 break;
             }
             case "updatePackage": {
@@ -136,7 +136,7 @@ public class PackageServlet extends HttpServlet {
                 String from = request.getParameter("from");
                 String to = request.getParameter("to");
                 int capacity = Integer.parseInt(request.getParameter("capacity"));
-                
+
                 System.out.println(id);
                 System.out.println(name);
                 System.out.println(details);
@@ -150,6 +150,19 @@ public class PackageServlet extends HttpServlet {
                 } else {
                     response.setStatus(401);
                 }
+                break;
+            }
+            case "readOne": {
+                int id = Integer.parseInt(request.getParameter("id"));
+
+                JsonArray result = pack.readOne(id);
+
+                if (result == null) {
+                    response.setStatus(404);
+                } else {
+                    response.setStatus(200);
+                }
+                out.print(result);
                 break;
             }
         }

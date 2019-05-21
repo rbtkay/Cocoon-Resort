@@ -77,8 +77,31 @@ public class ReservationServlet extends HttpServlet {
 
                 break;
             }
-            case "delete": {
+            case "cancel": {
+                int id = Integer.parseInt(request.getParameter("id"));
+                int packId = Integer.parseInt(request.getParameter("packId"));
+                int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+                if (reservation.cancel(id, packId, quantity)) {
+                    response.setStatus(200);
+                    out.print("Reservation Cancelled");
+                } else {
+                    response.setStatus(404);
+                    out.print("Connection Error");
+                }
                 break;
+            }
+            case "readByCustomer": {
+                int id = Integer.parseInt(request.getParameter("id"));
+                JsonArray result = reservation.getReservationByCustomer(id);
+
+                if (result == null) {
+                    response.setStatus(404);
+                } else {
+                    response.setStatus(200);
+                }
+                out.print(result);
+
             }
         }
     }
