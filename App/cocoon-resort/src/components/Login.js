@@ -16,7 +16,7 @@ class Login extends Component {
                 onClose={this.loginClose}
                 size='small'
                 closeOnDimmerClick={false}
-                >
+            >
                 <Modal.Header>
                     <Icon name='sign-in' /> Log In
                 </Modal.Header>
@@ -29,7 +29,7 @@ class Login extends Component {
                             name='email'
                             value={this.state.email}
                             onChange={event => this.setState({ email: event.target.value })}
-                            />
+                        />
 
                         <Form.Input
                             label='Password'
@@ -37,15 +37,15 @@ class Login extends Component {
                             name='password'
                             value={this.state.password}
                             onChange={event => this.setState({ password: event.target.value })}
-                            />
+                        />
 
                         <Message error header="Oops!" content={this.state.errorMessage} />
                         <a href='/forgotPassword'>Forgot Password?</a>
                         <Form.Button
                             positive
                             loading={this.state.loading}
-                            content='Log In' floated='right'/>
-                        <Button secondary onClick={this.loginClose} content='Cancel'/>
+                            content='Log In' floated='right' />
+                        <Button secondary onClick={this.loginClose} content='Cancel' />
                     </Form>
                 </Modal.Content>
             </Modal>
@@ -62,7 +62,7 @@ class Login extends Component {
             const result = await login.authUser(email, password);
 
             if (result !== 404) {
-                this.props.handleLogin(result[0].email, result[0].name);
+                this.props.handleLogin(result[0].email, result[0].name, result[0].jwt);
             } else {
                 this.setState({ errorMessage: 'Invalid Username/Password' });
             }
