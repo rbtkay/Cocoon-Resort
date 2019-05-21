@@ -55,7 +55,7 @@ class Package extends Component {
                             </Grid>
                         </Card.Description>
                     </Card.Content>
-                    <Button floated='right' onClick={this.view}>View</Button>
+                    <Button floated='right' onClick={event => this.view(this.state.id)}>View</Button>
                 </Card>
             )
         } else {
@@ -104,8 +104,8 @@ class Package extends Component {
         console.log('updateDisplay: ', state);
     }
 
-    view = () => {
-        const { id } = this.state;
+    view = (id) => {
+        // const { id } = this.state;
         this.props.viewPack(id);
     }
 }

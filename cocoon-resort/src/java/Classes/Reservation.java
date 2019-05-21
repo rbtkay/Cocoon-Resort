@@ -38,7 +38,7 @@ public class Reservation {
 
             prepStmt.executeUpdate();
             Package pack = new Package();
-            if (pack.updateGuest(packId, quantity)) {
+            if (pack.updateGuest("increment", packId, quantity)) {
                 return true;
             } else {
                 return false;
@@ -114,6 +114,7 @@ public class Reservation {
                         .add("packPrice", result.getInt("package_price"))
                         .add("packFrom", result.getString("package_from"))
                         .add("packTo", result.getString("package_to"))
+                        .add("packGuests", result.getString("package_guest"))
                         .add("resortName", result.getString("resort_name"))
                         .add("resortLocation", result.getString("resort_location"))
                 );
@@ -130,5 +131,33 @@ public class Reservation {
             }
         }
         return null;
+    }
+
+    public boolean cancel(int id, int packId, int quantity) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+            prepStmt = con.prepareStatement("Delete from reservations_t where reservations_t.reservation_id = ?");
+
+            prepStmt.setInt(1, id);
+
+            prepStmt.executeUpdate();
+
+            Package pack = new Package();
+            if (pack.updateGuest("decrement", packId, quantity)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception e) {
+            try {
+                System.out.print("Error while throwing! " + e);
+                return false;
+            } catch (Exception err) {
+                System.out.print("Error while throwing! " + err);
+            }
+        }
+        return false;
     }
 }

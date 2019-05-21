@@ -363,13 +363,16 @@ public class Package {
         return null;
     }
 
-    public boolean updateGuest(int packId, int guests) {
+    public boolean updateGuest(String type, int packId, int guests) { //type is either decrement or increment
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
 
-            prepStmt = con.prepareStatement("update packages_t set package_guest = (package_guest + ?) where package_id = ?");
-
+            if (type.equals("increment")) {
+                prepStmt = con.prepareStatement("update packages_t set package_guest = (package_guest + ?) where package_id = ?");
+            } else if (type.equals("decrement")) {
+                prepStmt = con.prepareStatement("update packages_t set package_guest = (package_guest - ?) where package_id = ?");
+            }
             prepStmt.setInt(1, guests);
             prepStmt.setInt(2, packId);
 

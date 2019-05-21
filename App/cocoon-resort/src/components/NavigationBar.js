@@ -121,9 +121,7 @@ class NavigationBar extends Component {
     }
 
     viewReservation = () => {
-        return (
-            <Redirect to='/viewReservation' />
-        )
+        window.location.href = `http://localhost:3000/customer/viewReservation?id=6`;
     }
 
     loginClose = () => {

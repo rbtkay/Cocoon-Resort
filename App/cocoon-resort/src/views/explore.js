@@ -9,23 +9,28 @@ class Explore extends Component {
     constructor(props) {
         super(props);
 
-        const queryString = require('query-string');
+        // const queryString = require('query-string');
 
-        const info = queryString.parse(this.props.location.search)
+        // const info = queryString.parse(this.props.location.search)
 
         console.log('ziinfoinfo');
 
-        info['category'] = info['category'] ? info['category'] : '';
-        info['from'] = info['from'] || '';
-        info['to'] = info['to'] || '';
+        // info['category'] = info['category'] ? info['category'] : '';
+        // info['from'] = info['from'] || '';
+        // info['to'] = info['to'] || '';
+
+        const info = {
+            location: localStorage.getItem("location") || '',
+            from: localStorage.getItem("from") || '',
+            to: localStorage.getItem("to") || '',
+            guests: localStorage.getItem("guests") || 1
+        }
 
         this.state = {
+            isFirstLoad: true,
             info: info,
             allPackages: [],
             filteredPackages: [],
-            filter: {
-
-            },
         };
     }
 
@@ -54,10 +59,12 @@ class Explore extends Component {
     async componentDidMount() {
         const pack = new PackageClass();
 
-        const { filter } = this.state.filter;
+        // const { filter } = this.state.filter;
+
+        //TODO: check if the it is the first load, if it is search based on localStorage else get Data from searchComp
         let result;
         result = await pack.filterByDate(this.state.info.from, this.state.info.to);
-        this.setState({ allPackages: result, filteredPackages: result })
+        this.setState({ allPackages: result, filteredPackages: result, isFirstLoad: false })
     }
 
     filterPackages = async (filter) => {

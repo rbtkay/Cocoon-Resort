@@ -28,7 +28,7 @@ class ViewResort extends Component {
                 <h1>Resort Name</h1>
                 <Segment>
                     <Card.Group itemsPerRow='4'>
-                        <ListPackages packages={this.state.packages} isResort={false} />
+                        <ListPackages packages={this.state.packages} isResort={false} viewPack={this.viewPack} />
                     </Card.Group>
                 </Segment>
             </div>
@@ -48,6 +48,10 @@ class ViewResort extends Component {
             this.setState({ packages: result });
         }
 
+    }
+
+    viewPack = (id) => {
+        this.props.history.push(`/viewPackage?id=${id}`)
     }
 }
 

@@ -220,6 +220,10 @@ class Welcome extends Component {
             formError = 'dates are invalid'
             this.setState({ isErrorSearch, formError });
         } else {
+            localStorage.setItem("location", location.value);
+            localStorage.setItem("from", from);
+            localStorage.setItem("to", to);
+            localStorage.setItem("guests", guests);
             this.props.history.push(`/explore?location=${location.value}&from=${from}&to=${to}&guests=${guests}`);
         }
     }

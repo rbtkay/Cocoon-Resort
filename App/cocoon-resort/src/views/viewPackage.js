@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PackageClass from '../classes/package';
 import { Segment, ImageGroup, Image, Grid, Button, Icon } from 'semantic-ui-react';
 import NumericInput from 'react-numeric-input';
+import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 
 import Mountains from '../static/Mountains.jpg'
 import Beaches from '../static/Beaches.jpg'
@@ -25,29 +26,36 @@ import Reservation from '../classes/reservation';
 // }
 
 const ReserveBtn = (props) => {
-    if (props.guests < props.capacity) {
-        return (
-            <Segment textAlign='center'>
-                <Grid columns={2}>
-                    <Grid.Column verticalAlign='middle'>
-                        <NumericInput
-                            name='guests'
-                            min={1}
-                            value={props.numPeople}
-                            onChange={props.handleGuests}
-                        />
-                    </Grid.Column>
-                    <Grid.Column>
-                        <Button color='blue' onClick={props.reserve}>Reserve</Button>
-                    </Grid.Column>
-                </Grid>
-
-            </Segment>
-        )
+    if (props.isReserved === false) {
+        if (props.guests < props.capacity) {
+            return (
+                <Segment textAlign='center'>
+                    <Grid columns={2}>
+                        <Grid.Column verticalAlign='middle'>
+                            <NumericInput
+                                name='guests'
+                                min={1}
+                                value={props.numPeople}
+                                onChange={props.handleGuests}
+                            />
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Button color='blue' onClick={props.reserve}>Reserve</Button>
+                        </Grid.Column>
+                    </Grid>
+                </Segment>
+            )
+        } else {
+            return (
+                <Segment textAlign='center'>
+                    <h3>Package Full</h3>
+                </Segment>
+            )
+        }
     } else {
         return (
             <Segment textAlign='center'>
-                <h3>Package Full</h3>
+                <Button color='green'>Reserved</Button>
             </Segment>
         )
     }
@@ -74,7 +82,7 @@ class viewPackage extends Component {
             from: '',
             to: '',
             image: '',
-            capacity: '',
+            capacity: 0,
             isReserved: false,
             numPeople: 1,
             guests: 0
@@ -135,10 +143,8 @@ class viewPackage extends Component {
                                     <Grid.Column>
                                         <h4>Capacity</h4>
                                         {this.state.guests}/{this.state.capacity}
-
                                     </Grid.Column>
                                 </Grid>
-
                             </Segment>
                             <ReserveBtn isReserved={this.state.isReserved} reserve={this.reserve} guests={this.state.guests} capacity={this.state.capacity} numPeople={this.state.numPeople} handleGuests={this.handleGuests} />
                         </Grid.Column>
@@ -171,11 +177,12 @@ class viewPackage extends Component {
         console.log("this.state");
         console.log(this.state);
 
-        const clientId = 2;
+        const clientId = 6;
 
-        const { id, resortId, numPeople } = this.state
+        const { id, resortId, numPeople, guests } = this.state
         if (reservation.create(id, clientId, resortId, numPeople)) {
-            this.setState({ isReserved: true });
+            console.log("reserving");
+            this.setState({ isReserved: true, guests: parseInt(numPeople) + parseInt(guests) });
         };
     }
 
