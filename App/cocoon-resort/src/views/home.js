@@ -73,7 +73,7 @@ class Home extends Component {
             let formData = new FormData();
             formData.append('fileName', fileName);
 
-            const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet`, {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?packageId=7`, {
                 method: 'POST',
                 body: formData
             });

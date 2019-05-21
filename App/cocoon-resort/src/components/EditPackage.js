@@ -104,7 +104,7 @@ class EditPackage extends Component {
 
     handleSubmit = () => {
         this.props.updatePackage(this.state);
-        this.props.updateDisplay(this.state);
+        this.props.updatedisplay(this.state);
     }
 
 }

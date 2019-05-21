@@ -31,6 +31,7 @@ class Package extends Component {
             isReserved: isReserved || false,
         }
     }
+
     render() {
         if (this.state.isResort === false) {
             return (
@@ -60,7 +61,7 @@ class Package extends Component {
             )
         } else {
             return (<>
-                <Item key={this.state.id} onClick={this.handleOpen} updateDisplay={this.props.updateDisplay}>
+                <Item key={this.state.id} onClick={this.handleOpen} updatedisplay={this.props.updatedisplay}>
                     <Item.Image src={comingSoonPng} size='small' />
                     <Item.Content>
                         <Item.Header>{this.state.name}</Item.Header>
@@ -85,7 +86,7 @@ class Package extends Component {
                     <Button floated='right' color='red'>Delete</Button>
                     <Button floated='right' color='blue'>Update</Button>
                 </Item> <
-                EditPackage info = { this.state } isOpen = { this.state.isOpen } handleClose = { this.handleClose } updatePackage = { this.props.updatePackage } updateDisplay = { this.updateDisplay }
+                EditPackage info = { this.state } isOpen = { this.state.isOpen } handleClose = { this.handleClose } updatePackage = { this.props.updatePackage } updatedisplay = { this.updatedisplay }
                 /> </ >
             );
 
@@ -99,10 +100,22 @@ class Package extends Component {
         this.setState({ isOpen: false });
     }
 
-    updateDisplay = async (state) => {
+    updatedisplay = (state) => {
         const { id, name, capacity, price, from, to, description } = state;
         this.setState({ id, name, capacity, price, from, to, description, isOpen: false });
         console.log('updateDisplay: ', state);
+    }
+
+    async componentDidMount() {
+        console.log('ALOOOOOO ID = 7777777777');
+        if (this.state.id == 7) {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?packageId=7`, {
+                method: 'GET',
+            });
+
+            console.log(response);
+
+        }
     }
 }
 

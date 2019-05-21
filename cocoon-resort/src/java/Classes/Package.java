@@ -65,7 +65,7 @@ public class Package {
                 System.out.print(result.getString("package_from"));
                 System.out.print(result.getString("package_capacity"));
                 System.out.print(result.getString("package_isReserved"));
-                System.out.print(result.getString("package_image"));
+//                System.out.print(result.getString("package_image"));
                 System.out.print(result.getString("resort_name"));
                 System.out.print(result.getString("resort_location"));
                 System.out.print(result.getString("resort_category"));
@@ -78,7 +78,7 @@ public class Package {
                         .add("from", result.getString("package_from"))
                         .add("to", result.getString("package_to"))
                         .add("capacity", result.getString("package_capacity"))
-                        .add("image", result.getString("package_image"))
+//                        .add("image", result.getString("package_image"))
                         .add("isReserved", result.getString("package_isReserved"))
                         .add("resortId", result.getString("resort_id"))
                         .add("resortName", result.getString("resort_name"))
@@ -253,7 +253,7 @@ public class Package {
                         .add("price", result.getString("package_price"))
                         .add("from", result.getString("package_from"))
                         .add("to", result.getString("package_to"))
-                        .add("image", result.getString("package_image"))
+//                        .add("image", result.getString("package_image"))
                         .add("capacity", result.getString("package_capacity"))
                         .add("isReserved", result.getBoolean("package_isReserved")));
             }
