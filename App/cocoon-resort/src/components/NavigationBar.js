@@ -133,15 +133,15 @@ class NavigationBar extends Component {
 
     logout = async () => {
         const login = new loginClass();
-        const result = await login.logoutUser();
+        // const result = await login.logoutUser();
 
-        if (result === true) {
-            localStorage.clear();
-            cookie.deleteCookie();
-            window.location.href = `http://localhost:3000/welcome`;
-        } else {
-            alert('Connection Error');
-        }
+        // if (result === true) {
+        localStorage.clear();
+        cookie.deleteCookie();
+        window.location.href = `http://localhost:3000/welcome`;
+        // } else {
+        // alert('Connection Error');
+        // }
     }
 }
 
