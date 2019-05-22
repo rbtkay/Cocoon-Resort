@@ -68,11 +68,23 @@ public class Client {
 
             JsonArrayBuilder builder = Json.createArrayBuilder();
 
+            JWT jwtClass = new JWT();
+
+            String jwt = "";
+            System.out.print(jwt);
+
             while (result.next()) {
+                int id = result.getInt("client_id");
+                String emailResult = result.getString("client_email");
+                jwt = jwtClass.createJWT(id, email, "client");
+
                 builder.add(Json.createObjectBuilder()
-                        .add("email", result.getString("client_email"))
+                        .add("jwt", jwt)
+                        .add("id", id)
+                        .add("email", emailResult)
                         .add("name", result.getString("client_name")));
             }
+
             JsonArray resultJson = builder.build();
             if (resultJson.isEmpty()) {
                 return null;
@@ -116,14 +128,14 @@ public class Client {
             }
         }
     }
-    
+
     public boolean exists(String email) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
             prepStmt = con.prepareStatement("select client_email from clients_t where client_email = ?");
             prepStmt.setString(1, email);
-            
+
             result = prepStmt.executeQuery();
             if (result.first()) {
                 return true;
@@ -141,16 +153,16 @@ public class Client {
         }
         return false;
     }
-    
+
     public boolean resetPassword(String email, String password) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
-            
+
             prepStmt = con.prepareStatement("update clients_t set client_password = ? where client_email = ?");
             prepStmt.setString(1, password);
             prepStmt.setString(2, email);
-            
+
             prepStmt.executeUpdate();
             return true;
         } catch (Exception ex) {

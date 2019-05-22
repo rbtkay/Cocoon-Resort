@@ -44,6 +44,7 @@ class Filter extends Component {
                         <Dropdown item text={this.state.category || 'Category'}>
                             <Dropdown.Menu>
                                 <Dropdown.Header>Category</Dropdown.Header>
+                                <Dropdown.Item name='' onClick={this.setCategory} active={this.state.category === 'ALL'} >All</Dropdown.Item>
                                 <Dropdown.Item name='Beaches' onClick={this.setCategory} active={this.state.category === 'Beaches'} >Beaches</Dropdown.Item>
                                 <Dropdown.Item name='Mountains' onClick={this.setCategory} active={this.state.category === 'Mountains'}>Mountains</Dropdown.Item>
                                 <Dropdown.Item name='Bungalows' onClick={this.setCategory} active={this.state.category === 'Bungalows'}>Bungalows</Dropdown.Item>

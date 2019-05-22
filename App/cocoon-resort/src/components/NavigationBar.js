@@ -23,7 +23,7 @@ class NavigationBar extends Component {
 
         console.log(localStorage.getItem('auth'));
         this.state = {
-            isAuth: localStorage.getItem('auth') === "test" ? true : false,
+            isAuth: localStorage.getItem('auth') ? true : false,
             name: '',
             search: '',
             isLoginOpen: false
@@ -63,6 +63,7 @@ class NavigationBar extends Component {
     }
 
     async componentDidMount() {
+        console.log(this.props.isLoginNeeded);
         let name = cookie.getCookie('name');
         console.log(this.state)
         if (name) {
@@ -95,7 +96,7 @@ class NavigationBar extends Component {
 
                     <MenuItem>
                         <Login isLoginOpen={this.state.isLoginOpen} loginClose={this.loginClose} handleLogin={this.handleLogin} />
-                        <Button icon='sign-in' secondary inverted onClick={this.onClick} content='Log In'></Button>
+                        <Button id='login' icon='sign-in' secondary inverted onClick={this.onClick} content='Log In'></Button>
                     </MenuItem>
 
                     <MenuItem>
@@ -111,13 +112,15 @@ class NavigationBar extends Component {
         this.setState({ isLoginOpen: true });
     }
 
-    handleLogin = (email, name) => {
+    handleLogin = (email, name, jwt) => {
         cookie.setCookie('email', email, 100);
         cookie.setCookie('name', name, 100);
+        localStorage.setItem("auth", jwt);
+
         //TODO: get the jwt and store it in localStorage
-        localStorage.setItem("auth", "test");
+        // localStorage.setItem("auth", "test");
         this.loginClose();
-        this.setState({ name });
+        this.setState({ name, isAuth: true });
     }
 
     viewReservation = () => {
@@ -130,15 +133,15 @@ class NavigationBar extends Component {
 
     logout = async () => {
         const login = new loginClass();
-        const result = await login.logoutUser();
+        // const result = await login.logoutUser();
 
-        //TODO: Delete jwt from localStorage
-        if (result === true) {
-            cookie.deleteCookie();
-            window.location.href = `http://localhost:3000/welcome`;
-        } else {
-            alert('Connection Error');
-        }
+        // if (result === true) {
+        localStorage.clear();
+        cookie.deleteCookie();
+        window.location.href = `http://localhost:3000/welcome`;
+        // } else {
+        // alert('Connection Error');
+        // }
     }
 }
 
