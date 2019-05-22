@@ -102,8 +102,8 @@ class Package extends Component {
     }
 
     updatedisplay = (state) => {
-        const { id, name, capacity, price, from, to, description } = state;
-        this.setState({ id, name, capacity, price, from, to, description, isOpen: false });
+        const { id, name, capacity, price, from, to, details } = state;
+        this.setState({ id, name, capacity, price, from, to, details, isOpen: false });
         console.log('updateDisplay: ', state);
     }
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, MenuItem, Button, Dropdown, Form, Icon } from 'semantic-ui-react';
 import Login from '../components/Login';
+import ResortLogin from '../components/ResortLogin';
 import { Redirect } from 'react-router';
 
 import loginClass from '../classes/auth';
@@ -95,8 +96,9 @@ class NavigationBar extends Component {
                 <Menu.Menu position='right'>
 
                     <MenuItem>
-                        <Login isLoginOpen={this.state.isLoginOpen} loginClose={this.loginClose} handleLogin={this.handleLogin} />
-                        <Button id='login' icon='sign-in' secondary inverted onClick={this.onClick} content='Log In'></Button>
+                        <Login isLoginOpen={this.state.isLoginOpen} loginClose={this.loginClose} handleLogin={this.handleLogin} swapModals={this.swapModals} />
+                        <ResortLogin isResortLoginOpen={this.state.isResortLoginOpen} resortLoginClose={this.resortLoginClose} handleLogin={this.handleResortLogin} swapModals={this.swapModals}/>
+                        <Button icon='sign-in' secondary inverted onClick={this.onClick} content='Log In'></Button>
                     </MenuItem>
 
                     <MenuItem>
@@ -112,15 +114,29 @@ class NavigationBar extends Component {
         this.setState({ isLoginOpen: true });
     }
 
+    swapModals = () => {
+        if (this.state.isLoginOpen) {
+            this.setState({ isLoginOpen: false, isResortLoginOpen: true });
+        }
+        if (this.state.isResortLoginOpen) {
+            this.setState({ isLoginOpen: true, isResortLoginOpen: false });
+        }
+    }
+
     handleLogin = (email, name, jwt) => {
         cookie.setCookie('email', email, 100);
         cookie.setCookie('name', name, 100);
         localStorage.setItem("auth", jwt);
 
-        //TODO: get the jwt and store it in localStorage
-        // localStorage.setItem("auth", "test");
         this.loginClose();
         this.setState({ name, isAuth: true });
+    }
+
+    handleResortLogin = (resortName) => {
+        cookie.setCookie('resortName', resortName, 100);
+        localStorage.setItem('auth', jwt);
+        this.resortLoginClose();
+        this.setState({ name: resortName, isAuth: true });
     }
 
     viewReservation = () => {
@@ -129,6 +145,10 @@ class NavigationBar extends Component {
 
     loginClose = () => {
         this.setState({ isLoginOpen: false });
+    }
+
+    resortLoginClose = () => {
+        this.setState({ isResortLoginOpen: false });
     }
 
     logout = async () => {

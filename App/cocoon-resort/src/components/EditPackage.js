@@ -60,14 +60,16 @@ class EditPackage extends Component {
                                 iconPosition='left'
                                 fluid
                                 value={this.state.from}
-                                onChange={this.handleDateChange} />
+                                onChange={this.handleDateChange}
+                                dateFormat='YYYY-MM-DD' />
                             <DateInput
                                 name='to'
                                 label='Ending Date'
                                 placeholder={to}
                                 value={this.state.to}
                                 fluid
-                                onChange={this.handleDateChange} />
+                                onChange={this.handleDateChange}
+                                dateFormat='YYYY-MM-DD' />
                         </Form.Group>
 
                         <Form.Group widths='2'>

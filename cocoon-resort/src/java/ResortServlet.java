@@ -61,15 +61,15 @@ public class ResortServlet extends HttpServlet {
                 break;
             }
             case "login": {
-                String name = request.getParameter("name");
+                String resortName = request.getParameter("resortName");
                 String password = request.getParameter("password");
 
                 System.out.print("here in the servlet");
-                System.out.print(name);
+                System.out.print(resortName);
                 System.out.print(password);
-                System.out.print(resort.login(name, password));
+                System.out.print(resort.login(resortName, password));
 
-                JsonArray resultJson = resort.login(name, password);
+                JsonArray resultJson = resort.login(resortName, password);
                 if (resultJson != null) {
                     response.setStatus(200);
                     out.print(resultJson);

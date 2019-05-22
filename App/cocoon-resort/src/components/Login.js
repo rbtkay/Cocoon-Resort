@@ -21,7 +21,12 @@ class Login extends Component {
                     <Icon name='sign-in' /> Log In
                 </Modal.Header>
 
+                <Modal.Actions>
+                    <Button floated='right' basic color='green' onClick={this.props.swapModals} content='Resort Sign In' />
+                </Modal.Actions>
+
                 <Modal.Content>
+
                     <Form error={!!this.state.errorMessage} onSubmit={this.submit}>
                         <Form.Input
                             label='Email'

@@ -176,4 +176,21 @@ public class Client {
         }
         return false;
     }
+
+    public boolean verifyClient(int id) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+
+            prepStmt = con.prepareStatement("update clients_t set client_isVerified = 1 where client_id = ?");
+            prepStmt.setInt(1, id);
+
+            prepStmt.executeUpdate();
+            con.close();
+            return true;
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return false;
+    }
 }

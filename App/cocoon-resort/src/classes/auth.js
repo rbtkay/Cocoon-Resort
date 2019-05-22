@@ -33,6 +33,21 @@ class Auth {
         }
     }
 
+    async authResort(resortName, password) {
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ResortServlet?action=login&resortName=${resortName}&password=${password}`);
+
+            if (response.status === 200) {
+                const res = await response.json();
+                return res;
+            } else {
+                return 404;
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
     async logoutUser() {
         try {
             const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=logout`);

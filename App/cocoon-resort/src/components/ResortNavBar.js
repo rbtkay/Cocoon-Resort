@@ -5,7 +5,7 @@ import cookie from '../cookie';
 class ResortNavBar extends Component {
 
     state = {
-        name: ''
+        resortName: ''
     };
 
     render() {
@@ -35,8 +35,16 @@ class ResortNavBar extends Component {
     }
 
     async componentDidMount() {
-        const name = cookie.getCookie('name') || 'ALOOO';
-        this.setState({ name });
+        const resortName = cookie.getCookie('resortName') || '';
+        if (resortName === '') {
+            this.props.history.push(`/welcome`);
+        }
+        this.setState({ resortName });
+    }
+
+    logout = () => {
+        cookie.deleteCookie();
+        this.props.history.push(`/welcome`);
     }
 }
 

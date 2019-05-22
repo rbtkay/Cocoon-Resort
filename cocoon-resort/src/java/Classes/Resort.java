@@ -55,7 +55,7 @@ public class Resort {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
 
-            System.out.print("in the class");
+            System.out.print("in the class" + name);
             prepStmt = con.prepareStatement("select * from resorts_t where resort_name = ? and resort_password = ?");
 
             prepStmt.setString(1, name);

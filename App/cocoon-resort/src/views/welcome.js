@@ -13,8 +13,8 @@ class Welcome extends Component {
 
     constructor() {
         super();
-        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-        const date = new Date().toLocaleDateString('en-GB', options);
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        const date = new Date().toLocaleDateString('en-US', options);
         const d = date.replace(/\//g, '-');
 
         this.state = {
