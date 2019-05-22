@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import ResortPack from '../../components/ResortPack';
 import Profile from '../../components/Profile';
-import { Item, Grid, Button, Segment } from 'semantic-ui-react';
+import { Item, Grid, Button, Segment, Image } from 'semantic-ui-react';
 import Reservation from '../../classes/reservation';
 import Package from '../../components/Package';
 import ResortNavBar from '../../components/ResortNavBar';
@@ -28,6 +28,7 @@ class Home extends Component {
         info: {}, //for client package
         reservation: [], //for resort package
         packages: [],
+        src: ''
     }
 
     render() {
@@ -49,6 +50,7 @@ class Home extends Component {
                         </Segment>
                     </Grid.Column>
                     <Grid.Column width={4}>
+                        <Image src={this.state.src} />
                     </Grid.Column>
                 </Grid>
             </div>
@@ -65,12 +67,7 @@ class Home extends Component {
         packages.map((pack) => {
             console.log('le pack', pack);
         })
-
-        const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?packageId=7`);
-
-
-
-        // this.setState({ reservations, packages });
+        this.setState({ packages });
     }
 
 
