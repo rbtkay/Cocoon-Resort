@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Card, Image, Button, Grid, Item } from 'semantic-ui-react';
 import EditPackage from '../components/EditPackage';
+import PackageClass from '../classes/package';
 
 import comingSoonPng from '../static/default_product_image.jpg';
 
@@ -29,6 +30,7 @@ class Package extends Component {
             to: to || '*',
             capacity: capacity || 1,
             isReserved: isReserved || false,
+            imgSrc: ''
         }
     }
 
@@ -36,7 +38,7 @@ class Package extends Component {
         if (this.state.isResort === false) {
             return (
                 <Card key={this.state.id}>
-                    <Image src={comingSoonPng} />
+                    <Image src={this.state.imgSrc} />
                     <Card.Content>
                         <Card.Header>{this.state.name}</Card.Header>
                         <Card.Meta>
@@ -62,7 +64,7 @@ class Package extends Component {
         } else {
             return (<>
                 <Item key={this.state.id} onClick={this.handleOpen} updatedisplay={this.props.updatedisplay}>
-                    <Item.Image src={comingSoonPng} size='small' />
+                    <Item.Image src={this.state.imgSrc} size='small' />
                     <Item.Content>
                         <Item.Header>{this.state.name}</Item.Header>
                         <Item.Meta>
@@ -113,16 +115,9 @@ class Package extends Component {
         this.props.viewPack(id);
 
     async componentDidMount() {
-        console.log('ALOOOOOO ID = 7777777777');
-        if (this.state.id == 7) {
-            const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?packageId=7`, {
-                method: 'GET',
-            });
-
-            console.log(response);
-
-        }
-
+        const pack = new PackageClass();
+        let images = await pack.getImages(this.state.id);
+        this.setState({ imgSrc: images })
     }
 }
 

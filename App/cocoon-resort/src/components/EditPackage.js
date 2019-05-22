@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Modal, Form, Icon, TextArea } from 'semantic-ui-react';
+import { Modal, Form, Icon, TextArea, Input } from 'semantic-ui-react';
 import { DateInput } from 'semantic-ui-calendar-react';
+import PackageClass from '../classes/package';
 
 
 class EditPackage extends Component {
@@ -68,13 +69,23 @@ class EditPackage extends Component {
                                 fluid
                                 onChange={this.handleDateChange} />
                         </Form.Group>
-                        <Form.Field>
-                            <label>Description</label>
-                            <TextArea
-                                placeholder='Additional Details...'
-                                value={this.state.details}
-                                onChange={event => this.setState({details: event.target.value})} />
-                        </Form.Field>
+
+                        <Form.Group widths='2'>
+                            <Form.Field>
+                                <label>Description</label>
+                                <TextArea
+                                    placeholder='Additional Details...'
+                                    value={this.state.details}
+                                    onChange={event => this.setState({details: event.target.value})} />
+                            </Form.Field>
+
+                            <Form.Field>
+                                <Input
+                                    type='file'
+                                    onChange={event => this.uploadImage(event)} />
+
+                            </Form.Field>
+                        </Form.Group>
 
                         <Form.Group widths='2'>
                             <Form.Button
@@ -107,6 +118,11 @@ class EditPackage extends Component {
         this.props.updatedisplay(this.state);
     }
 
+    uploadImage = (event) => {
+        console.log('hahaha');
+        const pack = new PackageClass();
+        pack.updateImage(this.state.id, event.target.files[0]);
+    }
 }
 
 export default EditPackage;

@@ -57,11 +57,16 @@ public class Image {
             prepStmt.setInt(1, packId);
 
             result = prepStmt.executeQuery();
-            while (result.next()) {
-                System.out.println("DE IMAGE PATH = " + result.getString("image_name"));
-                returnString.add(result.getString("image_name"));
+            if (result.first() == false) {
+                System.out.println("MA LE2A IMAGESSS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                returnString.add("default_product_image.jpg");
+                return returnString;
+            } else {
+                result.beforeFirst();
+                while (result.next()) {
+                    returnString.add(result.getString("image_name"));
+                }
             }
-            return returnString;
         } catch (Exception ex) {
             System.out.println(ex);
         } finally {

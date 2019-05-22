@@ -39,43 +39,60 @@ public class UploadDownloadFileServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.setHeader("Access-Control-Allow-Methods", "GET");
         System.out.println("GETTING");
         int packId = Integer.parseInt(request.getParameter("packageId"));
-
+//        PrintWriter out = response.getWriter();''
         ArrayList<String> images = img.getImages(packId);
-//        for (String image : images) {
-        
-            String fileName = images.get(0);
-            System.out.println("THE IMAGE IN SERVLET " + fileName);
-            if (fileName == null || fileName.equals("")) {
-                throw new ServletException("File Name can't be null or empty");
-            }
-            File file = new File(request.getServletContext().getAttribute("FILES_DIR") + File.separator + fileName);
-            if (!file.exists()) {
-                throw new ServletException("File doesn't exists on server.");
-            }
-            System.out.println("File location on server::" + file.getAbsolutePath());
-            ServletContext ctx = getServletContext();
-            InputStream fis = new FileInputStream(file);
-            String mimeType = ctx.getMimeType(file.getAbsolutePath());
-            response.setContentType(mimeType != null ? mimeType : "application/octet-stream");
-//            response.setContentType("application/octet-stream");
-            response.setContentLength((int) file.length());
-//            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-            response.setHeader("Content-Disposition", "image; filename=\"" + fileName + "\"");
+        if (images == null) {
+            response.setStatus(404);
+            return;
+        } else {
+            for (String fileName : images) {
 
-            ServletOutputStream os = response.getOutputStream();
-            byte[] bufferData = new byte[1024];
-            int read = 0;
-            while ((read = fis.read(bufferData)) != -1) {
-                os.write(bufferData, 0, read);
-            }
-            os.flush();
-            os.close();
-            fis.close();
-            System.out.println("File downloaded at client successfully");
+                System.out.println("THE IMAGE IN SERVLET " + fileName);
+                if (fileName == null || fileName.equals("")) {
+                    throw new ServletException("File Name can't be null or empty");
+                }
+                File file = new File(request.getServletContext().getAttribute("FILES_DIR") + File.separator + fileName);
+                if (!file.exists()) {
+                    throw new ServletException("File doesn't exists on server.");
+                }
+                System.out.println("File location on server::" + file.getAbsolutePath());
+                ServletContext ctx = getServletContext();
+                InputStream fis = new FileInputStream(file);
+                String mimeType = ctx.getMimeType(file.getAbsolutePath());
+
+                System.out.println("MIME TYPE=====" + mimeType);
+                System.out.println("CTX==============" + ctx);
+//        response.setContentType("application/json");
+                response.setContentType(mimeType != null ? mimeType : "application/octet-stream");
+                response.setHeader("Content-Disposition", "image; filename=\"" + fileName + "\"");
+//            response.setContentType("application/octet-stream");
+                response.setContentLength((int) file.length());
+//            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+                ServletOutputStream os = response.getOutputStream();
+                byte[] bufferData = new byte[1024];
+                int read = 0;
+                while ((read = fis.read(bufferData)) != -1) {
+////            System.out.print("in the while");
+                    os.write(bufferData, 0, read);
+                }
+
+//        os.write("<a href=\"UploadDownloadFileServlet?fileName=" + file.getName() + "\">Download " + file.getName() + "</a>");
+                os.flush();
+                os.close();
+                fis.close();
+                System.out.println("File downloaded at client successfully");
 //        }
 //        String fileName = request.getParameter("fileName");
+            }
+        }
+//            String fileName = images.get(0);
+//        for (String image : images) {
+
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -110,7 +127,7 @@ public class UploadDownloadFileServlet extends HttpServlet {
                     System.out.println("Failed to insert image into table");
                 }
 //                System.out.println("<br>");
-//                System.out.println("<a href=\"UploadDownloadFileServlet?fileName=" + fileItem.getName() + "\">Download " + fileItem.getName() + "</a>");
+//                out.println("<a href=\"UploadDownloadFileServlet?fileName=" + fileItem.getName() + "\">Download " + fileItem.getName() + "</a>");
             }
         } catch (FileUploadException e) {
             System.out.println("Exception in uploading file." + e);

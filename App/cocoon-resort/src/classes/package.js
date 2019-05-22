@@ -73,6 +73,35 @@ class Package {
         }
     }
 
+    async getImages(id) {
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?packageId=${id}`);
+
+            if (response.ok) {
+                let objUrl = await response.blob();
+                const imgSrc = await URL.createObjectURL(objUrl);
+                // console.log('imgSrc', imgSrc);
+                return imgSrc;
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async updateImage(id, fileName) {
+        try {
+            let formData = new FormData();
+            formData.append('fileName', fileName);
+
+            const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?packageId=${id}`, {
+                method: 'POST',
+                body: formData
+            });
+        } catch (err) {
+            throw err;
+        }
+    }
+  
     async readOne(id) {
         try {
             const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=readOne&id=${id}`);
