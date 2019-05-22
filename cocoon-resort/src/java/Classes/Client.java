@@ -68,11 +68,23 @@ public class Client {
 
             JsonArrayBuilder builder = Json.createArrayBuilder();
 
+            JWT jwtClass = new JWT();
+
+            String jwt = "";
+            System.out.print(jwt);
+
             while (result.next()) {
+                int id = result.getInt("client_id");
+                String emailResult = result.getString("client_email");
+                jwt = jwtClass.createJWT(id, email, "client");
+
                 builder.add(Json.createObjectBuilder()
-                        .add("email", result.getString("client_email"))
+                        .add("jwt", jwt)
+                        .add("id", id)
+                        .add("email", emailResult)
                         .add("name", result.getString("client_name")));
             }
+
             JsonArray resultJson = builder.build();
             if (resultJson.isEmpty()) {
                 return null;

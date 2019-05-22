@@ -9,6 +9,7 @@ import Beaches from '../static/Beaches.jpg'
 import Forests from '../static/Forests.jpg'
 import NavigationBar from '../components/NavigationBar';
 import Reservation from '../classes/reservation';
+import Login from '../components/Login';
 
 // const ListImages = (props) => {
 //     if (props.images.length < 1) {
@@ -72,6 +73,7 @@ class viewPackage extends Component {
         const id = info['id'] ? info['id'] : -1;
 
         this.state = {
+            isLoginNeeded: false,
             id: id,
             images: [Mountains, Beaches, Forests],
             name: '',
@@ -183,6 +185,14 @@ class viewPackage extends Component {
     }
 
     reserve = async () => {
+
+        if (!localStorage.getItem('auth')) {
+            console.log("hehe");
+            const loginBtn = document.getElementById('login');
+            loginBtn.click();
+            return;
+        }
+
         const reservation = new Reservation();
 
         console.log("this.state");

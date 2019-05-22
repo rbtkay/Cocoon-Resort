@@ -88,9 +88,7 @@ class Package extends Component {
                     <Button floated='right' color='red'>Delete</Button>
                     <Button floated='right' color='blue'>Update</Button>
 
-                </Item> <
-                EditPackage info = { this.state } isOpen = { this.state.isOpen } handleClose = { this.handleClose } updatePackage = { this.props.updatePackage } updatedisplay = { this.updatedisplay }
-                /> </ >
+                </Item> <EditPackage info={this.state} isOpen={this.state.isOpen} handleClose={this.handleClose} updatePackage={this.props.updatePackage} updatedisplay={this.updatedisplay} /> </>
             );
 
         }
