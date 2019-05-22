@@ -88,7 +88,7 @@ public class Package {
             }
             JsonArray resultJson = builder.build();
 //
-//            System.out.print(resultJson);
+            System.out.print(resultJson);
             if (resultJson.isEmpty()) {
                 return null;
             } else {
@@ -338,7 +338,7 @@ public class Package {
                         .add("location", result.getString("resort_location"))
                         .add("from", result.getString("package_from"))
                         .add("to", result.getString("package_to"))
-                        .add("image", result.getString("package_image"))
+//                        .add("image", result.getString("package_image"))
                         .add("guests", result.getString("package_guest"))
                         .add("capacity", result.getString("package_capacity"))
                         .add("isReserved", result.getBoolean("package_isReserved")));

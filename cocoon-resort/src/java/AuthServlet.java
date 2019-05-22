@@ -68,6 +68,17 @@ public class AuthServlet extends HttpServlet {
                 }
                 break;
             }
+            case "verifyClient": {
+                int id = Integer.parseInt(request.getParameter("id"));
+                
+                Client client = new Client();
+                if (client.verifyClient(id)) {
+                    response.setStatus(200);
+                } else {
+                    response.setStatus(404);
+                }
+                break;
+            }
             default:
                 break;
         }

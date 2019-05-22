@@ -4,6 +4,7 @@ import App from '../app/App';
 import homeClass from "../classes/home";
 import NavigationBar from '../components/NavigationBar';
 import PackageClass from '../classes/package';
+// import bcrypt from 'bcrypt';
 
 const Test = (props) => {
     return (
@@ -16,7 +17,8 @@ class Home extends Component {
         name: '',
         file: '',
         imagePreviewUrl: '',
-        fileName: ''
+        fileName: '',
+        test: ''
     }
 
     render() {
@@ -24,13 +26,13 @@ class Home extends Component {
         return (
             <div>
                 <h1>Home of {/* {{/* user */}} */}</h1>
-                <Input type='file' id='fileName' name='fileName' onChange={event => this.setState({ fileName: event.target.value})} />
+                <Input type='text' name='test' value={this.state.test} onChange={event => this.setState({ test: event.target.value })} />
                 <Input type='button' value='upload' onClick={this.onClick}/>
-
                 <Test name="kevin" />
             </div>
         )
     }
+    // <Input type='file' id='fileName' name='fileName' onChange={event => this.setState({ fileName: event.target.value})} />
     // <Form action='http://localhost:8080/cocoon-resort/UploadDownloadFileServlet' method="post" encType="multipart/form-data">
     //     <Input type='file' name='fileName' />
     //     <Input type='submit' value='upload'/>
@@ -66,22 +68,31 @@ class Home extends Component {
     // }
 
     onClick = async (event) => {
-        try {
-            const fileName = document.getElementById('fileName').files[0];
-            console.log(fileName);
 
-            let formData = new FormData();
-            formData.append('fileName', fileName);
-
-            const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?packageId=7`, {
-                method: 'POST',
-                body: formData
-            });
-
-            console.log('successfully sent');
-        } catch (err) {
-            throw err;
-        }
+        // const saltRounds = 10;
+        // const myPlaintextPassword = 'ALOO??MYPASS';
+        // console.log('lol', bcrypt);
+        //
+        // bcrypt.hash(myPlaintextPassword, saltRounds, (err, hash) => {
+        //     console.log('loling le hash: ', hash);
+        //     console.log('loling le err: ', err);
+        // })
+        // try {
+        //     const fileName = document.getElementById('fileName').files[0];
+        //     console.log(fileName);
+        //
+        //     let formData = new FormData();
+        //     formData.append('fileName', fileName);
+        //
+        //     const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?packageId=7`, {
+        //         method: 'POST',
+        //         body: formData
+        //     });
+        //
+        //     console.log('successfully sent');
+        // } catch (err) {
+        //     throw err;
+        // }
         // const { file } = this.state;
         // let formData = new FormData();
         //

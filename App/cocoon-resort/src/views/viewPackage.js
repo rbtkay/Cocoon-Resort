@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PackageClass from '../classes/package';
 import { Segment, ImageGroup, Image, Grid, Button, Icon } from 'semantic-ui-react';
 import NumericInput from 'react-numeric-input';
-import { SemanticToastContainer, toast } from 'react-semantic-toasts';
+// import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 
 import Mountains from '../static/Mountains.jpg'
 import Beaches from '../static/Beaches.jpg'
@@ -166,7 +166,18 @@ class viewPackage extends Component {
             const { name, resortName, location, details, price, from, to, image, guests, capacity, isReserved, resortId } = result[0];
 
             this.setState({
-                name, resortName, location, resortId, details, price, from, to, image, guests, capacity, isReserved
+                name,
+                resortName,
+                location,
+                resortId,
+                details,
+                price,
+                from,
+                to,
+                image,
+                guests,
+                capacity,
+                isReserved
             })
         }
     }

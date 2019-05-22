@@ -81,7 +81,7 @@ class Explore extends Component {
         console.log(filter)
 
         const pack = new PackageClass();
-        // const allPackages = await pack.filterByDate(from, to);
+        const allPackages = await pack.filterByDate(from, to);
 
         let filteredPackages = allPackages;
         if (category !== '') {

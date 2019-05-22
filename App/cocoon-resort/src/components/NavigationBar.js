@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, MenuItem, Button, Dropdown, Form, Icon } from 'semantic-ui-react';
 import Login from '../components/Login';
+import ResortLogin from '../components/ResortLogin';
 import { Redirect } from 'react-router';
 
 import loginClass from '../classes/auth';
@@ -94,7 +95,8 @@ class NavigationBar extends Component {
                 <Menu.Menu position='right'>
 
                     <MenuItem>
-                        <Login isLoginOpen={this.state.isLoginOpen} loginClose={this.loginClose} handleLogin={this.handleLogin} />
+                        <Login isLoginOpen={this.state.isLoginOpen} loginClose={this.loginClose} handleLogin={this.handleLogin} swapModals={this.swapModals} />
+                        <ResortLogin isResortLoginOpen={this.state.isResortLoginOpen} resortLoginClose={this.resortLoginClose} handleLogin={this.handleResortLogin} swapModals={this.swapModals}/>
                         <Button icon='sign-in' secondary inverted onClick={this.onClick} content='Log In'></Button>
                     </MenuItem>
 
@@ -111,6 +113,15 @@ class NavigationBar extends Component {
         this.setState({ isLoginOpen: true });
     }
 
+    swapModals = () => {
+        if (this.state.isLoginOpen) {
+            this.setState({ isLoginOpen: false, isResortLoginOpen: true });
+        }
+        if (this.state.isResortLoginOpen) {
+            this.setState({ isLoginOpen: true, isResortLoginOpen: false });
+        }
+    }
+
     handleLogin = (email, name) => {
         cookie.setCookie('email', email, 100);
         cookie.setCookie('name', name, 100);
@@ -120,12 +131,23 @@ class NavigationBar extends Component {
         this.setState({ name });
     }
 
+    handleResortLogin = (resortName) => {
+        cookie.setCookie('resortName', resortName, 100);
+        // TODO: SET AUTH
+        this.resortLoginClose();
+        this.setState({ name: resortName });
+    }
+
     viewReservation = () => {
         window.location.href = `http://localhost:3000/customer/viewReservation?id=6`;
     }
 
     loginClose = () => {
         this.setState({ isLoginOpen: false });
+    }
+
+    resortLoginClose = () => {
+        this.setState({ isResortLoginOpen: false });
     }
 
     logout = async () => {

@@ -104,8 +104,8 @@ class Package extends Component {
     }
 
     updatedisplay = (state) => {
-        const { id, name, capacity, price, from, to, description } = state;
-        this.setState({ id, name, capacity, price, from, to, description, isOpen: false });
+        const { id, name, capacity, price, from, to, details } = state;
+        this.setState({ id, name, capacity, price, from, to, details, isOpen: false });
         console.log('updateDisplay: ', state);
     }
 
@@ -113,7 +113,7 @@ class Package extends Component {
     view = (id) => {
         // const { id } = this.state;
         this.props.viewPack(id);
-
+    }
     async componentDidMount() {
         const pack = new PackageClass();
         let images = await pack.getImages(this.state.id);
