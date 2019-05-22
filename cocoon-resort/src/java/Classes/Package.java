@@ -40,7 +40,7 @@ public class Package {
                     + "from packages_t, resorts_t "
                     + "where packages_t.package_id not in"
                     + "(select packages_t.package_id from packages_t where ((packages_t.package_from > ?) OR (packages_t.package_to < ?))) "
-                    + "and packages_t.resort_id = resorts_t.resort_id");   
+                    + "and packages_t.resort_id = resorts_t.resort_id");
 
             prepStmt.setString(1, end);
             prepStmt.setString(2, start);
@@ -313,5 +313,81 @@ public class Package {
                 System.out.print("Error while closing con" + ex);
             }
         }
+    }
+
+    public JsonArray readOne(int id) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+
+            prepStmt = con.prepareStatement("select packages_t.*, resorts_t.resort_name, resorts_t.resort_location from packages_t, resorts_t where packages_t.package_id = ? and packages_t.resort_id = resorts_t.resort_id");
+            prepStmt.setInt(1, id);
+
+            result = prepStmt.executeQuery();
+
+            JsonArrayBuilder builder = Json.createArrayBuilder();
+
+            while (result.next()) {
+                builder.add(Json.createObjectBuilder()
+                        .add("id", String.valueOf(result.getInt("package_id")))
+                        .add("name", result.getString("package_name"))
+                        .add("resortId", result.getString("resort_id"))
+                        .add("resortName", result.getString("resort_name"))
+                        .add("details", result.getString("package_detail"))
+                        .add("price", result.getString("package_price"))
+                        .add("location", result.getString("resort_location"))
+                        .add("from", result.getString("package_from"))
+                        .add("to", result.getString("package_to"))
+                        .add("image", result.getString("package_image"))
+                        .add("guests", result.getString("package_guest"))
+                        .add("capacity", result.getString("package_capacity"))
+                        .add("isReserved", result.getBoolean("package_isReserved")));
+            }
+
+            JsonArray resultJson = builder.build();
+            if (resultJson.isEmpty()) {
+                return null;
+            } else {
+                System.out.print(resultJson);
+                return resultJson;
+            }
+        } catch (Exception ex) {
+            System.out.print(ex);
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                System.out.print(ex);
+            }
+        }
+        return null;
+    }
+
+    public boolean updateGuest(String type, int packId, int guests) { //type is either decrement or increment
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+
+            if (type.equals("increment")) {
+                prepStmt = con.prepareStatement("update packages_t set package_guest = (package_guest + ?) where package_id = ?");
+            } else if (type.equals("decrement")) {
+                prepStmt = con.prepareStatement("update packages_t set package_guest = (package_guest - ?) where package_id = ?");
+            }
+            prepStmt.setInt(1, guests);
+            prepStmt.setInt(2, packId);
+
+            prepStmt.executeUpdate();
+            return true;
+        } catch (Exception ex) {
+            System.out.print(ex);
+            return false;
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                System.out.print("Error while closing con" + ex);
+            }
+        }
+//        update packages_t set package_guest = ((select package_guest from packages_t where package_id = 3) + 2) where package_id = 3
     }
 }

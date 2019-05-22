@@ -57,6 +57,8 @@ class Package {
     async filterByDate(from, to) {
         from = from || '1970-01-01';
         to = to || '2050-01-01';
+        console.log(from)
+        console.log(to)
         try {
             const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=filterByDate&start=${from}&end=${to}`);
 
@@ -97,6 +99,21 @@ class Package {
             });
         } catch (err) {
             throw err;
+        }
+    }
+  
+    async readOne(id) {
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=readOne&id=${id}`);
+
+            if (response.ok) {
+                const result = await response.json();
+                return result;
+            } else {
+                return 404;
+            }
+        } catch (e) {
+            throw e;
         }
     }
 }

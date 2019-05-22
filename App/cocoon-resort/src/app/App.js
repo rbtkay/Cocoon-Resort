@@ -14,6 +14,9 @@ import NewResort from '../views/resort/newResort';
 import NewPackage from '../views/resort/newPackage';
 import Resort from '../views/resort';
 import ViewResort from '../views/viewResort';
+
+import viewPackage from '../views/viewPackage';
+import viewReservation from '../views/customer/viewReservation';
 import ForgotPassword from '../views/forgotPassword';
 
 class App extends Component {
@@ -27,11 +30,15 @@ class App extends Component {
         return (
             <Router>
         <div>
+
           <Route path={"/resort/newResort"} exact component={NewResort} />
           <Route path={"/resort/home"} exact component={Home} />
           <Route path={"/resort/newPackage"} exact component={NewPackage} />
           <Route path={"/viewResort"} exact component={ViewResort} />
+          <Route path={"/customer/viewReservation"} exact component={viewReservation} />
+          <Route path={"/viewPackage"} exact component={viewPackage} />
           <Route path={"/resort"} exact component={Resort} />
+
           <Route path={"/user"} component={User} />
           <Route path={"/customer/signUp"} component={SignUp} />
           <Route path={"/welcome"} component={Welcome} />
