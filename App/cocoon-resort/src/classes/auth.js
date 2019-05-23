@@ -7,6 +7,15 @@ class Auth {
             const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=create&name=${name}&email=${email}&password=${password}&phone=${phone}`);
 
             if (response.status === 201) {
+                const result = await response.json();
+
+                const jwt = result[0].jwt;
+                const email = result[0].email;
+                const name = result[0].name;
+                localStorage.setItem("auth", jwt);
+                localStorage.setItem("email", email);
+                localStorage.setItem("name", name);
+
                 return true;
             } else {
                 return false;

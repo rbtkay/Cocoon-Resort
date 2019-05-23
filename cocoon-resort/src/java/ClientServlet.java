@@ -61,7 +61,8 @@ public class ClientServlet extends HttpServlet {
 
                 if (client.create(name, password, phone, email)) {
                     response.setStatus(201);
-                    out.print("Client Successfully Created");
+                    JsonArray result = client.login(email, password);
+                    out.print(result);
                 } else {
                     response.setStatus(401);
                     out.print("Connection Error");

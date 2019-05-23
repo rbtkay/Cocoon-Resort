@@ -53,7 +53,7 @@ class NavigationBar extends Component {
                 </MenuItem>
 
                 <MenuItem>
-                    <BtnComp isAuth={this.state.isAuth} newResort={this.props.newResort} viewReservation={this.viewReservation} />
+                    <BtnComp isAuth={this.state.isAuth} newResort={this.newResort} viewReservation={this.viewReservation} />
                 </MenuItem>
 
                 <Menu.Menu position='right'>
@@ -65,11 +65,16 @@ class NavigationBar extends Component {
 
     async componentDidMount() {
         console.log(this.props.isLoginNeeded);
-        let name = cookie.getCookie('name');
+        let name = localStorage.getItem('name');
         console.log(this.state)
         if (name) {
             this.setState({ name });
         }
+    }
+
+    newResort = () => {
+        // this.props.history.push('/resort/newResort')
+        window.location = '/resort/newResort';
     }
 
     renderMenu = () => {
@@ -102,7 +107,7 @@ class NavigationBar extends Component {
                     </MenuItem>
 
                     <MenuItem>
-                        <Icon name='signup' /><a href='/signup'>Sign Up</a>
+                        <Icon name='signup' /><a href='/customer/signup'>Sign Up</a>
                     </MenuItem>
                 </Menu.Menu>
             );
@@ -124,9 +129,12 @@ class NavigationBar extends Component {
     }
 
     handleLogin = (email, name, jwt) => {
-        cookie.setCookie('email', email, 100);
-        cookie.setCookie('name', name, 100);
+        // cookie.setCookie('email', email, 100);
+        // cookie.setCookie('name', name, 100);
+
         localStorage.setItem("auth", jwt);
+        localStorage.setItem("email", email);
+        localStorage.setItem("name", name);
 
         this.loginClose();
         this.setState({ name, isAuth: true });

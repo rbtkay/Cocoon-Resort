@@ -191,10 +191,6 @@ class Welcome extends Component {
         this.setState({ locationOptions: locations });
     }
 
-    newResort = () => {
-        this.props.history.push('/resort/newResort')
-    }
-
     handleChange = (event, { name, value }) => {
         if (this.state.hasOwnProperty(name)) {
             this.setState({
