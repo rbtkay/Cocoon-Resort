@@ -67,7 +67,7 @@ class Login extends Component {
             const result = await login.authUser(email, password);
 
             if (result !== 404) {
-                this.props.handleLogin(result[0].email, result[0].name, result[0].jwt);
+                this.props.handleLogin(result[0].id, result[0].email, result[0].name, result[0].jwt);
             } else {
                 this.setState({ errorMessage: 'Invalid Username/Password' });
             }
