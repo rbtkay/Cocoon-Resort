@@ -128,10 +128,11 @@ class NavigationBar extends Component {
         }
     }
 
-    handleLogin = (email, name, jwt) => {
+    handleLogin = (id, email, name, jwt) => {
         localStorage.setItem("auth", jwt);
         localStorage.setItem("email", email);
         localStorage.setItem("name", name);
+        localStorage.setItem("id", id);
 
         this.loginClose();
         this.setState({ name, isAuth: true });
