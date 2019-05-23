@@ -81,6 +81,14 @@ public class Email {
                     returnString += "<h3>Your reset code is: " + customer + "</h3>";
                     break;
                 }
+                case "verify": {
+                    message.setSubject("Welcome to Cocoon Resorts!");
+                    toAddress = customerEmail;
+                    returnString = "<h2>Thank You for Joining Us!</h2> <br />";
+                    returnString += "In order to get on your reservation sprees you need to first verify it's actually you ;)<br />";
+                    returnString += "<a href=...>CLICK ME!</a>";
+                    break;
+                }
                 default:
                     break;
             }
