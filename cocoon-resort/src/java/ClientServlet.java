@@ -104,6 +104,17 @@ public class ClientServlet extends HttpServlet {
                 }
                 break;
             }
+            case "fetchOne": {
+                int id = Integer.parseInt(request.getParameter("id"));
+                JsonArray clientObj = client.fetchOne(id);
+                if (clientObj.isEmpty()) {
+                    response.setStatus(404);
+                } else {
+                    response.setStatus(200);
+                    out.print(clientObj);
+                }
+                break;
+            }
             default: {
                 break;
             }

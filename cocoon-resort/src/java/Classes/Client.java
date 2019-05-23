@@ -193,4 +193,38 @@ public class Client {
         }
         return false;
     }
+
+    public JsonArray fetchOne(int id) {
+        JsonArray resultJson = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+
+            prepStmt = con.prepareStatement("select * from clients_t where client_id = ?");
+            prepStmt.setInt(1, id);
+
+            result = prepStmt.executeQuery();
+
+            JsonArrayBuilder builder = Json.createArrayBuilder();
+
+            while (result.next()) {
+                String password = result.getString("client_password");
+                String phone = result.getString("client_phone");
+
+                builder.add(Json.createObjectBuilder()
+                        .add("password", password)
+                        .add("phone", phone));
+            }
+
+            con.close();
+
+            resultJson = builder.build();
+            if (resultJson.isEmpty()) {
+                return null;
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return resultJson;
+    }
 }

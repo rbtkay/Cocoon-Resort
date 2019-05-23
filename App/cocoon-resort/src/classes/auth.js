@@ -57,6 +57,21 @@ class Auth {
         }
     }
 
+    async fetchOne(id) {
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=fetchOne&id=${id}`);
+
+            if (response.ok) {
+                const res = await response.json();
+                return res;
+            } else {
+                return 404;
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
     async logoutUser() {
         try {
             const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=logout`);
