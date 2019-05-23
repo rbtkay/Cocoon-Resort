@@ -67,9 +67,17 @@ public class Resort {
 
 //            if (result.first()) {
             while (result.next()) {
-                System.out.println("result.next " + result.getString("resort_name"));
+                int id = result.getInt("resort_id");
+                String resortName = result.getString("resort_name");
+
+                JWT jwtClass = new JWT();
+                String jwt = jwtClass.createJWT(id, resortName, "resort");
+
+//                System.out.println("result.next " + result.getString("resort_name"));
                 builder.add(Json.createObjectBuilder()
+                        .add("id", id)
                         .add("name", result.getString("resort_name"))
+                        .add("jwt", jwt)
                 );
             }
             JsonArray resultJson = builder.build();

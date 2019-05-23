@@ -21,7 +21,18 @@ class Resort {
         try {
             const response = await fetch(`http://localhost:8080/cocoon-resort/ResortServlet?action=create&name=${name}&password=${password}&location=${location}&category=${category}`);
 
-            if (response.ok) {
+            if (response.status === 201) {
+                const result = await response.json();
+
+                console.log('result');
+                console.log(result);
+
+                const jwt = result[0].jwt;
+                const id = result[0].id;
+                const name = result[0].name;
+                localStorage.setItem("auth", jwt);
+                localStorage.setItem("id", id);
+                localStorage.setItem("resortName", name);
                 return true;
             }
         } catch (e) {

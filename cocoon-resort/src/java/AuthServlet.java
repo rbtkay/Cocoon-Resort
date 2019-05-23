@@ -60,7 +60,7 @@ public class AuthServlet extends HttpServlet {
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
                 Client client = new Client();
-                
+
                 if (client.resetPassword(email, password)) {
                     response.setStatus(200);
                 } else {
@@ -69,11 +69,11 @@ public class AuthServlet extends HttpServlet {
                 break;
             }
             case "verifyClient": {
-                int id = Integer.parseInt(request.getParameter("id"));
-                
+                String id = request.getParameter("id");
+
                 Client client = new Client();
                 if (client.verifyClient(id)) {
-                    response.setStatus(200);
+                    out.print("<p>Your email is verified</p>");
                 } else {
                     response.setStatus(404);
                 }
