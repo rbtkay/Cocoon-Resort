@@ -8,6 +8,7 @@ import Test from '../views/home';
 import User from "../views/user";
 import Home from "../views/resort/home";
 import SignUp from '../views/customer/signUp';
+import Settings from '../views/customer/settings';
 import Welcome from '../views/welcome';
 import Explore from '../views/explore';
 import NewResort from '../views/resort/newResort';
@@ -41,6 +42,7 @@ class App extends Component {
 
           <Route path={"/user"} component={User} />
           <Route path={"/customer/signUp"} component={SignUp} />
+          <Route path={"/customer/settings"} component={Settings} />
           <Route path={"/welcome"} component={Welcome} />
           <Route path={"/explore"} component={Explore} />
           <Route path={"/forgotPassword"} component={ForgotPassword} />
