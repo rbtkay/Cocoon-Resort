@@ -48,10 +48,10 @@ public class Email {
 
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(sender, password);
-                    }
-                });
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(sender, password);
+            }
+        });
 
         //Compose the message
         try {
@@ -82,11 +82,13 @@ public class Email {
                     break;
                 }
                 case "verify": {
+                    JWT jwtClass = new JWT();
+                    String jwt = jwtClass.createJWT(0, customerEmail, "client");
                     message.setSubject("Welcome to Cocoon Resorts!");
                     toAddress = customerEmail;
                     returnString = "<h2>Thank You for Joining Us!</h2> <br />";
                     returnString += "In order to get on your reservation sprees you need to first verify it's actually you ;)<br />";
-                    returnString += "<a href=...>CLICK ME!</a>";
+                    returnString += "<a href=http://localhost:8080/cocoon-resort/AuthServlet?action=verifyClient&token=" + jwt + "+>CLICK ME!</a>";
                     break;
                 }
                 default:

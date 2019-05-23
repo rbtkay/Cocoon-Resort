@@ -19,6 +19,8 @@ public class JWT {
 
     //Sample method to construct a JWT
     public String createJWT(int id, String email, String type) {
+        
+        if(id == -1)
 
         //The JWT signature algorithm we will be using to sign the token
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
