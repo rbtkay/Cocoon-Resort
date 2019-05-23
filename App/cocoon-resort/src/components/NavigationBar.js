@@ -84,7 +84,7 @@ class NavigationBar extends Component {
                     <Dropdown text={`Hello ${this.state.name}`} className='item'>
                         <Dropdown.Menu>
                             <Dropdown.Item>
-                                <Icon name='settings' /><a href='/settings' className='black'>Settings</a>
+                                <Icon name='settings' /><a href='/customer/settings' className='black'>Settings</a>
                             </Dropdown.Item>
                             <Dropdown.Item>
                                 <Icon name='map signs' /><a href='/reservations'>Reservations</a>
@@ -140,15 +140,16 @@ class NavigationBar extends Component {
         this.setState({ name, isAuth: true });
     }
 
-    handleResortLogin = (resortName) => {
-        cookie.setCookie('resortName', resortName, 100);
-        localStorage.setItem('auth', jwt);
-        this.resortLoginClose();
-        this.setState({ name: resortName, isAuth: true });
-    }
+    // handleResortLogin = (resortName) => {
+    //     cookie.setCookie('resortName', resortName, 100);
+    //     localStorage.setItem('auth', jwt);
+    //     this.resortLoginClose();
+    //     this.setState({ name: resortName, isAuth: true });
+    // }
 
     viewReservation = () => {
-        window.location.href = `http://localhost:3000/customer/viewReservation?id=6`;
+        let id = localStorage.getItem('id');
+        window.location.href = `http://localhost:3000/customer/viewReservation?id=${id}`;
     }
 
     loginClose = () => {
