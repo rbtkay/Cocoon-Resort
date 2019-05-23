@@ -102,7 +102,7 @@ class NavigationBar extends Component {
 
                     <MenuItem>
                         <Login isLoginOpen={this.state.isLoginOpen} loginClose={this.loginClose} handleLogin={this.handleLogin} swapModals={this.swapModals} />
-                        <ResortLogin isResortLoginOpen={this.state.isResortLoginOpen} resortLoginClose={this.resortLoginClose} handleLogin={this.handleResortLogin} swapModals={this.swapModals}/>
+                        <ResortLogin isResortLoginOpen={this.state.isResortLoginOpen} resortLoginClose={this.resortLoginClose} handleLogin={this.handleResortLogin} swapModals={this.swapModals} />
                         <Button icon='sign-in' secondary inverted onClick={this.onClick} content='Log In'></Button>
                     </MenuItem>
 
@@ -129,9 +129,6 @@ class NavigationBar extends Component {
     }
 
     handleLogin = (email, name, jwt) => {
-        // cookie.setCookie('email', email, 100);
-        // cookie.setCookie('name', name, 100);
-
         localStorage.setItem("auth", jwt);
         localStorage.setItem("email", email);
         localStorage.setItem("name", name);
@@ -140,8 +137,8 @@ class NavigationBar extends Component {
         this.setState({ name, isAuth: true });
     }
 
-    handleResortLogin = (resortName) => {
-        cookie.setCookie('resortName', resortName, 100);
+    handleResortLogin = (resortName, jwt) => {
+        localStorage.setItem("resortName", resortName);
         localStorage.setItem('auth', jwt);
         this.resortLoginClose();
         this.setState({ name: resortName, isAuth: true });

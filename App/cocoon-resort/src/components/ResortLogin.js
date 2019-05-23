@@ -16,7 +16,7 @@ class ResortLogin extends Component {
                 size='small'
                 dimmer='blurring'
                 closeOnDimmerClick={false}
-                >
+            >
                 <Modal.Header>
                     <Icon name='pin' /> Resort Sign In
                 </Modal.Header>
@@ -32,7 +32,7 @@ class ResortLogin extends Component {
                             placeholder='e.g: CocoonResort'
                             name='resortName'
                             value={this.state.resortName}
-                            onChange={event => this.setState({ resortName: event.target.value})} />
+                            onChange={event => this.setState({ resortName: event.target.value })} />
 
                         <Form.Input
                             label='Password'
@@ -66,7 +66,7 @@ class ResortLogin extends Component {
             const result = await login.authResort(resortName, password);
 
             if (result !== 404) {
-                this.props.handleLogin(result[0].name);
+                this.props.handleLogin(result[0].name, result[0].jwt);
             } else {
                 this.setState({ errorMessage: 'Invalid Username/Password' });
             }

@@ -53,7 +53,9 @@ public class ResortServlet extends HttpServlet {
 
                 if (resort.create(name, password, location, category)) {
                     response.setStatus(201);
-                    out.print("Resort Successfully Created");
+                    JsonArray result = resort.login(name, password);
+                    System.out.print(result);
+                    out.print(result);
                 } else {
                     response.setStatus(401);
                     out.print("Connection Error");
@@ -100,16 +102,16 @@ public class ResortServlet extends HttpServlet {
             }
             case "readAll": {
                 String category = request.getParameter("category");
-                
+
                 JsonArray result = resort.readAll(category);
-                
+
                 if (result == null) {
                     response.setStatus(404);
                 } else {
                     response.setStatus(200);
                 }
                 out.print(result);
-                
+
                 break;
             }
         }
