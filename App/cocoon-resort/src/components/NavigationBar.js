@@ -4,13 +4,30 @@ import Login from '../components/Login';
 import ResortLogin from '../components/ResortLogin';
 import { Redirect } from 'react-router';
 
+import JWT from 'jsonwebtoken';
+
 import loginClass from '../classes/auth';
 const cookie = require('../cookie');
 
 
 const BtnComp = (props) => {
-    if (props.isAuth === true) {
-        return <Button onClick={props.viewReservation}>Check Your Reservation</Button>
+    console.log(props.isAuth)
+
+    if (props.isAuth) {
+        const token = props.isAuth;
+
+        // const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        const decodedToken = JWT.decode(token, "secret");
+        console.log(decodedToken);
+
+        if (decodedToken.iss === "client") {
+            return <Button onClick={props.viewReservation}>Check Your Reservation</Button>
+        } else if (decodedToken.iss === "resort") {
+            return <p />;
+        } else {
+            return <Button color='brown' onClick={props.newResort}>Show us Your Resort</Button>
+
+        }
     } else {
         return <Button color='brown' onClick={props.newResort}>Show us Your Resort</Button>
     }
@@ -24,7 +41,7 @@ class NavigationBar extends Component {
 
         console.log(localStorage.getItem('auth'));
         this.state = {
-            isAuth: localStorage.getItem('auth') ? true : false,
+            isAuth: localStorage.getItem('auth') || false,
             name: '',
             search: '',
             isLoginOpen: false
@@ -78,24 +95,38 @@ class NavigationBar extends Component {
     }
 
     renderMenu = () => {
-        if (this.state.name) {
-            return (
-                <Menu.Menu position='right'>
-                    <Dropdown text={`Hello ${this.state.name}`} className='item'>
-                        <Dropdown.Menu>
-                            <Dropdown.Item>
-                                <Icon name='settings' /><a href='/customer/settings' className='black'>Settings</a>
+        const token = this.state.isAuth;
+
+        if (token !== false) {
+            const decodedToken = JWT.decode(token, "secret");
+
+
+
+            if (decodedToken.iss === "client") {
+                return (
+                    <Menu.Menu position='right'>
+                        <Dropdown text={`Hello ${this.state.name}`} className='item'>
+                            <Dropdown.Menu>
+                                <Dropdown.Item>
+                                    <Icon name='settings' /><a href='/customer/settings' className='black'>Settings</a>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                    <Icon name='map signs' /><a href='/reservations'>Reservations</a>
+                                </Dropdown.Item>
+                                <Dropdown.Item onClick={this.logout}>
+                                    <Icon name='log out' />Logout
                             </Dropdown.Item>
-                            <Dropdown.Item>
-                                <Icon name='map signs' /><a href='/reservations'>Reservations</a>
-                            </Dropdown.Item>
-                            <Dropdown.Item onClick={this.logout}>
-                                <Icon name='log out' />Logout
-                            </Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Menu.Menu>
-            )
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Menu.Menu>
+                )
+            } else if (decodedToken.iss === "resort") {
+                return (
+                    <Menu.Item>
+                        <Button color='red' onClick={this.logout}>Logout</Button>
+                    </Menu.Item>
+                )
+            }
         } else {
             return (
                 <Menu.Menu position='right'>
@@ -134,7 +165,7 @@ class NavigationBar extends Component {
         localStorage.setItem("name", name);
 
         this.loginClose();
-        this.setState({ name, isAuth: true });
+        this.setState({ name, isAuth: jwt });
     }
 
 
@@ -142,7 +173,7 @@ class NavigationBar extends Component {
         localStorage.setItem("resortName", resortName);
         localStorage.setItem('auth', jwt);
         this.resortLoginClose();
-        this.setState({ name: resortName, isAuth: true });
+        this.setState({ name: resortName, isAuth: jwt });
     }
 
 
