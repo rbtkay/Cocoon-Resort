@@ -25,7 +25,7 @@ public class Client {
     ResultSet result;
     PrintWriter out;
 
-    public boolean create(String name, String password, int phone, String email) {
+    public boolean create(String name, String password, String phone, String email) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
@@ -33,7 +33,7 @@ public class Client {
 
             prepStmt.setString(1, name);
             prepStmt.setString(2, password);
-            prepStmt.setInt(3, phone);
+            prepStmt.setString(3, phone);
             prepStmt.setString(4, email);
 
             prepStmt.executeUpdate();

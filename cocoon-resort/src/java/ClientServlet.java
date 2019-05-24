@@ -56,7 +56,7 @@ public class ClientServlet extends HttpServlet {
             case "create": {
                 String name = request.getParameter("name");
                 String password = request.getParameter("password");
-                int phone = Integer.parseInt(request.getParameter("phone"));
+                String phone = request.getParameter("phone");
                 String email = request.getParameter("email");
 
                 if (client.create(name, password, phone, email)) {

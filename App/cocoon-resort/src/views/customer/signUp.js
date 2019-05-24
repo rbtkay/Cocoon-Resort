@@ -34,7 +34,7 @@ class SignUp extends Component {
                                     label='First Name'
                                     placeholder='John'
                                     value={this.state.firstName}
-                                    onChange={event => this.setState({ firstName: event.target.value, isError: false, formError: '', isFirstName: false, isLastName: false, isEmail: false, isPassword: false, isConfirm: false })}
+                                    onChange={event => this.setState({ firstName: event.target.value, isError: false, formError: '', isFirstName: false })}
                                     error={this.state.isFirstName}
                                 />
                             </Form.Field>
@@ -43,7 +43,7 @@ class SignUp extends Component {
                                     label='Last Name'
                                     placeholder='Doe'
                                     value={this.state.lastName}
-                                    onChange={event => this.setState({ lastName: event.target.value, isError: false, formError: '', isFirstName: false, isLastName: false, isEmail: false, isPassword: false, isConfirm: false })}
+                                    onChange={event => this.setState({ lastName: event.target.value, isError: false, formError: '', isLastName: false })}
                                     error={this.state.isLastName}
                                 />
                             </Form.Field>
@@ -53,7 +53,7 @@ class SignUp extends Component {
                                 label='Email Address'
                                 placeholder='something@example.com'
                                 value={this.state.email}
-                                onChange={event => this.setState({ email: event.target.value, isError: false, formError: '', isFirstName: false, isLastName: false, isEmail: false, isPassword: false, isConfirm: false })}
+                                onChange={event => this.setState({ email: event.target.value, isError: false, formError: '', isEmail: false })}
                                 error={this.state.isEmail}
                             />
                         </Form.Field>
@@ -63,7 +63,7 @@ class SignUp extends Component {
                                 placeholder='Password'
                                 type='password'
                                 value={this.state.password}
-                                onChange={event => this.setState({ password: event.target.value, isError: false, formError: '', isFirstName: false, isLastName: false, isEmail: false, isPassword: false, isConfirm: false })}
+                                onChange={event => this.setState({ password: event.target.value, isError: false, formError: '', isPassword: false })}
                                 error={this.state.isPassword}
                             />
                         </Form.Field>
@@ -73,7 +73,7 @@ class SignUp extends Component {
                                 placeholder='Confirm Password'
                                 type='password'
                                 value={this.state.confirmPassword}
-                                onChange={event => this.setState({ confirmPassword: event.target.value, isError: false, formError: '', isFirstName: false, isLastName: false, isEmail: false, isPassword: false, isConfirm: false })}
+                                onChange={event => this.setState({ confirmPassword: event.target.value, isError: false, formError: '', isConfirm: false })}
                                 error={this.state.isConfirm}
                             />
                         </Form.Field>
@@ -81,8 +81,11 @@ class SignUp extends Component {
                             <Form.Input
                                 label='Phone Number'
                                 placeholder='Phone Number'
+                                type='text'
+                                id='phone'
                                 value={this.state.phone}
-                                onChange={event => this.setState({ phone: event.target.value, isError: false, formError: '', isFirstName: false, isLastName: false, isEmail: false, isPassword: false, isConfirm: false })}
+                                onKeyDown={event => this.addPhone(event)}
+
                             />
                         </Form.Field>
                         <Message success header='Form Completed' content="We've sent you a confirmation email" />
@@ -100,11 +103,8 @@ class SignUp extends Component {
         )
     }
 
-
     handleForm = async () => {
-
         this.setState({ isLoading: true });
-
         const emailRegEx = new RegExp(/^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6}$/);
         const { firstName, lastName, email, password, confirmPassword, phone } = this.state;
         //TODO: is loading for button
@@ -143,6 +143,26 @@ class SignUp extends Component {
                 this.setState({ isError: true, formError: "Connection Error", isLoading: false }); //TODO: check what kind of error
             }
         }
+    }
+
+    addPhone = (event) => {
+        const { phone } = this.state;
+        if (this.handlePhone(event)) {
+            this.setState({ phone: phone + this.handlePhone(event) })
+        }
+    }
+
+    handlePhone(e) {
+        console.log(e.key);
+        let allowed = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-'];
+        if (allowed.includes(e.key)) {
+            console.log('includes');
+            return e.key;
+        } else {
+            console.log('doesnt include');
+            return false;
+        }
+
     }
 
     emptyFieldVerification() {

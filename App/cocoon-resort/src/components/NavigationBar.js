@@ -175,6 +175,7 @@ class NavigationBar extends Component {
         localStorage.setItem('auth', jwt);
         this.resortLoginClose();
         this.setState({ name: resortName, isAuth: jwt });
+        window.location = `/resort/home`;
     }
 
 
