@@ -26,9 +26,9 @@ class Package {
         }
     }
 
-    async filterByResort(id) {
+    async filterByResort(name) {
         try {
-            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=readByResortID&id=${id}`)
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=readByResortID&name=${name}`)
             if (response.ok) {
                 const result = await response.json();
                 return result;
@@ -101,7 +101,7 @@ class Package {
             throw err;
         }
     }
-  
+
     async readOne(id) {
         try {
             const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=readOne&id=${id}`);

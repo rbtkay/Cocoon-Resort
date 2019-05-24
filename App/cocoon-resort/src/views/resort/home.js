@@ -62,7 +62,8 @@ class Home extends Component {
         const reservation = new Reservation();
         const pack = new PackageClass();
         // const reservations = await reservation.readAll();
-        const packages = await pack.filterByResort(1);
+        const resortName = localStorage.getItem('resortName');
+        const packages = await pack.filterByResort(resortName);
 
         packages.map((pack) => {
             console.log('le pack', pack);
