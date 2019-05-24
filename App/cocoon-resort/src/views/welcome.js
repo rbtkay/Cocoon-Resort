@@ -13,9 +13,21 @@ class Welcome extends Component {
 
     constructor() {
         super();
-        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-        const date = new Date().toLocaleDateString('en-US', options);
-        const d = date.replace(/\//g, '-');
+        // const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        // let date = new Date().toLocaleDateString('en-GB', options);
+        // let date = new Date().toLocaleDateString('en-GB');
+        let date = new Date();
+        let month = '' + (date.getMonth() + 1);
+        let day = '' + date.getDate();
+        let year = date.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+        const d = [year, month, day].join('-');
+        // const d = date.replace(/\//g, '-');
+        // console.log('d', d);
 
         this.state = {
             locationOptions: [{ text: 'no location available yet', value: null }],
