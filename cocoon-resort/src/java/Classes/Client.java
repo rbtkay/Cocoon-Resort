@@ -38,6 +38,9 @@ public class Client {
 
             prepStmt.executeUpdate();
 
+            Email confirmEmail = new Email();
+            confirmEmail.send("verify", email, 0, 0, 0);
+
             return true;
         } catch (Exception e) {
             return false;
@@ -177,13 +180,19 @@ public class Client {
         return false;
     }
 
-    public boolean verifyClient(int id) {
+    public boolean verifyClient(String token) {
+        JWT jwtClass = new JWT();
+
+        String email = jwtClass.decodeURL(token);
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
 
-            prepStmt = con.prepareStatement("update clients_t set client_isVerified = 1 where client_id = ?");
-            prepStmt.setInt(1, id);
+            System.out.print("verify CLient");
+
+            prepStmt = con.prepareStatement("update clients_t set client_isVerified = 1 where client_email = ?");
+            prepStmt.setString(1, email);
 
             prepStmt.executeUpdate();
             con.close();
@@ -226,5 +235,45 @@ public class Client {
             System.out.println(ex);
         }
         return resultJson;
+    }
+
+    public String[] getId(String email) {
+        JsonArray resultJson = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+
+            prepStmt = con.prepareStatement("select client_id, client_name from clients_t where client_email = ?");
+            prepStmt.setString(1, email);
+
+            result = prepStmt.executeQuery();
+
+            JsonArrayBuilder builder = Json.createArrayBuilder();
+            String id = "";
+            String name = "";
+            while (result.next()) {
+                id = result.getString("client_id");
+                name = result.getString("client_name");
+//                builder.add(Json.createObjectBuilder()
+//                        .add("password", password)
+//                        .add("phone", phone));
+            }
+
+            String[] info = new String[2];
+            info[0] = id;
+            info[1] = name;
+            con.close();
+
+            return info;
+
+//            resultJson = builder.build();
+//            if (resultJson.isEmpty()) {
+//                return null;
+//            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return null;
+//        return resultJson;
     }
 }

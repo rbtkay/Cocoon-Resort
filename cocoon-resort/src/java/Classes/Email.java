@@ -82,13 +82,17 @@ public class Email {
                     break;
                 }
                 case "verify": {
+                    Client client = new Client();
+                    String[] info = client.getId(customerEmail);
                     JWT jwtClass = new JWT();
-                    String jwt = jwtClass.createJWT(0, customerEmail, "client");
+                    String jwt = jwtClass.createJWT(Integer.parseInt(info[0]), info[1], "client");
                     message.setSubject("Welcome to Cocoon Resorts!");
                     toAddress = customerEmail;
                     returnString = "<h2>Thank You for Joining Us!</h2> <br />";
                     returnString += "In order to get on your reservation sprees you need to first verify it's actually you ;)<br />";
-                    returnString += "<a href=http://localhost:8080/cocoon-resort/AuthServlet?action=verifyClient&token=" + jwt + "+>CLICK ME!</a>";
+                    returnString += "<a href='http://localhost:3000/verify?token=" + jwt + "&id=" + Integer.parseInt(info[0]) + "&name=" + info[1]
+                            + "&email=" + customerEmail + "'> CLICK ME!</a>";
+
                     break;
                 }
                 default:
