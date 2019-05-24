@@ -71,18 +71,16 @@ public class Client {
 
             JsonArrayBuilder builder = Json.createArrayBuilder();
 
-            JWT jwtClass = new JWT();
-
-            String jwt = "";
-            System.out.print(jwt);
-
+//            JWT jwtClass = new JWT();
+//            String jwt = "";
+//            System.out.print(jwt);
             while (result.next()) {
                 int id = result.getInt("client_id");
                 String emailResult = result.getString("client_email");
-                jwt = jwtClass.createJWT(id, email, "client");
+//                jwt = jwtClass.createJWT(id, email, "client");
 
                 builder.add(Json.createObjectBuilder()
-                        .add("jwt", jwt)
+                        //                        .add("jwt", jwt)
                         .add("id", id)
                         .add("email", emailResult)
                         .add("name", result.getString("client_name")));
@@ -112,13 +110,13 @@ public class Client {
         }
     }
 
-    public boolean delete(String email) {
+    public boolean delete(int id) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
-            prepStmt = con.prepareStatement("delete from clients_t where client_email = ?");
+            prepStmt = con.prepareStatement("delete from clients_t where client_id = ?");
 
-            prepStmt.setString(1, email);
+            prepStmt.setInt(1, id);
             prepStmt.executeUpdate();
             return true;
         } catch (Exception e) {
@@ -224,11 +222,10 @@ public class Client {
                         .add("password", password)
                         .add("phone", phone));
             }
-
             con.close();
-
             resultJson = builder.build();
             if (resultJson.isEmpty()) {
+                System.out.println("result json is empty");
                 return null;
             }
         } catch (Exception ex) {
@@ -275,5 +272,24 @@ public class Client {
         }
         return null;
 //        return resultJson;
+    }
+  
+    public boolean update(int id, String password, String phone) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+            
+            prepStmt = con.prepareStatement("update clients_t set client_password = ?, client_phone = ? where client_id = ?");
+            prepStmt.setString(1, password);
+            prepStmt.setString(2, phone);
+            prepStmt.setInt(3, id);
+            
+            prepStmt.executeUpdate();
+            con.close();
+            return true;
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return false;
     }
 }

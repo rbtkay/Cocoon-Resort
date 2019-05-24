@@ -25,6 +25,20 @@ class Auth {
         }
     }
 
+    async updateUser(id, password, phone) {
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=update&id=${id}&password=${password}&phone=${phone}`);
+
+            if (response.ok) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
     async authUser(email, password) {
         try {
             const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=login&email=${email}&password=${password}`);
@@ -97,6 +111,20 @@ class Auth {
             }
         } catch (e) {
             throw e;
+        }
+    }
+      
+    async deleteUser(id) {
+        try{
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=delete&id=${id}`);
+
+            if (response.ok) {
+              return true;
+            } else{
+                return false:
+            }
+        } catch (err) {
+            throw err;
         }
     }
 }
