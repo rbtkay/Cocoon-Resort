@@ -96,8 +96,8 @@ public class ClientServlet extends HttpServlet {
                 break;
             }
             case "delete": {
-                String email = request.getParameter("email");
-                if (client.delete(email)) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                if (client.delete(id)) {
                     out.print("Successfully Deleted");
                 } else {
                     out.print("Failed to Delete Account");
@@ -114,6 +114,17 @@ public class ClientServlet extends HttpServlet {
                     out.print(clientObj);
                 }
                 break;
+            }
+            case "update": {
+                int id = Integer.parseInt(request.getParameter("id"));
+                String password = request.getParameter("password");
+                String phone = request.getParameter("phone");
+                
+                if (client.update(id, password, phone)) {
+                    response.setStatus(200);
+                } else {
+                    response.setStatus(404);
+                }
             }
             default: {
                 break;
