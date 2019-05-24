@@ -18,7 +18,8 @@ class SignUp extends Component {
         isLastName: false,
         isPassword: false,
         isConfirm: false,
-        isEmail: false
+        isEmail: false,
+        isLoading: false
     }
 
     render() {
@@ -87,7 +88,7 @@ class SignUp extends Component {
                         <Message success header='Form Completed' content="We've sent you a confirmation email" />
                         <Message error header='Form Error' content={this.state.formError} />
                         <Form.Field>
-                            <Form.Button color='green' floated='right'>Register</Form.Button>
+                            <Form.Button loading={this.state.isLoading} color='green' floated='right'>Register</Form.Button>
                         </Form.Field>
 
                     </Form>
@@ -101,7 +102,10 @@ class SignUp extends Component {
 
 
     handleForm = async () => {
-        const emailRegEx = new RegExp(/^([a-zA-Z0-9_]+)@([a-zA-Z0-9_]+)\.([a-zA-Z]{2,5})$/);
+
+        this.setState({ isLoading: true });
+
+        const emailRegEx = new RegExp(/^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6}$/);
         const { firstName, lastName, email, password, confirmPassword, phone } = this.state;
         //TODO: is loading for button
         console.log(email)
@@ -114,7 +118,8 @@ class SignUp extends Component {
             this.setState({
                 isError: true,
                 formError: "Invalid Email Address",
-                isEmail: true
+                isEmail: true,
+                isLoading: false
             });
         }
         if (password !== confirmPassword) {
@@ -123,7 +128,8 @@ class SignUp extends Component {
                 isError: true,
                 formError: "Password don't match",
                 isPassword: true,
-                isConfirm: true
+                isConfirm: true,
+                isLoading: false
             })
         } else {
             const auth = new Auth();
@@ -132,9 +138,9 @@ class SignUp extends Component {
             const isCreated = await auth.signUp({ firstName, lastName, email, password, phone });
 
             if (isCreated === true) {
-                this.setState({ isSuccess: true });
+                this.setState({ isSuccess: true, isLoading: false });
             } else {
-                this.setState({ isError: true, formError: "Connection Error" }); //TODO: check what kind of error
+                this.setState({ isError: true, formError: "Connection Error", isLoading: false }); //TODO: check what kind of error
             }
         }
     }

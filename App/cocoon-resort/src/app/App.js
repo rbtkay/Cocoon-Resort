@@ -19,17 +19,18 @@ import ViewResort from '../views/viewResort';
 import viewPackage from '../views/viewPackage';
 import viewReservation from '../views/customer/viewReservation';
 import ForgotPassword from '../views/forgotPassword';
+import Verify from '../views/verify';
 
 class App extends Component {
 
-    state = {
-        user: ""
-    }
+  state = {
+    user: ""
+  }
 
-    render() {
-        console.log(this.state.user);
-        return (
-            <Router>
+  render() {
+    console.log(this.state.user);
+    return (
+      <Router>
         <div>
 
           <Route path={"/resort/newResort"} exact component={NewResort} />
@@ -39,6 +40,7 @@ class App extends Component {
           <Route path={"/customer/viewReservation"} exact component={viewReservation} />
           <Route path={"/viewPackage"} exact component={viewPackage} />
           <Route path={"/resort"} exact component={Resort} />
+          <Route path={"/verify"} exact component={Verify} />
 
           <Route path={"/user"} component={User} />
           <Route path={"/customer/signUp"} component={SignUp} />
@@ -49,7 +51,7 @@ class App extends Component {
           <Route path={"/home"} component={Test} />
         </div>
       </Router>
-        );
-    }
+    );
+  }
 }
 export default App;
