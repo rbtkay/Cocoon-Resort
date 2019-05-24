@@ -69,13 +69,16 @@ public class AuthServlet extends HttpServlet {
                 break;
             }
             case "verifyClient": {
-                int id = Integer.parseInt(request.getParameter("id"));
+                String token = request.getParameter("token");
 
                 Client client = new Client();
-                if (client.verifyClient(id)) {
-                    out.print("<p>Your email is verified</p>");
+                if (client.verifyClient(token)) {
+                    response.setStatus(200);
+                    out.print("verified");
+//                    client.login(token);
                 } else {
                     response.setStatus(404);
+
                 }
                 break;
             }

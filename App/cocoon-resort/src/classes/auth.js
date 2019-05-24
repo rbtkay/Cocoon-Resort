@@ -7,14 +7,14 @@ class Auth {
             const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=create&name=${name}&email=${email}&password=${password}&phone=${phone}`);
 
             if (response.status === 201) {
-                const result = await response.json();
+                // const result = await response.json();
 
-                const jwt = result[0].jwt;
-                const email = result[0].email;
-                const name = result[0].name;
-                localStorage.setItem("auth", jwt);
-                localStorage.setItem("email", email);
-                localStorage.setItem("name", name);
+                // const jwt = result[0].jwt;
+                // const email = result[0].email;
+                // const name = result[0].name;
+                // localStorage.setItem("auth", jwt);
+                // localStorage.setItem("email", email);
+                // localStorage.setItem("name", name);
 
                 return true;
             } else {
@@ -100,14 +100,28 @@ class Auth {
         }
     }
 
+    async verifyClient(token) {
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/AuthServlet?action=verifyClient&token=${token}`); //TODO: put the right api
+
+            if (response.status === 200) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (e) {
+            throw e;
+        }
+    }
+      
     async deleteUser(id) {
         try{
             const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=delete&id=${id}`);
 
             if (response.ok) {
-                return true;
-            } else {
-                return false;
+              return true;
+            } else{
+                return false:
             }
         } catch (err) {
             throw err;

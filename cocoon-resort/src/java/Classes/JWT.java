@@ -19,8 +19,6 @@ public class JWT {
 
     //Sample method to construct a JWT
     public String createJWT(int id, String email, String type) {
-        
-
         //The JWT signature algorithm we will be using to sign the token
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
@@ -76,5 +74,27 @@ public class JWT {
         }
 
 //        return false;
+    }
+
+    public String encodeURL(String email, String password) {
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+
+        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary("secret");
+        Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
+
+        JwtBuilder builder = Jwts.builder()
+                .setSubject(email)
+                .signWith(signatureAlgorithm, signingKey);
+        return builder.compact();
+    }
+
+    public String decodeURL(String jwt) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(DatatypeConverter.parseBase64Binary("secret"))
+                .parseClaimsJws(jwt).getBody();
+
+        String email = claims.getSubject();
+
+        return email;
     }
 }
