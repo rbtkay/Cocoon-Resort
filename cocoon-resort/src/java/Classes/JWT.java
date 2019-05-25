@@ -46,29 +46,34 @@ public class JWT {
     }
 
     //Sample method to validate and read the JWT
-    public boolean parseJWT(String jwt, String id) {
+    public String[] parseJWT(String jwt) {
         System.out.print("Hello Im Jwt");
+        String[] resultJWT = new String[3];
         //This line will throw an exception if it is not a signed JWS (as expected)
         try {
             Claims claims = Jwts.parser()
                     .setSigningKey(DatatypeConverter.parseBase64Binary("secret"))
                     .parseClaimsJws(jwt).getBody();
 
-            System.out.print(id);
-            if (!id.isEmpty()) {
-                if (!id.equals(claims.getId())) {
-                    return false;
-                }
-            }
-//            System.out.println("ID: " + claims.getId());
-//            System.out.println("Subject: " + claims.getSubject());
-//            System.out.println("Issuer: " + claims.getIssuer());
-//            System.out.println("Expiration: " + claims.getExpiration());
+            System.out.print(claims);
 
-            return true;
+//            if (!id.isEmpty()) {
+//                if (!id.equals(claims.getId())) {
+//                    return false;
+//                }
+//            }
+            System.out.println("ID: " + claims.getId());
+            System.out.println("Subject: " + claims.getSubject());
+            System.out.println("Issuer: " + claims.getIssuer());
+            System.out.println("Expiration: " + claims.getExpiration());
+            resultJWT[0] = claims.getId();
+            resultJWT[1] = claims.getSubject();
+            resultJWT[2] = claims.getIssuer();
+
+            return resultJWT;
         } catch (Exception e) {
             System.out.print(e);
-            return false;
+            return null;
         }
 
     }

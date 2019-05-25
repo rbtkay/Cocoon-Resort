@@ -115,7 +115,8 @@ public class PackageServlet extends HttpServlet {
             }
             case "readByResortId": {
                 int id = Integer.parseInt(request.getParameter("id"));
-
+                String token = request.getParameter("token");
+                
                 JsonArray result;
                 result = pack.readByResortID(id);
 

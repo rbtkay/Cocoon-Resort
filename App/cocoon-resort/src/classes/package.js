@@ -28,7 +28,8 @@ class Package {
 
     async filterByResort(id) {
         try {
-            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=readByResortId&id=${id}`)
+            const token = localStorage.getItem("id");
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=readByResortId&id=${id}&token=${token}`);
             if (response.status === 200) {
                 // console.log(response);
                 const result = await response.json();

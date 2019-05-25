@@ -198,10 +198,8 @@ class viewPackage extends Component {
         console.log("this.state");
         console.log(this.state);
 
-        const clientId = 6;
-
         const { id, resortId, numPeople, guests } = this.state
-        if (reservation.create(id, clientId, resortId, numPeople)) {
+        if (reservation.create(id, resortId, numPeople)) {
             console.log("reserving");
             this.setState({ isReserved: true, guests: parseInt(numPeople) + parseInt(guests) });
         };
