@@ -58,6 +58,7 @@ class Home extends Component {
     }
 
     async componentDidMount() {
+        window.scroll(0, 0);
 
         const reservation = new Reservation();
         const pack = new PackageClass();

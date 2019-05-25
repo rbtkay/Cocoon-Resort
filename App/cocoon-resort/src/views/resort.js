@@ -64,6 +64,7 @@ class Resort extends Component {
     }
 
     async componentDidMount() {
+        window.scroll(0, 0);
         const resort = new ResortClass();
 
         const { category } = this.state;

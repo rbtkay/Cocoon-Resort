@@ -148,6 +148,7 @@ class Settings extends Component {
         const id = localStorage.getItem('id');
         const authObj = new AuthClass();
         if (authObj.deleteUser(id)) {
+            localStorage.clear()
             this.props.history.push(`/welcome`);
         } else {
             this.setState({ errorMessage: "Something went wrong..." });

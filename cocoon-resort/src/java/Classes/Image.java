@@ -24,6 +24,9 @@ public class Image {
 
     public boolean insertImage(int packId, String imageName, String imagePath) {
         try {
+            System.out.print(packId);
+            System.out.print(imageName);
+            System.out.print(imagePath);
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
 

@@ -19,16 +19,21 @@ class Package {
     }
 
     async createPackage(name, resortId, details, price, from, to, capacity, image) {
-        const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=create&name=${name}&resortId=${resortId}&details=${details}&price=${price}&from=${from}&to=${to}&capacity=${capacity}&image=${image}`);
+        try {
+            const token = localStorage.getItem('auth');
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=create&name=${name}&resortId=${resortId}&details=${details}&price=${price}&from=${from}&to=${to}&capacity=${capacity}&image=${image}&token=${token}`);
 
-        if (response.ok) {
-            return true;
+            if (response.ok) {
+                return true;
+            }
+        } catch (e) {
+            return false;
         }
     }
 
     async filterByResort(id) {
         try {
-            const token = localStorage.getItem("id");
+            const token = localStorage.getItem("auth");
             const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=readByResortId&id=${id}&token=${token}`);
             if (response.status === 200) {
                 // console.log(response);
@@ -44,7 +49,8 @@ class Package {
 
     async updatePackage(id, name, details, price, from, to, capacity) {
         try {
-            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=updatePackage&id=${id}&name=${name}&details=${details}&price=${price}&from=${from}&to=${to}&capacity=${capacity}`);
+            const token =localStorage.getItem("auth");
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=updatePackage&id=${id}&name=${name}&details=${details}&price=${price}&from=${from}&to=${to}&capacity=${capacity}&token=${token}`);
 
             if (response.ok) {
                 return true;

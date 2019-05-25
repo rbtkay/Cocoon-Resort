@@ -64,6 +64,7 @@ class Explore extends Component {
     }
 
     async componentDidMount() {
+        window.scroll(0, 0);
         const pack = new PackageClass();
 
         // const { info } = this.state;

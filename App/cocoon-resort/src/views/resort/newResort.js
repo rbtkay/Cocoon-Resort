@@ -133,6 +133,7 @@ class NewResort extends Component {
             const resort = new Resort();
             if (resort.create(name, password, location, category.value)) {
                 console.log("new Resort Created");
+                window.location = "/resort/home";
             } else {
                 console.log("network error");
             }

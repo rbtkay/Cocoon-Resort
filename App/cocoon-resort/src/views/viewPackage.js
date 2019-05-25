@@ -158,6 +158,8 @@ class viewPackage extends Component {
 
     async componentDidMount() {
         const { id } = this.state;
+        console.log('id');
+        console.log(id);
         if (id === -1) {
             this.props.history.push('/explore');
         } else {

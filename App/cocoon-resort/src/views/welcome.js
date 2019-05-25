@@ -174,7 +174,7 @@ class Welcome extends Component {
                                 <br /><br /><br /><br /><br />
                             </Segment>
                             <br />
-                            <h1>Most Popular Resorts</h1>
+                            {/* <h1>Most Popular Resorts</h1> */}
 
                         </Grid.Column>
                         <Grid.Column width='1'>

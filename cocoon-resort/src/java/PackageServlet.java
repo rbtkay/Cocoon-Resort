@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import Classes.JWT;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -46,16 +47,23 @@ public class PackageServlet extends HttpServlet {
         Package pack = new Package();
         switch (action) {
             case "create": {
-                String test = request.getParameter("from");
-                System.out.print(test);
+//                String test = request.getParameter("from");
+//                System.out.print(test);
 //                System.out.print(request.getParameter("to"));
-                String name = request.getParameter("name");
-                int resortId = Integer.parseInt(request.getParameter("resortId"));
-                String details = request.getParameter("details");
-                int price = Integer.parseInt(request.getParameter("price"));
-                String from = String.valueOf(request.getParameter("from"));
-                String to = String.valueOf(request.getParameter("to"));
-                int capacity = Integer.parseInt(request.getParameter("capacity"));
+                String token = request.getParameter("token");
+                String id = request.getParameter("resortId");
+
+                System.out.print(token);
+                System.out.print(id);
+                if (this.verifyUser(token, id)) {
+
+                    String name = request.getParameter("name");
+                    int resortId = Integer.parseInt(request.getParameter("resortId"));
+                    String details = request.getParameter("details");
+                    int price = Integer.parseInt(request.getParameter("price"));
+                    String from = String.valueOf(request.getParameter("from"));
+                    String to = String.valueOf(request.getParameter("to"));
+                    int capacity = Integer.parseInt(request.getParameter("capacity"));
 //
 //                System.out.print(name);
 //                System.out.print(resortId);
@@ -66,16 +74,20 @@ public class PackageServlet extends HttpServlet {
 //                System.out.print(capacity);
 ////                String image = request.getParameter("image");
 //
-                if (pack.createPack(name, resortId, details, price, from, to, capacity)) {
-                    System.out.print("in the if");
-                    response.setStatus(200);
-                    out.print("package created");
-                } else {
-                    response.setStatus(401);
-                    out.print("Error");
-                }
+                    if (pack.createPack(name, resortId, details, price, from, to, capacity)) {
+                        System.out.print("in the if");
+                        response.setStatus(200);
+                        out.print("package created");
+                    } else {
+                        response.setStatus(403);
+                        out.print("Error");
+                    }
 //                String kevin = "18-02-2019";
 //                System.out.print(kevin);
+                } else {
+                    response.setStatus(401);
+                    out.print("Auth Failed");
+                }
                 break;
             }
             case "filterByDate": {
@@ -111,14 +123,22 @@ public class PackageServlet extends HttpServlet {
                 break;
             }
             case "delete": {
+                String id = request.getParameter("id");
+                String token = request.getParameter("token");
+
+                if (this.verifyUser(token, id)) {
+                    if(pack.delete())
+                } else {
+                    response.setStatus(401);
+                    out.print("Auth Failed");
+                }
+
                 break;
             }
             case "readByResortId": {
-                int id = Integer.parseInt(request.getParameter("id"));
-                String token = request.getParameter("token");
-                
                 JsonArray result;
-                result = pack.readByResortID(id);
+                int resortId = Integer.parseInt(request.getParameter("id"));
+                result = pack.readByResortID(resortId);
 
                 if (result == null) {
                     response.setStatus(404);
@@ -126,30 +146,39 @@ public class PackageServlet extends HttpServlet {
                     response.setStatus(200);
                 }
                 out.print(result);
-
                 break;
             }
             case "updatePackage": {
-                int id = Integer.parseInt(request.getParameter("id"));
-                String name = request.getParameter("name");
-                String details = request.getParameter("details");
-                int price = Integer.parseInt(request.getParameter("price"));
-                String from = request.getParameter("from");
-                String to = request.getParameter("to");
-                int capacity = Integer.parseInt(request.getParameter("capacity"));
 
-                System.out.println(id);
-                System.out.println(name);
-                System.out.println(details);
-                System.out.println(price);
-                System.out.println(from);
-                System.out.println(to);
-                System.out.println(capacity);
-                if (pack.updatePack(id, name, details, price, from, to, capacity)) {
-                    response.setStatus(200);
-                    out.println("Package Modified Successfully");
+                String id = request.getParameter("id");
+                String token = request.getParameter("token");
+
+                if (this.verifyUser(token, id)) {
+
+                    int packId = Integer.parseInt(id);
+                    String name = request.getParameter("name");
+                    String details = request.getParameter("details");
+                    int price = Integer.parseInt(request.getParameter("price"));
+                    String from = request.getParameter("from");
+                    String to = request.getParameter("to");
+                    int capacity = Integer.parseInt(request.getParameter("capacity"));
+
+                    System.out.println(id);
+                    System.out.println(name);
+                    System.out.println(details);
+                    System.out.println(price);
+                    System.out.println(from);
+                    System.out.println(to);
+                    System.out.println(capacity);
+                    if (pack.updatePack(packId, name, details, price, from, to, capacity)) {
+                        response.setStatus(200);
+                        out.println("Package Modified Successfully");
+                    } else {
+                        response.setStatus(401);
+                    }
                 } else {
                     response.setStatus(401);
+                    out.print("Auth Failed");
                 }
                 break;
             }
@@ -166,6 +195,19 @@ public class PackageServlet extends HttpServlet {
                 out.print(result);
                 break;
             }
+        }
+    }
+
+    private boolean verifyUser(String token, String id) {
+
+        JWT jwt = new JWT();
+
+        String[] decoded = jwt.parseJWT(token);
+
+        if (decoded[0].equals(id)) {
+            return true;
+        } else {
+            return false;
         }
     }
 

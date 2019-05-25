@@ -142,7 +142,7 @@ class newPackage extends Component {
             to = to === '' ? this.state.now : to;
             capacity = capacity === 0 ? 1 : capacity;
 
-            const resortId = 1; //TODO: get it from localStorage.getItem("resortId");
+            const resortId = localStorage.getItem("id");
 
             const pack = new Package();
 

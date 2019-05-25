@@ -22,7 +22,7 @@ const BtnComp = (props) => {
         if (decodedToken.iss === "client") {
             return <Button onClick={props.viewReservation}>Check Your Reservation</Button>
         } else if (decodedToken.iss === "resort") {
-            return <p />;
+            window.location = '/resort/home';
         } else {
             return <Button color='brown' onClick={props.newResort}>Show us Your Resort</Button>
 
@@ -136,7 +136,7 @@ class NavigationBar extends Component {
                     <MenuItem>
                         <Login isLoginOpen={this.state.isLoginOpen} loginClose={this.loginClose} handleLogin={this.handleLogin} swapModals={this.swapModals} />
                         <ResortLogin isResortLoginOpen={this.state.isResortLoginOpen} resortLoginClose={this.resortLoginClose} handleLogin={this.handleResortLogin} swapModals={this.swapModals} />
-                        <Button icon='sign-in' secondary inverted onClick={this.onClick} content='Log In'></Button>
+                        <Button id='login' icon='sign-in' secondary inverted onClick={this.onClick} content='Log In'></Button>
                     </MenuItem>
 
                     <MenuItem>

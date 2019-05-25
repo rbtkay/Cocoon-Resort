@@ -16,7 +16,7 @@ class ResortLogin extends Component {
                 size='small'
                 dimmer='blurring'
                 closeOnDimmerClick={false}
-                >
+            >
                 <Modal.Header>
                     <Icon name='pin' /> Resort Sign In
                 </Modal.Header>
@@ -32,12 +32,13 @@ class ResortLogin extends Component {
                             placeholder='e.g: CocoonResort'
                             name='resortName'
                             value={this.state.resortName}
-                            onChange={event => this.setState({ resortName: event.target.value})} />
+                            onChange={event => this.setState({ resortName: event.target.value })} />
 
                         <Form.Input
                             label='Password'
                             placeholder='Password'
                             name='password'
+                            type='password'
                             value={this.state.password}
                             onChange={event => this.setState({ password: event.target.value })} />
 
