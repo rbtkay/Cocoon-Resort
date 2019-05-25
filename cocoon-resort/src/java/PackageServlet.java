@@ -113,7 +113,7 @@ public class PackageServlet extends HttpServlet {
             case "delete": {
                 break;
             }
-            case "readByResortName": {
+            case "readByResortId": {
                 int id = Integer.parseInt(request.getParameter("id"));
 
                 JsonArray result;

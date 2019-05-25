@@ -42,7 +42,7 @@ class Home extends Component {
                     </Grid.Column>
                     <Grid.Column width={8}>
                         <Item.Group>
-                            <ListPackages packages={this.state.packages} updatePackage={this.updatePackage}/>
+                            <ListPackages packages={this.state.packages} updatePackage={this.updatePackage} />
                         </Item.Group>
 
                         <Segment textAlign='center'>
@@ -62,12 +62,14 @@ class Home extends Component {
         const reservation = new Reservation();
         const pack = new PackageClass();
         // const reservations = await reservation.readAll();
-        const resortName = localStorage.getItem('resortName');
-        const packages = await pack.filterByResort(resortName);
+        const id = localStorage.getItem('id');
+        const packages = await pack.filterByResort(id);
 
-        packages.map((pack) => {
-            console.log('le pack', pack);
-        })
+        console.log(packages);
+
+        // packages.map((pack) => {
+        //     console.log('le pack', pack);
+        // })
         this.setState({ packages });
     }
 

@@ -26,14 +26,15 @@ class Package {
         }
     }
 
-    async filterByResort(name) {
+    async filterByResort(id) {
         try {
-            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=readByResortID&name=${name}`)
-            if (response.ok) {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=readByResortId&id=${id}`)
+            if (response.status === 200) {
+                // console.log(response);
                 const result = await response.json();
                 return result;
             } else {
-                return 404;
+                return [];
             }
         } catch (e) {
             throw e;

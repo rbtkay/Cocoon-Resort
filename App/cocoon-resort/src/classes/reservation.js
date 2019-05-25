@@ -29,7 +29,11 @@ class Reservation {
 
     async readAllByCustomer(id) {
         try {
-            const response = await fetch(`http://localhost:8080/cocoon-resort/ReservationServlet?action=readByCustomer&id=${id}`);
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ReservationServlet?action=readByCustomer&id=${id}`, {
+                headers: new Headers({
+                    'authorization': localStorage.getItem("auth")
+                })
+            });
             if (response.status === 200) {
                 const result = response.json();
                 return result;

@@ -113,15 +113,15 @@ class Auth {
             throw e;
         }
     }
-      
+
     async deleteUser(id) {
-        try{
+        try {
             const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=delete&id=${id}`);
 
             if (response.ok) {
-              return true;
-            } else{
-                return false:
+                return true;
+            } else {
+                return false;
             }
         } catch (err) {
             throw err;

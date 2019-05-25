@@ -16,7 +16,7 @@ class ResortNavBar extends Component {
                 </MenuItem>
 
                 <Menu.Menu position='right'>
-                    <Dropdown text={`Hello ${this.state.name}`} className='item'>
+                    <Dropdown text={`Hello ${this.state.resortName}`} className='item'>
                         <Dropdown.Menu>
                             <Dropdown.Item>
                                 <Icon name='settings' /><a href='/settings' className='black'>Settings</a>
@@ -35,16 +35,19 @@ class ResortNavBar extends Component {
     }
 
     async componentDidMount() {
-        const resortName = cookie.getCookie('resortName') || '';
+        const resortName = localStorage.getItem("resortName");
+        // const resortName = cookie.getCookie('resortName') || '';
         if (resortName === '') {
-            this.props.history.push(`/welcome`);
+            // this.props.history.push(`/welcome`);
+            window.location = '/welcome';
         }
         this.setState({ resortName });
     }
 
     logout = () => {
+        localStorage.clear();
         cookie.deleteCookie();
-        this.props.history.push(`/welcome`);
+        window.location = '/welcome';
     }
 }
 

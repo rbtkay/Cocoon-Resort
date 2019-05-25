@@ -129,10 +129,14 @@ public class authFilter implements Filter {
                 Enumeration<String> headerNames = httpRequest.getHeaderNames();
 
                 if (headerNames != null) {
-                    String jwt = httpRequest.getHeader("jwt");
+                    String jwt = httpRequest.getHeader("authorization");
+                    System.out.print("jwt, " + jwt);
+
                     JWT jwtClass = new JWT();
 
                     String queryString = httpRequest.getParameter("action");
+                    System.out.print("queryString, " + queryString);
+
                     if (queryString.equals("readByCustomer")) {
                         System.out.print("in the if");
                         String queryId = httpRequest.getParameter("id");

@@ -47,12 +47,9 @@ public class JWT {
 
     //Sample method to validate and read the JWT
     public boolean parseJWT(String jwt, String id) {
-        System.out.print("Hello");
+        System.out.print("Hello Im Jwt");
         //This line will throw an exception if it is not a signed JWS (as expected)
         try {
-
-            System.out.print("in the class");
-
             Claims claims = Jwts.parser()
                     .setSigningKey(DatatypeConverter.parseBase64Binary("secret"))
                     .parseClaimsJws(jwt).getBody();
@@ -70,10 +67,10 @@ public class JWT {
 
             return true;
         } catch (Exception e) {
+            System.out.print(e);
             return false;
         }
 
-//        return false;
     }
 
     public String encodeURL(String email, String password) {

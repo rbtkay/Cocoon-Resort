@@ -13,11 +13,10 @@ const cookie = require('../cookie');
 const BtnComp = (props) => {
     console.log(props.isAuth)
 
-    if (props.isAuth) {
+    if (props.isAuth !== false) {
         const token = props.isAuth;
 
-        // const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        const decodedToken = JWT.decode(token, "secret");
+        const decodedToken = JWT.decode(token);
         console.log(decodedToken);
 
         if (decodedToken.iss === "client") {
@@ -97,8 +96,11 @@ class NavigationBar extends Component {
     renderMenu = () => {
         const token = this.state.isAuth;
 
-        if (token !== false) {
-            const decodedToken = JWT.decode(token, "secret");
+        console.log("token")
+        console.log(token)
+
+        if (token) {
+            const decodedToken = JWT.decode(token);
 
 
 
@@ -170,9 +172,10 @@ class NavigationBar extends Component {
     }
 
 
-    handleResortLogin = (resortName, jwt) => {
+    handleResortLogin = (resortName, jwt, id) => {
         localStorage.setItem("resortName", resortName);
         localStorage.setItem('auth', jwt);
+        localStorage.setItem('id', id);
         this.resortLoginClose();
         this.setState({ name: resortName, isAuth: jwt });
         window.location = `/resort/home`;
