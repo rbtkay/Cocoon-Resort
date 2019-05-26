@@ -153,7 +153,6 @@ public class PackageServlet extends HttpServlet {
                 break;
             }
             case "updatePackage": {
-
                 String id = request.getParameter("id");
                 String token = request.getParameter("token");
 
