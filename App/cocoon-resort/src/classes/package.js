@@ -47,10 +47,11 @@ class Package {
         }
     }
 
-    async updatePackage(id, name, details, price, from, to, capacity) {
+    async updatePackage(packId, name, details, price, from, to, capacity) {
         try {
+            const id = localStorage.getItem('id');
             const token = localStorage.getItem("auth");
-            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=updatePackage&id=${id}&name=${name}&details=${details}&price=${price}&from=${from}&to=${to}&capacity=${capacity}&token=${token}`);
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=updatePackage&id=${id}&packId=${packId}&name=${name}&details=${details}&price=${price}&from=${from}&to=${to}&capacity=${capacity}&token=${token}`);
 
             if (response.ok) {
                 return true;

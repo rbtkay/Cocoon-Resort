@@ -118,14 +118,14 @@ public class UploadDownloadFileServlet extends HttpServlet {
                 System.out.println("Size in bytes=" + fileItem.getSize());
 
                 File file = new File(request.getServletContext().getAttribute("FILES_DIR") + File.separator + fileItem.getName());
-                System.out.println("Absolute Path at server=" + file.getAbsolutePath());
-                fileItem.write(file);
-                System.out.println("File " + fileItem.getName() + " uploaded successfully.");
                 if (img.insertImage(packId, fileItem.getName(), file.getAbsolutePath())) {
                     System.out.println("File inserted into table successfully");
                 } else {
                     System.out.println("Failed to insert image into table");
                 }
+                System.out.println("Absolute Path at server=" + file.getAbsolutePath());
+                fileItem.write(file);
+                System.out.println("File " + fileItem.getName() + " uploaded successfully.");
 //                System.out.println("<br>");
 //                out.println("<a href=\"UploadDownloadFileServlet?fileName=" + fileItem.getName() + "\">Download " + fileItem.getName() + "</a>");
             }

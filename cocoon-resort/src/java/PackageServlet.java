@@ -159,7 +159,7 @@ public class PackageServlet extends HttpServlet {
 
                 if (this.verifyUser(token, id)) {
 
-                    int packId = Integer.parseInt(id);
+                    int packId = Integer.parseInt(request.getParameter("packId"));
                     String name = request.getParameter("name");
                     String details = request.getParameter("details");
                     int price = Integer.parseInt(request.getParameter("price"));
