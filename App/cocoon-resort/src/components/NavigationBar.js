@@ -11,14 +11,11 @@ const cookie = require('../cookie');
 
 
 const BtnComp = (props) => {
-    console.log(props.isAuth)
 
     if (props.isAuth !== false) {
         const token = props.isAuth;
 
         const decodedToken = JWT.decode(token);
-        console.log(decodedToken);
-
         if (decodedToken.iss === "client") {
             return <Button onClick={props.viewReservation}>Check Your Reservation</Button>
         } else if (decodedToken.iss === "resort") {
@@ -38,7 +35,6 @@ class NavigationBar extends Component {
     constructor(props) {
         super(props);
 
-        console.log(localStorage.getItem('auth'));
         this.state = {
             isAuth: localStorage.getItem('auth') || false,
             name: '',
@@ -80,9 +76,7 @@ class NavigationBar extends Component {
     }
 
     async componentDidMount() {
-        console.log(this.props.isLoginNeeded);
         let name = localStorage.getItem('name');
-        console.log(this.state)
         if (name) {
             this.setState({ name });
         }
@@ -95,9 +89,6 @@ class NavigationBar extends Component {
 
     renderMenu = () => {
         const token = this.state.isAuth;
-
-        console.log("token")
-        console.log(token)
 
         if (token) {
             const decodedToken = JWT.decode(token);

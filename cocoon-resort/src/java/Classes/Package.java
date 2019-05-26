@@ -118,10 +118,21 @@ public class Package {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
 
-            prepStmt = con.prepareStatement("Delete from packages_t where package_id = ?");
-
+            prepStmt = con.prepareStatement("delete from reservations_t where package_id = ?");
             prepStmt.setInt(1, id);
+            prepStmt.executeUpdate();
+            
+            System.out.println("DELETED FROM RESERVATION");
+            
+            prepStmt = con.prepareStatement("delete from images_t where package_id = ?");
+            prepStmt.setInt(1, id);
+            prepStmt.executeUpdate();
 
+            prepStmt = con.prepareStatement("Delete from packages_t where package_id = ?");
+            prepStmt.setInt(1, id);
+            prepStmt.executeUpdate();
+            
+            System.out.println("DELETED FROM PACKAGE");
             return true;
 
         } catch (Exception e) {

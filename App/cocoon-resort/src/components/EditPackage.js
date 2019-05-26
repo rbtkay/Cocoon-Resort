@@ -121,7 +121,6 @@ class EditPackage extends Component {
     }
 
     uploadImage = (event) => {
-        console.log('hahaha');
         const pack = new PackageClass();
         pack.updateImage(this.state.id, event.target.files[0]);
     }

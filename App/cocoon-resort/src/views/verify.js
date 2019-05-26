@@ -22,7 +22,6 @@ class Verify extends Component {
 
         // const email = decoded.sub;
 
-        console.log(token);
         const auth = new Auth();
 
         const isVerified = await auth.verifyClient(token);

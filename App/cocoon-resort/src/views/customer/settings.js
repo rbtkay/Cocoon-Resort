@@ -98,7 +98,6 @@ class Settings extends Component {
 
         // const user = await response.json();
         this.setState({ user: response[0] });
-        console.log('user', response);
     }
 
     checkOld = () => {

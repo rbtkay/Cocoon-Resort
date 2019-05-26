@@ -49,6 +49,28 @@ public class Image {
         }
         return false;
     }
+    
+    public boolean insertImage(String imageName, String imagePath) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+            
+            prepStmt = con.prepareStatement("insert into images_t (image_name, image_path) values (?, ?)");
+            prepStmt.setString(1, imageName);
+            prepStmt.setString(2, imagePath);
+            prepStmt.executeUpdate();
+            return true;
+        } catch (Exception ex) {
+            System.out.println(ex);
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        }
+        return false;
+    }
 
     public ArrayList<String> getImages(int packId) {
         ArrayList<String> returnString = new ArrayList<>();

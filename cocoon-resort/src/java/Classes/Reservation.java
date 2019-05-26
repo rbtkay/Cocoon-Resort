@@ -19,23 +19,23 @@ import javax.json.JsonArrayBuilder;
  * @author Robert
  */
 public class Reservation {
-    
+
     Connection con;
     PreparedStatement prepStmt;
     ResultSet result;
     PrintWriter out;
-    
+
     public boolean create(int packId, int clientId, int resortId, int quantity) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
             prepStmt = con.prepareStatement("insert into reservations_t (package_id, client_id, resort_id, quantity) values (?,?,?,?)");
-            
+
             prepStmt.setInt(1, packId);
             prepStmt.setInt(2, clientId);
             prepStmt.setInt(3, resortId);
             prepStmt.setInt(4, quantity);
-            
+
             prepStmt.executeUpdate();
             Package pack = new Package();
             if (pack.updateGuest("increment", packId, quantity)) {
@@ -43,7 +43,7 @@ public class Reservation {
             } else {
                 return false;
             }
-            
+
         } catch (Exception e) {
             try {
                 System.out.print("Error while throwing! " + e);
@@ -54,7 +54,7 @@ public class Reservation {
         }
         return false;
     }
-    
+
     public JsonArray readAllByResort(int id) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -62,23 +62,21 @@ public class Reservation {
             prepStmt = con.prepareStatement("select reservations_t.*, clients_t.client_name, packages_t.package_name, resorts_t.resort_name "
                     + "from reservations_t, clients_t, packages_t,resorts_t "
                     + "where reservations_t.client_id = clients_t.client_id and reservations_t.package_id = packages_t.package_id and reservations_t.resort_id = ?");
-            
+
             prepStmt.setInt(1, id);
             result = prepStmt.executeQuery();
-            
+
             JsonArrayBuilder builder = Json.createArrayBuilder();
             while (result.next()) {
                 builder.add(Json.createObjectBuilder()
-                        .add("reservation", Json.createObjectBuilder()
-                                .add("from", result.getString("reservation_from"))
-                                .add("to", result.getString("reservation_to")))
                         .add("client", result.getString("client_name"))
                         .add("package", result.getString("package_name"))
+                        .add("quantity", result.getString("quantity"))
                 );
             }
-            
+
             JsonArray resultJson = builder.build();
-            
+            System.out.println(resultJson);
             return resultJson;
         } catch (Exception e) {
             try {
@@ -89,10 +87,10 @@ public class Reservation {
         }
         return null;
     }
-    
+
     public JsonArray getReservationByCustomer(int id) {
         try {
-            
+
             System.out.print("id");
             System.out.print(id);
             Class.forName("com.mysql.jdbc.Driver");
@@ -102,10 +100,10 @@ public class Reservation {
                     + "and reservations_t.package_id = packages_t.package_id "
                     + "and resorts_t.resort_id = reservations_t.resort_id "
                     + "and reservations_t.client_id = ?");
-            
+
             prepStmt.setInt(1, id);
             result = prepStmt.executeQuery();
-            
+
             JsonArrayBuilder builder = Json.createArrayBuilder();
             while (result.next()) {
                 builder.add(Json.createObjectBuilder()
@@ -123,9 +121,9 @@ public class Reservation {
                         .add("resortLocation", result.getString("resort_location"))
                 );
             }
-            
+
             JsonArray resultJson = builder.build();
-            
+
             return resultJson;
         } catch (Exception e) {
             try {
@@ -136,24 +134,24 @@ public class Reservation {
         }
         return null;
     }
-    
+
     public boolean cancel(int id, int packId, int quantity) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
             prepStmt = con.prepareStatement("Delete from reservations_t where reservations_t.reservation_id = ?");
-            
+
             prepStmt.setInt(1, id);
-            
+
             prepStmt.executeUpdate();
-            
+
             Package pack = new Package();
             if (pack.updateGuest("decrement", packId, quantity)) {
                 return true;
             } else {
                 return false;
             }
-            
+
         } catch (Exception e) {
             try {
                 System.out.print("Error while throwing! " + e);

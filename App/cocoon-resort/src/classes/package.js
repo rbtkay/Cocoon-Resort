@@ -49,7 +49,7 @@ class Package {
 
     async updatePackage(id, name, details, price, from, to, capacity) {
         try {
-            const token =localStorage.getItem("auth");
+            const token = localStorage.getItem("auth");
             const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=updatePackage&id=${id}&name=${name}&details=${details}&price=${price}&from=${from}&to=${to}&capacity=${capacity}&token=${token}`);
 
             if (response.ok) {
@@ -65,8 +65,6 @@ class Package {
     async filterByDate(from, to) {
         from = from || '1970-01-01';
         to = to || '2050-01-01';
-        console.log(from)
-        console.log(to)
         try {
             const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=filterByDate&start=${from}&end=${to}`);
 
@@ -87,6 +85,7 @@ class Package {
 
             if (response.ok) {
                 let objUrl = await response.blob();
+                console.log('response', response);
                 const imgSrc = await URL.createObjectURL(objUrl);
                 // console.log('imgSrc', imgSrc);
                 return imgSrc;
@@ -122,6 +121,22 @@ class Package {
             }
         } catch (e) {
             throw e;
+        }
+    }
+
+    async deletePackage(packId) {
+        const id = localStorage.getItem('id');
+        const token = localStorage.getItem('auth');
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=delete&id=${id}&token=${token}&packId=${packId}`);
+
+            if (response.ok) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (err) {
+            throw err;
         }
     }
 }

@@ -14,9 +14,8 @@ const ListPackages = (props) => {
         )
     } else {
         return props.packages.map(item => {
-            console.log('item.id', item.id);
             return (
-                <Package key={item.id} info={item} isResort={true} updatePackage={props.updatePackage} />
+                <Package key={item.id} info={item} isResort={true} updatePackage={props.updatePackage} handleDelete={props.deletePackage}/>
             )
         })
     }
@@ -26,7 +25,7 @@ class Home extends Component {
 
     state = {
         info: {}, //for client package
-        reservation: [], //for resort package
+        reservations: [], //for resort package
         packages: [],
         src: ''
     }
@@ -38,11 +37,11 @@ class Home extends Component {
                 <br /><br /><br />
                 <Grid columns={3}>
                     <Grid.Column width={4}>
-                        <Profile />
+                        <Profile reservations={this.state.reservations} />
                     </Grid.Column>
                     <Grid.Column width={8}>
                         <Item.Group>
-                            <ListPackages packages={this.state.packages} updatePackage={this.updatePackage} />
+                            <ListPackages packages={this.state.packages} updatePackage={this.updatePackage} deletePackage={this.deletePackage}/>
                         </Item.Group>
 
                         <Segment textAlign='center'>
@@ -62,25 +61,27 @@ class Home extends Component {
 
         const reservation = new Reservation();
         const pack = new PackageClass();
-        // const reservations = await reservation.readAll();
+
         const id = localStorage.getItem('id');
         const packages = await pack.filterByResort(id);
+        const reservations = await reservation.readAllByResort(id);
 
-        console.log(packages);
-
-        // packages.map((pack) => {
-        //     console.log('le pack', pack);
-        // })
-        this.setState({ packages });
+        this.setState({ packages, reservations });
     }
 
 
     addPackage = () => {
         this.props.history.push(`/resort/newPackage`);
     }
+
     updatePackage = async (state) => {
         const pack = new PackageClass();
         const result = await pack.updatePackage(state.id, state.name, state.details, state.price, state.from, state.to, state.capacity);
+    }
+
+    deletePackage = async (id) => {
+        const pack = new PackageClass();
+        const result = await pack.deletePackage(id);
     }
 }
 

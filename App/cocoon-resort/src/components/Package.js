@@ -11,13 +11,7 @@ class Package extends Component {
 
         const isResort = this.props.isResort || false;
 
-        if (isResort === true) {
-            console.log(props)
-        }
-
         const { id, name, resortName, details, price, from, to, capacity, isReserved } = props.info;
-
-        console.log(props);
 
         this.state = {
             id: id || -1,
@@ -63,7 +57,7 @@ class Package extends Component {
             )
         } else {
             return (<>
-                <Item key={this.state.id} onClick={this.handleOpen} updatedisplay={this.props.updatedisplay}>
+                <Item key={this.state.id} updatedisplay={this.props.updatedisplay}>
                     <Item.Image src={this.state.imgSrc} size='small' />
                     <Item.Content>
                         <Item.Header>{this.state.name}</Item.Header>
@@ -85,8 +79,8 @@ class Package extends Component {
                         </Item.Description>
                     </Item.Content>
 
-                    <Button floated='right' color='red'>Delete</Button>
-                    <Button floated='right' color='blue'>Update</Button>
+                    <Button floated='right' color='red' onClick={this.handleDelete}>Delete</Button>
+                    <Button floated='right' color='blue' onClick={this.handleOpen} >Update</Button>
 
                 </Item> <EditPackage info={this.state} isOpen={this.state.isOpen} handleClose={this.handleClose} updatePackage={this.props.updatePackage} updatedisplay={this.updatedisplay} /> </>
             );
@@ -97,14 +91,18 @@ class Package extends Component {
     handleOpen = () => {
         this.setState({ isOpen: true })
     }
+
     handleClose = () => {
         this.setState({ isOpen: false });
+    }
+
+    handleDelete = () => {
+        this.props.handleDelete(this.state.id);
     }
 
     updatedisplay = (state) => {
         const { id, name, capacity, price, from, to, details } = state;
         this.setState({ id, name, capacity, price, from, to, details, isOpen: false });
-        console.log('updateDisplay: ', state);
     }
 
 

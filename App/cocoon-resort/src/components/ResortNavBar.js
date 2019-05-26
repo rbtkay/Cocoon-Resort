@@ -38,8 +38,6 @@ class ResortNavBar extends Component {
     async componentDidMount() {
 
         const token = localStorage.getItem("auth");
-        console.log('token');
-        console.log(token);
         if (token !== null) {
             const decoded = JWT.decode(token);
             if (decoded.iss !== "resort" || decoded.jti !== localStorage.getItem("id")) {

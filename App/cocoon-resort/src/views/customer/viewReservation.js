@@ -8,8 +8,6 @@ import ReservationClass from '../../classes/reservation'
 import NavigationBar from '../../components/NavigationBar';
 
 const Reservation = (props) => {
-    console.log("props")
-    console.log(props)
     const { packId, packName, resortName, reservationId, packFrom, packTo, packGuests, packDetails, resortLocation } = props.info;
     return (
         <Segment key={props.toString()}>
@@ -103,12 +101,9 @@ class viewReservation extends Component {
         }
         const reservation = new ReservationClass();
         const result = await reservation.readAllByCustomer(this.state.clientId);
-        console.log('result');
-        console.log(result);
         if (result === 401) {
             window.location = '/welcome';
         } else {
-            console.log(result)
             if (result !== null) {
                 this.setState({ reservations: result })
             }
@@ -120,7 +115,6 @@ class viewReservation extends Component {
         const result = await reservation.cancel(id, packId, quantity);
 
         if (result === true) {
-            console.log("should refresh")
             this.componentDidMount();
         }
     }

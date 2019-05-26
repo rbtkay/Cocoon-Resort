@@ -12,12 +12,11 @@ class Reservation {
         }
     }
 
-    async readAllByResort() {
+    async readAllByResort(id) {
         const token = localStorage.getItem('auth');
 
         try {
-
-            const response = await fetch(`http://localhost:8080/cocoon-resort/ReservationServlet?action=readAllByResort&token=${token}`);
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ReservationServlet?action=readAllByResort&id=${id}&token=${token}`);
             if (response.ok) {
                 const result = response.json();
                 return result;
@@ -46,13 +45,9 @@ class Reservation {
     }
 
     async readAllByCustomer(id) {
-        console.log("localStorage.getItem(auth)");
-        console.log(localStorage.getItem("auth"));
         const token = localStorage.getItem('auth');
         try {
             const response = await fetch(`http://localhost:8080/cocoon-resort/ReservationServlet?action=readByCustomer&id=${id}&token=${token}`);
-            console.log("response.status");
-            console.log(response.status);
             if (response.status === 200) {
                 const result = response.json();
                 return result;

@@ -9,7 +9,6 @@ const ListPackages = (props) => {
         );
     } else {
         return props.packages.map(item => {
-            console.log('zi item', item);
             return (
                 <PackageComponent key={item.id} info={item} isResort={props.isResort} redirect={props.redirect} viewPack={props.viewPack} />
             );

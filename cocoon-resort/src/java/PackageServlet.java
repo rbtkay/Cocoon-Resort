@@ -124,15 +124,18 @@ public class PackageServlet extends HttpServlet {
             }
             case "delete": {
                 String id = request.getParameter("id");
+                int packId = Integer.parseInt(request.getParameter("packId"));
                 String token = request.getParameter("token");
 
                 if (this.verifyUser(token, id)) {
-                    if(pack.delete())
+                    if (pack.delete(packId)) {
+                        response.setStatus(200);
+                        out.print("package deleted");
+                    }
                 } else {
                     response.setStatus(401);
                     out.print("Auth Failed");
                 }
-
                 break;
             }
             case "readByResortId": {

@@ -17,8 +17,6 @@ class ResortComp extends Component {
             category: category ? category : '',
             count: count ? count : 'NAN'
         }
-
-        console.log(this.state);
     }
 
     render() {
