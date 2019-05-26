@@ -47,10 +47,11 @@ class Package {
         }
     }
 
-    async updatePackage(id, name, details, price, from, to, capacity) {
+    async updatePackage(packId, name, details, price, from, to, capacity) {
         try {
+            const id = localStorage.getItem('id');
             const token = localStorage.getItem("auth");
-            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=updatePackage&id=${id}&name=${name}&details=${details}&price=${price}&from=${from}&to=${to}&capacity=${capacity}&token=${token}`);
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=updatePackage&id=${id}&packId=${packId}&name=${name}&details=${details}&price=${price}&from=${from}&to=${to}&capacity=${capacity}&token=${token}`);
 
             if (response.ok) {
                 return true;
@@ -79,19 +80,56 @@ class Package {
         }
     }
 
-    async getImages(id) {
+    async getImageNames(id) {
         try {
-            const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?packageId=${id}`);
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=getImageNames&packageId=${id}`);
 
             if (response.ok) {
-                let objUrl = await response.blob();
-                console.log('response', response);
-                const imgSrc = await URL.createObjectURL(objUrl);
-                // console.log('imgSrc', imgSrc);
-                return imgSrc;
+                const imageNames = await response.text();
+                // console.log(`response is ok for ${id}`, imageNames);
+                
+                return imageNames;
+            } else {
+                console.log('response is NULL');
+                return null;
             }
         } catch (err) {
             throw err;
+        }
+    }
+
+    async getSingleImageName(id) {
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=getSingleImageName&packageId=${id}`);
+
+            if (response.ok) {
+                const imageNames = await response.text();
+                // console.log(`response is ok for ${id}`, imageNames);
+                return imageNames;
+            } else {
+                console.log('response is NULL');
+                return null;
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async getImage(name) {
+        console.log('name', name)
+        if (name) {
+            try {
+                const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?imageName=${name}`);
+
+                if (response.ok) {
+                    let objUrl = await response.blob();
+                    const imgSrc = await URL.createObjectURL(objUrl);
+                    // console.log('imgSrc', imgSrc);
+                    return imgSrc;
+                }
+            } catch (err) {
+                throw err;
+            }
         }
     }
 

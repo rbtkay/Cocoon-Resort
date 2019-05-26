@@ -83,7 +83,9 @@ class viewPackage extends Component {
             isReserved: false,
             numPeople: 1,
             guests: 0,
-            images: ''
+            images: [],
+            imageNames: [],
+            imageIndex: 0
         }
     }
 
@@ -101,16 +103,16 @@ class viewPackage extends Component {
                     <Grid.Row columns={2}>
                         <Grid.Column >
                             <Segment>
-                                <Grid style={{ backgroundImage: `url(${this.state.images})`, backgroundRepeat: 'no-repeat', backgroundSize: '100%' }}>
+                                <Grid style={{ backgroundImage: `url(${this.state.images[this.state.imageIndex]})`, backgroundRepeat: 'no-repeat', backgroundSize: '100%' }}>
                                     <Grid.Row columns={3}>
                                         <Grid.Column width={2} verticalAlign='middle'>
-                                            <Icon name='angle left' size='huge' />
+                                            <Button icon='angle left' size='big' color='green' inverted onClick={this.left}/>
                                         </Grid.Column>
                                         <Grid.Column width={12}>
                                             <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                                         </Grid.Column>
                                         <Grid.Column width={2} verticalAlign='middle'>
-                                            <Icon name='angle right' size='huge' />
+                                            <Button icon='angle right' size='big' color='green' inverted onClick={this.right}/>
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>
@@ -152,6 +154,13 @@ class viewPackage extends Component {
         )
     }
 
+    callback = (result, images) => {
+        const { name, resortName, location, details, price, from, to, image, guests, capacity, isReserved, resortId } = result;
+
+        this.setState({ name, resortName, location, details, price, from, to, images, guests, capacity, isReserved, resortId });
+    }
+
+
     async componentDidMount() {
         const { id } = this.state;
         if (id === -1) {
@@ -159,27 +168,38 @@ class viewPackage extends Component {
         } else {
             const pack = new PackageClass();
             const result = await pack.readOne(id);
-            const images = await pack.getImages(id);
+            const imageNames = await pack.getImageNames(id);
+            const imageArray = imageNames.substr(1, imageNames.length - 2).split(',');
+            let images = [];
+            let count = 0;
+            imageArray.forEach(async img => {
+                const image = await pack.getImage(img.trim());
+                images.push(image);
+                count++;
+                if (count === imageArray.length - 1) {
+                    this.callback(result[0], images);
+                }
+            });
+        }
+    }
 
-            //TODO: get the images
-            console.log('images', images);
-            const { name, resortName, location, details, price, from, to, image, guests, capacity, isReserved, resortId } = result[0];
+    left = (event) => {
+        event.target.blur();
+        let { images, imageIndex } = this.state;
+        if (imageIndex > 0) {
+            this.setState({ imageIndex: imageIndex - 1 });
+        } else {
+            this.setState({ imageIndex: images.length - 1 });
+        }
+    }
 
-            this.setState({
-                name,
-                resortName,
-                location,
-                resortId,
-                details,
-                price,
-                from,
-                to,
-                image,
-                guests,
-                capacity,
-                isReserved,
-                images
-            })
+    right = (event) => {
+        event.target.blur();
+        let { images, imageIndex } = this.state;
+        if (imageIndex === images.length - 1) {
+            this.setState({ imageIndex: 0 });
+        } else {
+            this.setState({ imageIndex: imageIndex + 1 });
         }
     }
 

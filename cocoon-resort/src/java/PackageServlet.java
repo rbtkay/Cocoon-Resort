@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Classes.Package;
+import java.util.ArrayList;
 import javax.json.JsonArray;
 
 /**
@@ -152,13 +153,12 @@ public class PackageServlet extends HttpServlet {
                 break;
             }
             case "updatePackage": {
-
                 String id = request.getParameter("id");
                 String token = request.getParameter("token");
 
                 if (this.verifyUser(token, id)) {
 
-                    int packId = Integer.parseInt(id);
+                    int packId = Integer.parseInt(request.getParameter("packId"));
                     String name = request.getParameter("name");
                     String details = request.getParameter("details");
                     int price = Integer.parseInt(request.getParameter("price"));
@@ -196,6 +196,23 @@ public class PackageServlet extends HttpServlet {
                     response.setStatus(200);
                 }
                 out.print(result);
+                break;
+            }
+            case "getImageNames": {
+                int id = Integer.parseInt(request.getParameter("packageId"));
+                
+                ArrayList<String> imageNames = pack.getImageNames(id);
+                if (imageNames == null) {
+                    response.setStatus(404);
+                } else {
+                    response.setStatus(200);
+                }
+                out.print(imageNames);
+                break;
+            }
+            case "getSingleImageName": {
+                int id = Integer.parseInt(request.getParameter("packageId"));
+                out.print(pack.getSingleImageName(id));
                 break;
             }
         }

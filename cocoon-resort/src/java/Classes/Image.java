@@ -103,4 +103,27 @@ public class Image {
         }
         return returnString;
     }
+    
+    public boolean deleteImage(int packageId, String imageName) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+            
+            prepStmt = con.prepareStatement("delete from images_t where package_id = ? and image_name = ?");
+            prepStmt.setInt(1, packageId);
+            prepStmt.setString(2, imageName);
+            
+            prepStmt.executeUpdate();
+            return true;
+        } catch (Exception ex) {
+            System.out.println(ex);
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        }
+        return false;
+    }
 }

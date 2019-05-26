@@ -416,6 +416,51 @@ public class Package {
                 System.out.print("Error while closing con" + ex);
             }
         }
-//        update packages_t set package_guest = ((select package_guest from packages_t where package_id = 3) + 2) where package_id = 3
+    }
+    
+    public ArrayList<String> getImageNames(int id) {
+        ArrayList<String> imageNames = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+            
+            prepStmt = con.prepareStatement("select image_name from images_t where package_id = ?");
+            prepStmt.setInt(1, id);
+            result = prepStmt.executeQuery();
+            
+            while (result.next()) {
+                imageNames.add(result.getString("image_name"));
+                System.out.println("LE RESULT IMAGE NAME: " + result.getString("image_name") + imageNames.size());
+            }
+            if (imageNames.isEmpty()) {
+                System.out.println("ITS EMPTYYYY");
+                imageNames.add("default_product_image.jpg");
+                System.out.println(imageNames.size());
+            }
+            return imageNames;
+        } catch (Exception ex) {
+            System.out.print("ta2 hone..." + ex);
+        }
+        return imageNames;
+    }
+    
+    public String getSingleImageName(int id) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+            
+            prepStmt = con.prepareStatement("select image_name from images_t where package_id = ?");
+            prepStmt.setInt(1, id);
+            result = prepStmt.executeQuery();
+            
+            if (result.first()) {
+                return result.getString("image_name");
+            } else {
+                return "default_product_image.jpg";
+            }
+        } catch (Exception ex) {
+            System.out.print("ta2 hone..." + ex);
+        }
+        return "default_product_image.jpg";
     }
 }
