@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, MenuItem, Dropdown, Icon } from 'semantic-ui-react';
 import cookie from '../cookie';
+import JWT from 'jsonwebtoken';
 
 class ResortNavBar extends Component {
 
@@ -35,13 +36,20 @@ class ResortNavBar extends Component {
     }
 
     async componentDidMount() {
-        const resortName = localStorage.getItem("resortName");
-        // const resortName = cookie.getCookie('resortName') || '';
-        if (resortName === '') {
-            // this.props.history.push(`/welcome`);
+
+        const token = localStorage.getItem("auth");
+        if (token !== null) {
+            const decoded = JWT.decode(token);
+            if (decoded.iss !== "resort" || decoded.jti !== localStorage.getItem("id")) {
+                localStorage.clear();
+                window.location = '/welcome';
+            }
+            const resortName = localStorage.getItem("resortName");
+            this.setState({ resortName });
+        } else {
+            localStorage.clear();
             window.location = '/welcome';
         }
-        this.setState({ resortName });
     }
 
     logout = () => {

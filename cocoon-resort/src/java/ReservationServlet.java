@@ -6,6 +6,7 @@
 
 import Classes.Reservation;
 import Classes.Email;
+import Classes.JWT;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.json.JsonArray;
@@ -40,69 +41,87 @@ public class ReservationServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Methods", "GET");
         out = response.getWriter();
 
-        String action = request.getParameter("action");
-        System.out.print(action);
+        String token = request.getParameter("token");
+        String id = request.getParameter("id");
 
-        Reservation reservation = new Reservation();
+        JWT jwt = new JWT();
+        String[] decoded = jwt.parseJWT(token);
+        if (decoded != null) {
+            String idFromToken = decoded[0];
 
-        switch (action) {
-            case "create": {
-                int packId = Integer.parseInt(request.getParameter("packId"));
-                int clientId = Integer.parseInt(request.getParameter("clientId"));
-                int resortId = Integer.parseInt(request.getParameter("resortId"));
-                int quantity = Integer.parseInt(request.getParameter("quantity"));
+            System.out.print("isFromToken");
+            System.out.print(idFromToken);
+            if (idFromToken.equals(id)) {
+                String action = request.getParameter("action");
+                System.out.print(action);
+                Reservation reservation = new Reservation();
 
-                if (reservation.create(packId, clientId, resortId, quantity)) {
-                    response.setStatus(200);
-                    Email sendEmail = new Email();
-                    sendEmail.send("receipt", "", clientId, resortId, packId);
-                    out.print("Reservation Done");
-                } else {
-                    response.setStatus(401);
-                    out.print("Error");
+                switch (action) {
+                    case "create": {
+                        int packId = Integer.parseInt(request.getParameter("packId"));
+                        int clientId = Integer.parseInt(id);
+                        int resortId = Integer.parseInt(request.getParameter("resortId"));
+                        int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+                        if (reservation.create(packId, clientId, resortId, quantity)) {
+                            response.setStatus(200);
+                            Email sendEmail = new Email();
+                            sendEmail.send("receipt", "", clientId, resortId, packId);
+                            out.print("Reservation Done");
+                        } else {
+                            response.setStatus(401);
+                            out.print("Error");
+                        }
+                        break;
+                    }
+                    case "readAllByResort": {
+
+                        JsonArray result = reservation.readAllByResort(Integer.parseInt(id));
+
+                        if (result == null) {
+                            response.setStatus(404);
+                        } else {
+                            response.setStatus(200);
+                        }
+                        out.print(result);
+
+                        break;
+                    }
+                    case "cancel": {
+                        int reservationId = Integer.parseInt(request.getParameter("reservationId"));
+                        int packId = Integer.parseInt(request.getParameter("packId"));
+                        int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+                        if (reservation.cancel(reservationId, packId, quantity)) {
+                            response.setStatus(200);
+                            out.print("Reservation Cancelled");
+                        } else {
+                            response.setStatus(404);
+                            out.print("Connection Error");
+                        }
+                        break;
+                    }
+                    case "readByCustomer": {
+                        JsonArray result = reservation.getReservationByCustomer(Integer.parseInt(id));
+                        System.out.print("result");
+                        System.out.print(result);
+
+                        if (result == null) {
+                            response.setStatus(404);
+                        } else {
+                            response.setStatus(200);
+                        }
+                        out.print(result);
+
+                    }
                 }
-                break;
+            } else {
+                response.setStatus(401);
+                out.print("Auth Failed");
             }
-            case "readAll": {
-//                String category = request.getParameter("category");
-
-                JsonArray result = reservation.readAll();
-
-                if (result == null) {
-                    response.setStatus(404);
-                } else {
-                    response.setStatus(200);
-                }
-                out.print(result);
-
-                break;
-            }
-            case "cancel": {
-                int id = Integer.parseInt(request.getParameter("id"));
-                int packId = Integer.parseInt(request.getParameter("packId"));
-                int quantity = Integer.parseInt(request.getParameter("quantity"));
-
-                if (reservation.cancel(id, packId, quantity)) {
-                    response.setStatus(200);
-                    out.print("Reservation Cancelled");
-                } else {
-                    response.setStatus(404);
-                    out.print("Connection Error");
-                }
-                break;
-            }
-            case "readByCustomer": {
-                int id = Integer.parseInt(request.getParameter("id"));
-                JsonArray result = reservation.getReservationByCustomer(id);
-
-                if (result == null) {
-                    response.setStatus(404);
-                } else {
-                    response.setStatus(200);
-                }
-                out.print(result);
-
-            }
+        } else {
+            response.setStatus(401);
+            out.print("Auth Failed");
         }
     }
 

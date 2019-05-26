@@ -6,7 +6,7 @@ import comingSoonPng from '../static/default_product_image.jpg';
 const Reservation = (props) => {
     const { name, reservations } = props;
 
-    if (reservations === undefined) {
+    if (reservations === undefined || reservations.length === 0) {
         return (
             <List.Item>
                 <List.Icon name='github' size='large' verticalAlign='middle' />
@@ -21,8 +21,8 @@ const Reservation = (props) => {
             <List.Item key={item.toString()}>
                 <List.Icon name='github' size='large' verticalAlign='middle' />
                 <List.Content>
-                    <List.Header>{item.packName}</List.Header>
-                    <List.Description>Reserved by {item.name} on {item.date}</List.Description>
+                    <List.Header>{item.package}</List.Header>
+                    <List.Description>Reserved by {item.client}, qty: {item.quantity}</List.Description>
                 </List.Content>
             </List.Item>
         )
@@ -43,7 +43,8 @@ class Profile extends Component {
     }
 
     render() {
-        const { name, reservations, today } = this.state;
+        const { reservations, name } = this.props;
+        
         return (
             <Card raised>
                 <Image src={comingSoonPng} />
@@ -53,7 +54,7 @@ class Profile extends Component {
                         <h6>{this.state.today}</h6>
                         <h3>Reservations</h3>
                         <List divided relaxed>
-                            <Reservation name={name} reservations={reservations} today={today} />
+                            <Reservation name={name} reservations={reservations} />
                         </List>
                     </Card.Description>
                 </Card.Content>

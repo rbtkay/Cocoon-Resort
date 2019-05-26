@@ -108,9 +108,6 @@ class SignUp extends Component {
         const emailRegEx = new RegExp(/^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6}$/);
         const { firstName, lastName, email, password, confirmPassword, phone } = this.state;
         //TODO: is loading for button
-        console.log(email)
-        console.log(password)
-        console.log(confirmPassword)
         this.emptyFieldVerification();
 
 
@@ -123,7 +120,6 @@ class SignUp extends Component {
             });
         }
         if (password !== confirmPassword) {
-            console.log("in the if")
             this.setState({
                 isError: true,
                 formError: "Password don't match",
@@ -148,18 +144,19 @@ class SignUp extends Component {
     addPhone = (event) => {
         const { phone } = this.state;
         if (this.handlePhone(event)) {
-            this.setState({ phone: phone + this.handlePhone(event) })
+            if (this.handlePhone(event) == 'Backspace') {
+                this.setState({ phone: phone.substr(0, phone.length - 1) })
+            } else {
+                this.setState({ phone: phone + this.handlePhone(event) })
+            }
         }
     }
 
     handlePhone(e) {
-        console.log(e.key);
-        let allowed = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-'];
+        let allowed = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', 'Backspace'];
         if (allowed.includes(e.key)) {
-            console.log('includes');
             return e.key;
         } else {
-            console.log('doesnt include');
             return false;
         }
 

@@ -8,8 +8,6 @@ import ReservationClass from '../../classes/reservation'
 import NavigationBar from '../../components/NavigationBar';
 
 const Reservation = (props) => {
-    console.log("props")
-    console.log(props)
     const { packId, packName, resortName, reservationId, packFrom, packTo, packGuests, packDetails, resortLocation } = props.info;
     return (
         <Segment key={props.toString()}>
@@ -65,17 +63,17 @@ class viewReservation extends Component {
     constructor(props) {
         super(props);
 
-        const queryString = require('query-string');
+        // const queryString = require('query-string');
 
-        const info = queryString.parse(props.location.search)
+        // const info = queryString.parse(props.location.search)
 
-        const id = info['id'] ? info['id'] : -1;
+        // const id = info['id'] ? info['id'] : -1;
 
-        console.log(id)
+        // console.log(id)
 
 
         this.state = {
-            clientId: id,
+            clientId: localStorage.getItem("id"),
             reservations: []
         }
     }
@@ -103,11 +101,13 @@ class viewReservation extends Component {
         }
         const reservation = new ReservationClass();
         const result = await reservation.readAllByCustomer(this.state.clientId);
-
-        console.log(result)
-        if (result !== null) {
-            this.setState({ reservations: result })
-         }
+        if (result === 401) {
+            window.location = '/welcome';
+        } else {
+            if (result !== null) {
+                this.setState({ reservations: result })
+            }
+        }
     }
 
     cancelReservation = async (id, packId, quantity) => {
@@ -115,7 +115,6 @@ class viewReservation extends Component {
         const result = await reservation.cancel(id, packId, quantity);
 
         if (result === true) {
-            console.log("should refresh")
             this.componentDidMount();
         }
     }

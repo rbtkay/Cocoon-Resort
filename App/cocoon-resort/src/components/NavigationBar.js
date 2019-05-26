@@ -11,18 +11,15 @@ const cookie = require('../cookie');
 
 
 const BtnComp = (props) => {
-    console.log(props.isAuth)
 
     if (props.isAuth !== false) {
         const token = props.isAuth;
 
         const decodedToken = JWT.decode(token);
-        console.log(decodedToken);
-
         if (decodedToken.iss === "client") {
             return <Button onClick={props.viewReservation}>Check Your Reservation</Button>
         } else if (decodedToken.iss === "resort") {
-            return <p />;
+            window.location = '/resort/home';
         } else {
             return <Button color='brown' onClick={props.newResort}>Show us Your Resort</Button>
 
@@ -38,7 +35,6 @@ class NavigationBar extends Component {
     constructor(props) {
         super(props);
 
-        console.log(localStorage.getItem('auth'));
         this.state = {
             isAuth: localStorage.getItem('auth') || false,
             name: '',
@@ -80,9 +76,7 @@ class NavigationBar extends Component {
     }
 
     async componentDidMount() {
-        console.log(this.props.isLoginNeeded);
         let name = localStorage.getItem('name');
-        console.log(this.state)
         if (name) {
             this.setState({ name });
         }
@@ -95,9 +89,6 @@ class NavigationBar extends Component {
 
     renderMenu = () => {
         const token = this.state.isAuth;
-
-        console.log("token")
-        console.log(token)
 
         if (token) {
             const decodedToken = JWT.decode(token);
@@ -136,7 +127,7 @@ class NavigationBar extends Component {
                     <MenuItem>
                         <Login isLoginOpen={this.state.isLoginOpen} loginClose={this.loginClose} handleLogin={this.handleLogin} swapModals={this.swapModals} />
                         <ResortLogin isResortLoginOpen={this.state.isResortLoginOpen} resortLoginClose={this.resortLoginClose} handleLogin={this.handleResortLogin} swapModals={this.swapModals} />
-                        <Button icon='sign-in' secondary inverted onClick={this.onClick} content='Log In'></Button>
+                        <Button id='login' icon='sign-in' secondary inverted onClick={this.onClick} content='Log In'></Button>
                     </MenuItem>
 
                     <MenuItem>

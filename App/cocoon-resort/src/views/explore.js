@@ -13,7 +13,6 @@ class Explore extends Component {
 
         // const info = queryString.parse(this.props.location.search)
 
-        console.log('ziinfoinfo');
 
         // info['category'] = info['category'] ? info['category'] : '';
         // info['from'] = info['from'] || '';
@@ -27,7 +26,6 @@ class Explore extends Component {
             category: ''
         }
 
-        console.log({ info })
 
         localStorage.removeItem("location");
         localStorage.removeItem("from");
@@ -64,6 +62,7 @@ class Explore extends Component {
     }
 
     async componentDidMount() {
+        window.scroll(0, 0);
         const pack = new PackageClass();
 
         // const { info } = this.state;
@@ -77,8 +76,6 @@ class Explore extends Component {
 
     setFilteredPackages = async (filter) => { //is called from the filter component
         const { location, from, to, category, guests } = filter;
-
-        console.log(filter)
 
         const pack = new PackageClass();
         const allPackages = await pack.filterByDate(from, to);

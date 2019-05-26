@@ -98,7 +98,6 @@ class Settings extends Component {
 
         // const user = await response.json();
         this.setState({ user: response[0] });
-        console.log('user', response);
     }
 
     checkOld = () => {
@@ -148,6 +147,7 @@ class Settings extends Component {
         const id = localStorage.getItem('id');
         const authObj = new AuthClass();
         if (authObj.deleteUser(id)) {
+            localStorage.clear()
             this.props.history.push(`/welcome`);
         } else {
             this.setState({ errorMessage: "Something went wrong..." });

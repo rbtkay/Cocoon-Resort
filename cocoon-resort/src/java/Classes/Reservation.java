@@ -55,29 +55,28 @@ public class Reservation {
         return false;
     }
 
-    public JsonArray readAll() {
+    public JsonArray readAllByResort(int id) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
             prepStmt = con.prepareStatement("select reservations_t.*, clients_t.client_name, packages_t.package_name, resorts_t.resort_name "
                     + "from reservations_t, clients_t, packages_t,resorts_t "
-                    + "where reservations_t.client_id = clients_t.client_id and reservations_t.package_id = packages_t.package_id and resorts_t.resort_id = reservations_t.resort_id");
+                    + "where reservations_t.client_id = clients_t.client_id and reservations_t.package_id = packages_t.package_id and reservations_t.resort_id = ?");
 
+            prepStmt.setInt(1, id);
             result = prepStmt.executeQuery();
 
             JsonArrayBuilder builder = Json.createArrayBuilder();
             while (result.next()) {
                 builder.add(Json.createObjectBuilder()
-                        .add("reservation", Json.createObjectBuilder()
-                                .add("from", result.getString("reservation_from"))
-                                .add("to", result.getString("reservation_to")))
                         .add("client", result.getString("client_name"))
                         .add("package", result.getString("package_name"))
+                        .add("quantity", result.getString("quantity"))
                 );
             }
 
             JsonArray resultJson = builder.build();
-
+            System.out.println(resultJson);
             return resultJson;
         } catch (Exception e) {
             try {
@@ -91,6 +90,9 @@ public class Reservation {
 
     public JsonArray getReservationByCustomer(int id) {
         try {
+
+            System.out.print("id");
+            System.out.print(id);
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
             prepStmt = con.prepareStatement("select reservations_t.*, clients_t.client_name, packages_t.*, resorts_t.resort_name, resorts_t.resort_location from reservations_t, clients_t, packages_t,resorts_t"

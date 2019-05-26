@@ -4,9 +4,6 @@ import { Segment, ImageGroup, Image, Grid, Button, Icon } from 'semantic-ui-reac
 import NumericInput from 'react-numeric-input';
 // import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 
-import Mountains from '../static/Mountains.jpg'
-import Beaches from '../static/Beaches.jpg'
-import Forests from '../static/Forests.jpg'
 import NavigationBar from '../components/NavigationBar';
 import Reservation from '../classes/reservation';
 import Login from '../components/Login';
@@ -75,7 +72,6 @@ class viewPackage extends Component {
         this.state = {
             isLoginNeeded: false,
             id: id,
-            images: [Mountains, Beaches, Forests],
             name: '',
             resortName: '',
             details: '',
@@ -83,11 +79,11 @@ class viewPackage extends Component {
             location: '',
             from: '',
             to: '',
-            image: '',
             capacity: 0,
             isReserved: false,
             numPeople: 1,
-            guests: 0
+            guests: 0,
+            images: ''
         }
     }
 
@@ -105,7 +101,7 @@ class viewPackage extends Component {
                     <Grid.Row columns={2}>
                         <Grid.Column >
                             <Segment>
-                                <Grid style={{ backgroundImage: `url(${Mountains})`, backgroundRepeat: 'no-repeat', backgroundSize: '100%' }}>
+                                <Grid style={{ backgroundImage: `url(${this.state.images})`, backgroundRepeat: 'no-repeat', backgroundSize: '100%' }}>
                                     <Grid.Row columns={3}>
                                         <Grid.Column width={2} verticalAlign='middle'>
                                             <Icon name='angle left' size='huge' />
@@ -163,8 +159,10 @@ class viewPackage extends Component {
         } else {
             const pack = new PackageClass();
             const result = await pack.readOne(id);
+            const images = await pack.getImages(id);
+
             //TODO: get the images
-            console.log(result);
+            console.log('images', images);
             const { name, resortName, location, details, price, from, to, image, guests, capacity, isReserved, resortId } = result[0];
 
             this.setState({
@@ -179,7 +177,8 @@ class viewPackage extends Component {
                 image,
                 guests,
                 capacity,
-                isReserved
+                isReserved,
+                images
             })
         }
     }
@@ -187,7 +186,6 @@ class viewPackage extends Component {
     reserve = async () => {
 
         if (!localStorage.getItem('auth')) {
-            console.log("hehe");
             const loginBtn = document.getElementById('login');
             loginBtn.click();
             return;
@@ -195,14 +193,8 @@ class viewPackage extends Component {
 
         const reservation = new Reservation();
 
-        console.log("this.state");
-        console.log(this.state);
-
-        const clientId = 6;
-
         const { id, resortId, numPeople, guests } = this.state
-        if (reservation.create(id, clientId, resortId, numPeople)) {
-            console.log("reserving");
+        if (reservation.create(id, resortId, numPeople)) {
             this.setState({ isReserved: true, guests: parseInt(numPeople) + parseInt(guests) });
         };
     }

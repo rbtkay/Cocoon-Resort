@@ -114,8 +114,12 @@ public class Client {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+            
+            prepStmt = con.prepareStatement("delete from reservations_t where client_id = ?");
+            prepStmt.setInt(1, id);
+            prepStmt.executeUpdate();
+            
             prepStmt = con.prepareStatement("delete from clients_t where client_id = ?");
-
             prepStmt.setInt(1, id);
             prepStmt.executeUpdate();
             return true;

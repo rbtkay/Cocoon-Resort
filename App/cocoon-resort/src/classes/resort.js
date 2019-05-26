@@ -24,9 +24,6 @@ class Resort {
             if (response.status === 201) {
                 const result = await response.json();
 
-                console.log('result');
-                console.log(result);
-
                 const jwt = result[0].jwt;
                 const id = result[0].id;
                 const name = result[0].name;

@@ -37,15 +37,11 @@ class Resort extends Component {
             category: info['category'] ? info['category'] : 'World',
             resorts: []
         }
-
-        console.log(this.state)
     }
 
     render() {
         const images = { Mountains: Mountains, Beaches: Beaches, Forests: Forests };
         const { category } = this.state;
-        console.log(category);
-        console.log(images[category]);
         const image = category !== "World" ? images[category] : Mountains;
         return (
             <div>
@@ -64,6 +60,7 @@ class Resort extends Component {
     }
 
     async componentDidMount() {
+        window.scroll(0, 0);
         const resort = new ResortClass();
 
         const { category } = this.state;
@@ -71,15 +68,11 @@ class Resort extends Component {
         const categorySend = category === "World" ? '' : category;
         const result = await resort.readAll(categorySend);
 
-        console.log(result);
-
         this.setState({ resorts: result })
     }
 
 
     redirect = (id) => {
-        console.log("id")
-        console.log(id)
         this.props.history.push(`/viewResort?id=${id}`);
     }
 }

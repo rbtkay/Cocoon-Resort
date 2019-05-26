@@ -7,9 +7,16 @@ class newPackage extends Component {
 
     constructor(props) {
         super(props);
-        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-        const date = new Date().toLocaleDateString('en-GB', options);
-        const d = date.replace(/\//g, '-');
+        let date = new Date();
+        let month = '' + (date.getMonth() + 1);
+        let day = '' + date.getDate();
+        let year = date.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+        const d = [year, month, day].join('-');
 
         this.state = {
             name: '',
@@ -120,9 +127,9 @@ class newPackage extends Component {
 
     handleForm = () => {
         let { name, details, price, from, to, capacity, image } = this.state;
-
-        const fromDate = new Date(from.split('-')[2], from.split('-')[1], from.split('-')[0]);
-        const toDate = new Date(to.split('-')[2], to.split('-')[1], to.split('-')[0]);
+        
+        const fromDate = new Date(from);
+        const toDate = new Date(to);
 
         if (name === '') {
             this.setState({
@@ -142,7 +149,7 @@ class newPackage extends Component {
             to = to === '' ? this.state.now : to;
             capacity = capacity === 0 ? 1 : capacity;
 
-            const resortId = 1; //TODO: get it from localStorage.getItem("resortId");
+            const resortId = localStorage.getItem("id");
 
             const pack = new Package();
 

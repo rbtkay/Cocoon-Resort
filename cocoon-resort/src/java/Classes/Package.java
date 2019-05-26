@@ -78,7 +78,7 @@ public class Package {
                         .add("from", result.getString("package_from"))
                         .add("to", result.getString("package_to"))
                         .add("capacity", result.getString("package_capacity"))
-//                        .add("image", result.getString("package_image"))
+                        //                        .add("image", result.getString("package_image"))
                         .add("isReserved", result.getString("package_isReserved"))
                         .add("resortId", result.getString("resort_id"))
                         .add("resortName", result.getString("resort_name"))
@@ -110,6 +110,34 @@ public class Package {
             } catch (Exception e) {
                 out.println("Error while Closing to the Database");
             }
+        }
+    }
+
+    public boolean delete(int id) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+
+            prepStmt = con.prepareStatement("delete from reservations_t where package_id = ?");
+            prepStmt.setInt(1, id);
+            prepStmt.executeUpdate();
+            
+            System.out.println("DELETED FROM RESERVATION");
+            
+            prepStmt = con.prepareStatement("delete from images_t where package_id = ?");
+            prepStmt.setInt(1, id);
+            prepStmt.executeUpdate();
+
+            prepStmt = con.prepareStatement("Delete from packages_t where package_id = ?");
+            prepStmt.setInt(1, id);
+            prepStmt.executeUpdate();
+            
+            System.out.println("DELETED FROM PACKAGE");
+            return true;
+
+        } catch (Exception e) {
+            System.out.print(e);
+            return false;
         }
     }
 
@@ -253,7 +281,7 @@ public class Package {
                         .add("price", result.getString("package_price"))
                         .add("from", result.getString("package_from"))
                         .add("to", result.getString("package_to"))
-//                        .add("image", result.getString("package_image"))
+                        //                        .add("image", result.getString("package_image"))
                         .add("capacity", result.getString("package_capacity"))
                         .add("isReserved", result.getBoolean("package_isReserved")));
             }
@@ -338,7 +366,7 @@ public class Package {
                         .add("location", result.getString("resort_location"))
                         .add("from", result.getString("package_from"))
                         .add("to", result.getString("package_to"))
-//                        .add("image", result.getString("package_image"))
+                        //                        .add("image", result.getString("package_image"))
                         .add("guests", result.getString("package_guest"))
                         .add("capacity", result.getString("package_capacity"))
                         .add("isReserved", result.getBoolean("package_isReserved")));
