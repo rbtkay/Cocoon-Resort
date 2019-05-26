@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Form, Icon, TextArea, Input } from 'semantic-ui-react';
+import { Modal, Form, Icon, TextArea, Input, Image } from 'semantic-ui-react';
 import { DateInput } from 'semantic-ui-calendar-react';
 import PackageClass from '../classes/package';
 
@@ -82,6 +82,7 @@ class EditPackage extends Component {
                             </Form.Field>
 
                             <Form.Field>
+                            {/* <Image src={this.state.images[this.state.imageIndex]} size='tiny' /> */}
                                 <Input
                                     type='file'
                                     onChange={event => this.uploadImage(event)} />

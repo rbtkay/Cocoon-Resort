@@ -105,15 +105,16 @@ class Package extends Component {
         this.setState({ id, name, capacity, price, from, to, details, isOpen: false });
     }
 
-
     view = (id) => {
         // const { id } = this.state;
         this.props.viewPack(id);
     }
-    async componentDidMount() {
+
+    async componentWillMount() {
         const pack = new PackageClass();
-        let images = await pack.getImages(this.state.id);
-        this.setState({ imgSrc: images })
+        let imageNames = await pack.getSingleImageName(this.state.id);
+        let imgSrc = await pack.getImage(imageNames);
+        this.setState({ imgSrc })
     }
 }
 

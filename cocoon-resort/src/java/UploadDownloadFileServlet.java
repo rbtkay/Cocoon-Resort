@@ -42,57 +42,57 @@ public class UploadDownloadFileServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         response.setHeader("Access-Control-Allow-Methods", "GET");
         System.out.println("GETTING");
-        int packId = Integer.parseInt(request.getParameter("packageId"));
+        String fileName = request.getParameter("imageName");
+//        int packId = Integer.parseInt(request.getParameter("packageId"));
 //        PrintWriter out = response.getWriter();''
-        ArrayList<String> images = img.getImages(packId);
-        if (images == null) {
-            response.setStatus(404);
-            return;
-        } else {
-            for (String fileName : images) {
+//        ArrayList<String> images = img.getImages(packId);
+//        if (images == null) {
+//            response.setStatus(404);
+//            return;
+//        } else {
+//            for (String fileName : images) {
 
-                System.out.println("THE IMAGE IN SERVLET " + fileName);
-                if (fileName == null || fileName.equals("")) {
-                    throw new ServletException("File Name can't be null or empty");
-                }
-                File file = new File(request.getServletContext().getAttribute("FILES_DIR") + File.separator + fileName);
-                if (!file.exists()) {
-                    throw new ServletException("File doesn't exists on server.");
-                }
-                System.out.println("File location on server::" + file.getAbsolutePath());
-                ServletContext ctx = getServletContext();
-                InputStream fis = new FileInputStream(file);
-                String mimeType = ctx.getMimeType(file.getAbsolutePath());
+        System.out.println("THE IMAGE IN SERVLET " + fileName);
+        if (fileName == null || fileName.equals("")) {
+            throw new ServletException("File Name can't be null or empty");
+        }
+        File file = new File(request.getServletContext().getAttribute("FILES_DIR") + File.separator + fileName);
+        if (!file.exists()) {
+            throw new ServletException("File doesn't exists on server.");
+        }
+        System.out.println("File location on server::" + file.getAbsolutePath());
+        ServletContext ctx = getServletContext();
+        InputStream fis = new FileInputStream(file);
+        String mimeType = ctx.getMimeType(file.getAbsolutePath());
 
-                System.out.println("MIME TYPE=====" + mimeType);
-                System.out.println("CTX==============" + ctx);
+        System.out.println("MIME TYPE=====" + mimeType);
+        System.out.println("CTX==============" + ctx);
 //        response.setContentType("application/json");
-                response.setContentType(mimeType != null ? mimeType : "application/octet-stream");
-                response.setHeader("Content-Disposition", "image; filename=\"" + fileName + "\"");
+        response.setContentType(mimeType != null ? mimeType : "application/octet-stream");
+        response.setHeader("Content-Disposition", "image; filename=\"" + fileName + "\"");
 //            response.setContentType("application/octet-stream");
-                response.setContentLength((int) file.length());
+        response.setContentLength((int) file.length());
 //            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
-                ServletOutputStream os = response.getOutputStream();
-                byte[] bufferData = new byte[1024];
-                int read = 0;
-                while ((read = fis.read(bufferData)) != -1) {
+        ServletOutputStream os = response.getOutputStream();
+        byte[] bufferData = new byte[1024];
+        int read = 0;
+        while ((read = fis.read(bufferData)) != -1) {
 ////            System.out.print("in the while");
-                    os.write(bufferData, 0, read);
-                }
+            os.write(bufferData, 0, read);
+        }
 
 //        os.write("<a href=\"UploadDownloadFileServlet?fileName=" + file.getName() + "\">Download " + file.getName() + "</a>");
-                os.flush();
-                os.close();
-                fis.close();
-                System.out.println("File downloaded at client successfully");
+        os.flush();
+        os.close();
+        fis.close();
+        System.out.println("File downloaded at client successfully");
 //        }
 //        String fileName = request.getParameter("fileName");
-            }
-        }
+//            }
+
 //            String fileName = images.get(0);
 //        for (String image : images) {
-
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
