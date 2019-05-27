@@ -131,6 +131,8 @@ class SignUp extends Component {
             const auth = new Auth();
 
             //TODO: encrypt Password
+
+
             const isCreated = await auth.signUp({ firstName, lastName, email, password, phone });
 
             if (isCreated === true) {
