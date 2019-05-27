@@ -10,13 +10,16 @@ class EditPackage extends Component {
 
         let { id, name, details, price, from, to, capacity, isOpen } = this.props.info;
 
+        const dates = from + ' - ' + to;
+
         this.state = {
             id: id || '',
             name: name || '',
             details: details || '',
             price: price || '',
-            from: from || '',
-            to: to || '',
+            // from: from || '',
+            // to: to || '',
+            dates: dates,
             capacity: capacity || '',
             images: [],
             imageNames: [],

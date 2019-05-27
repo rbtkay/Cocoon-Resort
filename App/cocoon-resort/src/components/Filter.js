@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Menu, Dropdown, Grid, Form, Button } from 'semantic-ui-react';
-import { DateInput } from 'semantic-ui-calendar-react';
+import { DateInput, DatesRangeInput } from 'semantic-ui-calendar-react';
 import NumericInput from 'react-numeric-input';
 
 import Resort from '../classes/resort';
@@ -9,7 +9,25 @@ class Filter extends Component {
     constructor(props) {
         super(props);
 
-        const { location, from, to, category, guests } = this.props.info;
+        const { location, from, to, category, guests, dates } = this.props.info;
+
+        console.log('from in the filter')
+        console.log(from)
+        console.log('to in the filter')
+        console.log(to)
+
+        console.log(from + ' - ' + to)
+
+        let date = new Date();
+        let month = '' + (date.getMonth() + 1);
+        let day = '' + date.getDate();
+        let year = date.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+        const d = [year, month, day].join('-');
 
         this.state = {
             locationOptions: [],
@@ -20,7 +38,9 @@ class Filter extends Component {
             from: from,
             to: to,
             category: category || '',
-            guests: guests || 1
+            guests: guests || 1,
+            now: d,
+            dates: dates || ''
         }
     }
 
@@ -52,25 +72,12 @@ class Filter extends Component {
                         </Dropdown>
                     </Menu.Item>
                     <Menu.Item>
-                        <DateInput
-                            style={{ width: '170px' }}
-                            popupPosition='right center'
-                            name='from'
-                            placeholder='from'
-                            iconPosition='left'
-                            value={this.state.from || ''}
-                            onChange={this.handleDateChange}
-                            dateFormat='YYYY-MM-DD'
-                        />
-                    </Menu.Item>
-                    <Menu.Item>
-                        <DateInput
-                            style={{ width: '170px' }}
-                            popupPosition='right center'
-                            name='to'
-                            placeholder='to'
-                            iconPosition='left'
-                            value={this.state.to || ''}
+                        <DatesRangeInput
+                            name="dates"
+                            minDate={this.state.now}
+                            placeholder="From - To"
+                            value={this.state.dates}
+                            iconPosition="left"
                             onChange={this.handleDateChange}
                             dateFormat='YYYY-MM-DD'
                         />
@@ -122,17 +129,26 @@ class Filter extends Component {
     }
 
     handleDateChange = (event, { name, value }) => {
+
         if (this.state.hasOwnProperty(name)) {
             this.setState({
                 [name]: value
             });
         }
+
     }
 
     search = (event) => {
         event.preventDefault();
-        const { location, from, to, category, guests } = this.state;
+
+        console.log("this.state")
+        console.log(this.state.dates)
+
+        const { location, dates, category, guests } = this.state;
         const { value } = location;
+        const from = dates.split(' ')[0];
+        const to = dates.split(' ')[2];
+
         const info = { location: value, from, to, category, guests };
 
         this.props.filter(info);
