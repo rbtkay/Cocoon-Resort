@@ -216,8 +216,17 @@ class Welcome extends Component {
         // console.log(this.state)
 
 
-        const fromDate = new Date(from.split('-')[2], from.split('-')[1], from.split('-')[0]);
-        const toDate = new Date(to.split('-')[2], to.split('-')[1], to.split('-')[0]);
+        // const fromDate = new Date(from.split('-')[2], from.split('-')[1], from.split('-')[0]);
+        // const toDate = new Date(to.split('-')[2], to.split('-')[1], to.split('-')[0]);
+
+        const fromDate = new Date(from);
+        const toDate = new Date(to);
+
+
+        console.log('fromDate');
+        console.log(fromDate);
+        console.log('toDate');
+        console.log(toDate);
 
         if (guests < 1) {
             isErrorSearch = true;
