@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 21, 2019 at 01:30 PM
+-- Generation Time: May 27, 2019 at 09:34 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.14
 
@@ -33,19 +33,20 @@ CREATE TABLE IF NOT EXISTS `clients_t` (
   `client_id` int(11) NOT NULL AUTO_INCREMENT,
   `client_name` varchar(500) CHARACTER SET latin1 NOT NULL,
   `client_password` varchar(200) CHARACTER SET latin1 NOT NULL,
-  `client_phone` int(11) NOT NULL,
+  `client_phone` varchar(50) NOT NULL,
   `client_email` varchar(200) CHARACTER SET latin1 NOT NULL,
   `client_isVerified` bit(1) DEFAULT b'0',
   PRIMARY KEY (`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `clients_t`
 --
 
 INSERT INTO `clients_t` (`client_id`, `client_name`, `client_password`, `client_phone`, `client_email`, `client_isVerified`) VALUES
-(6, 'robert khayat', '123', 3060933, 'robert.g.khayat@gmail.com', b'0'),
-(7, 'kevin boghossian', '456', 3060933, 'kevin.boghossian@gmail.com', b'0');
+(6, 'robert khayat', '123', '3060933', 'robert.g.khayat@gmail.com', b'0'),
+(8, 'Kevin Boghossian', '123', '123', 'kevin.boghossian@gmail.com', b'0'),
+(9, ' ', '', '1226--07849356532356553463456324--435', '', b'0');
 
 -- --------------------------------------------------------
 
@@ -61,14 +62,16 @@ CREATE TABLE IF NOT EXISTS `images_t` (
   `image_path` varchar(500) NOT NULL,
   PRIMARY KEY (`image_id`),
   KEY `package_id` (`package_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `images_t`
 --
 
 INSERT INTO `images_t` (`image_id`, `package_id`, `image_name`, `image_path`) VALUES
-(1, 7, '613147.jpg', 'C:\\Users\\user\\AppData\\Roaming\\NetBeans\\8.0.2\\config\\GF_4.1\\domain1\\tmpfiles\\613147.jpg');
+(7, 10, '404c9ccd0824545bf5bebf9cb098ec0d.jpg', 'C:\\Users\\user\\AppData\\Roaming\\NetBeans\\8.0.2\\config\\GF_4.1\\domain1\\tmpfiles\\404c9ccd0824545bf5bebf9cb098ec0d.jpg'),
+(8, 11, '613147.jpg', 'C:\\Users\\user\\AppData\\Roaming\\NetBeans\\8.0.2\\config\\GF_4.1\\domain1\\tmpfiles\\613147.jpg'),
+(9, 11, 'TAS-Wave-2016-min-1250x594.png', 'C:\\Users\\user\\AppData\\Roaming\\NetBeans\\8.0.2\\config\\GF_4.1\\domain1\\tmpfiles\\TAS-Wave-2016-min-1250x594.png');
 
 -- --------------------------------------------------------
 
@@ -85,25 +88,20 @@ CREATE TABLE IF NOT EXISTS `packages_t` (
   `package_price` int(11) NOT NULL,
   `package_from` date DEFAULT '1990-01-01',
   `package_to` date DEFAULT '3000-01-01',
+  `package_guest` int(11) NOT NULL DEFAULT '0',
   `package_capacity` int(11) NOT NULL DEFAULT '1',
   `package_isReserved` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`package_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `packages_t`
 --
 
-INSERT INTO `packages_t` (`package_id`, `package_name`, `resort_id`, `package_detail`, `package_price`, `package_from`, `package_to`, `package_capacity`, `package_isReserved`) VALUES
-(1, '\0unknown', 1, 'a la montagne a cheval ', 200, '1990-01-01', '3000-01-01', 1, b'0'),
-(2, '\0Weekend', 1, 'well well', 100, '1990-01-01', '3000-01-01', 2, b'0'),
-(3, 'test', 1, 'lalala', 200, '1990-01-01', '3000-01-01', 2, b'0'),
-(4, 'test2', 1, 'lalala', 200, '1990-01-01', '3000-01-01', 2, b'0'),
-(5, 'le bon test', 1, 'ceci est un bon test', 200, '1990-01-01', '3000-01-01', 0, b'0'),
-(6, 'final test', 1, 'this is hopefully the last test', 400, '1990-01-01', '3000-01-01', 0, b'0'),
-(7, 'qwer', 1, 'this is hahah', 300, '2019-05-27', '2019-05-31', 20, b'0'),
-(8, 'alo?', 1, 'Hello World', 101, '2000-01-01', '2001-01-01', 5, b'0'),
-(9, 'alo?!?', 1, 'Hello World', 101, '2000-01-01', '2001-01-01', 5, b'0');
+INSERT INTO `packages_t` (`package_id`, `package_name`, `resort_id`, `package_detail`, `package_price`, `package_from`, `package_to`, `package_guest`, `package_capacity`, `package_isReserved`) VALUES
+(10, 'Test', 1, 'Tell us More... :)', 10, '2019-05-27', '2019-07-01', 0, 10, b'0'),
+(11, 'Test 2', 1, 'SALT', 200, '2019-05-27', '2020-05-26', 0, 200, b'0'),
+(12, 'abc', 1, '123', 123, '2019-05-27', '2019-05-27', 0, 123, b'0');
 
 -- --------------------------------------------------------
 
@@ -122,18 +120,7 @@ CREATE TABLE IF NOT EXISTS `reservations_t` (
   KEY `fk_clients_t_reservations_t` (`client_id`),
   KEY `fk_resorts_t_reservations_t` (`resort_id`),
   KEY `fk_packages_t_reservations_t` (`package_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `reservations_t`
---
-
-INSERT INTO `reservations_t` (`reservation_id`, `package_id`, `client_id`, `resort_id`, `quantity`) VALUES
-(1, 1, 6, 1, 2),
-(2, 1, 7, 1, 2),
-(3, 1, 6, 1, 2),
-(4, 1, 7, 1, 2),
-(5, 1, 7, 1, 2);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -148,6 +135,7 @@ CREATE TABLE IF NOT EXISTS `resorts_t` (
   `resort_password` varchar(200) CHARACTER SET latin1 NOT NULL,
   `resort_location` varchar(100) CHARACTER SET latin1 NOT NULL,
   `resort_category` varchar(200) CHARACTER SET latin1 DEFAULT NULL,
+  `resort_image` varchar(255) DEFAULT 'default_product_image.jpg',
   PRIMARY KEY (`resort_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
@@ -155,9 +143,9 @@ CREATE TABLE IF NOT EXISTS `resorts_t` (
 -- Dumping data for table `resorts_t`
 --
 
-INSERT INTO `resorts_t` (`resort_id`, `resort_name`, `resort_password`, `resort_location`, `resort_category`) VALUES
-(1, 'CookieResort', '123', 'Beit Chabeb', 'Mountains'),
-(3, 'laklouk', '123', 'laklouk', 'Mountains');
+INSERT INTO `resorts_t` (`resort_id`, `resort_name`, `resort_password`, `resort_location`, `resort_category`, `resort_image`) VALUES
+(1, 'CookieResort', '123', 'Beit Chabeb', 'Mountains', '613147.jpg'),
+(3, 'laklouk', '123', 'laklouk', 'Mountains', 'default_product_image.jpg');
 
 --
 -- Constraints for dumped tables
