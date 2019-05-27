@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import Classes.Image;
 import Classes.JWT;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -200,7 +201,7 @@ public class PackageServlet extends HttpServlet {
             }
             case "getImageNames": {
                 int id = Integer.parseInt(request.getParameter("packageId"));
-                
+
                 ArrayList<String> imageNames = pack.getImageNames(id);
                 if (imageNames == null) {
                     response.setStatus(404);
@@ -214,6 +215,22 @@ public class PackageServlet extends HttpServlet {
                 int id = Integer.parseInt(request.getParameter("packageId"));
                 out.print(pack.getSingleImageName(id));
                 break;
+            }
+            case "deleteImage": {
+                String id = request.getParameter("id");
+                String token = request.getParameter("token");
+                int packageId = Integer.parseInt(request.getParameter("packageId"));
+                String imageName = request.getParameter("imageName");
+                if (this.verifyUser(token, id)) {
+                    Image img = new Image();
+                    if (img.deleteImage(packageId, imageName)) {
+                        response.setStatus(200);
+                    } else {
+                        response.setStatus(404);
+                    }
+                } else {
+                    response.setStatus(401);
+                }
             }
         }
     }

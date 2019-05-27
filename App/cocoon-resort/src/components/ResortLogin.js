@@ -67,7 +67,7 @@ class ResortLogin extends Component {
             const result = await login.authResort(resortName, password);
 
             if (result !== 404) {
-                this.props.handleLogin(result[0].name, result[0].jwt, result[0].id);
+                this.props.handleLogin(result[0].name, result[0].jwt, result[0].id, result[0].image);
             } else {
                 this.setState({ errorMessage: 'Invalid Username/Password' });
             }

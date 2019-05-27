@@ -103,6 +103,7 @@ public class UploadDownloadFileServlet extends HttpServlet {
         }
         System.out.println("POSTING");
         int packId = Integer.parseInt(request.getParameter("packageId"));
+        String type = request.getParameter("type");
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
@@ -118,10 +119,18 @@ public class UploadDownloadFileServlet extends HttpServlet {
                 System.out.println("Size in bytes=" + fileItem.getSize());
 
                 File file = new File(request.getServletContext().getAttribute("FILES_DIR") + File.separator + fileItem.getName());
-                if (img.insertImage(packId, fileItem.getName(), file.getAbsolutePath())) {
-                    System.out.println("File inserted into table successfully");
+                if (type.equals("package")) {
+                    if (img.insertImage(packId, fileItem.getName(), file.getAbsolutePath())) {
+                        System.out.println("File inserted into table successfully");
+                    } else {
+                        System.out.println("Failed to insert image into table");
+                    }
                 } else {
-                    System.out.println("Failed to insert image into table");
+                    if (img.updateResortImage(packId, fileItem.getName())) {
+                        System.out.println("File inserted into table successfully ==> RESORT");
+                    } else {
+                        System.out.println("Failed to insert image into RESORT");
+                    }
                 }
                 System.out.println("Absolute Path at server=" + file.getAbsolutePath());
                 fileItem.write(file);

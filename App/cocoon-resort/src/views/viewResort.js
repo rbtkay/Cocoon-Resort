@@ -4,9 +4,6 @@ import { Segment, Card } from 'semantic-ui-react';
 import PackageClass from '../classes/package';
 import ListPackages from '../components/ListPackages';
 
-
-
-
 class ViewResort extends Component {
 
     constructor(props) {

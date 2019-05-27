@@ -51,6 +51,21 @@ class Resort {
             return 502;
         }
     }
+
+    async updateImage(fileName) {
+        const id = localStorage.getItem('id');
+        try {
+            let formData = new FormData();
+            formData.append('fileName', fileName);
+
+            const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?packageId=${id}&type=resort`, {
+                method: 'POST',
+                body: formData
+            });
+        } catch (err) {
+            throw err;
+        }
+    }
 }
 
 export default Resort;

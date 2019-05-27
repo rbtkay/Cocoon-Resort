@@ -126,4 +126,26 @@ public class Image {
         }
         return false;
     }
+    
+    public boolean updateResortImage(int id, String imageName) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
+            
+            prepStmt = con.prepareStatement("update resorts_t set resort_image = ? where resort_id = ?");
+            prepStmt.setString(1, imageName);
+            prepStmt.setInt(2, id);
+            prepStmt.executeUpdate();
+            return true;
+        } catch (Exception ex) {
+            System.out.println(ex);
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        }
+        return false;
+    }
 }
