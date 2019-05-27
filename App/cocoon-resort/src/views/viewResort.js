@@ -5,10 +5,6 @@ import NavigationBar from '../components/NavigationBar';
 import PackageClass from '../classes/package';
 import ListPackages from '../components/ListPackages';
 
-
-import image from '../static/image1.jpg';
-
-
 class ViewResort extends Component {
 
     constructor(props) {

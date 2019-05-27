@@ -66,6 +66,7 @@ class Home extends Component {
         const packages = await pack.filterByResort(id);
         const reservations = await reservation.readAllByResort(id);
 
+
         this.setState({ packages, reservations });
     }
 

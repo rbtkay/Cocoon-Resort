@@ -94,22 +94,18 @@ class viewPackage extends Component {
             <div>
 
                 <NavigationBar />
-                <br />
-                <br />
-                <br />
-                <br />
-
+                <br /><br /><br /><br />
                 <Grid>
                     <Grid.Row columns={2}>
                         <Grid.Column >
                             <Segment>
-                                <Grid style={{ backgroundImage: `url(${this.state.images[this.state.imageIndex]})`, backgroundRepeat: 'no-repeat', backgroundSize: '100%' }}>
-                                    <Grid.Row columns={3}>
+                                <Grid>
+                                    <Grid.Row columns={2}>
                                         <Grid.Column width={2} verticalAlign='middle'>
                                             <Button icon='angle left' size='big' color='green' inverted onClick={this.left}/>
                                         </Grid.Column>
                                         <Grid.Column width={12}>
-                                            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+                                            <Image centered id='img' src={this.state.images[this.state.imageIndex]} />
                                         </Grid.Column>
                                         <Grid.Column width={2} verticalAlign='middle'>
                                             <Button icon='angle right' size='big' color='green' inverted onClick={this.right}/>
@@ -154,32 +150,40 @@ class viewPackage extends Component {
         )
     }
 
-    callback = (result, images) => {
-        const { name, resortName, location, details, price, from, to, image, guests, capacity, isReserved, resortId } = result;
-
-        this.setState({ name, resortName, location, details, price, from, to, images, guests, capacity, isReserved, resortId });
+    async componentWillMount() {
+        const pack = new PackageClass();
+        let imageNames = await pack.getImageNames(this.state.id);
+        let imageArray = imageNames.substr(1, imageNames.length - 2).split(',');
+        imageArray = imageArray.map((imageName) => {
+            return imageName.trim();
+        });
+        let images = [];
+        let img = document.getElementById('img');
+        imageArray.map((imageName) => {
+            if (imageName) {
+                return pack.getImage(imageName.trim()).then((value) => {
+                    images.push(value);
+                    img.src = value;
+                })
+            }
+        });
+        console.log('images', images)
+        console.log(img);
+        this.setState({ images });
     }
 
 
     async componentDidMount() {
+        console.log('did mount');
         const { id } = this.state;
         if (id === -1) {
             this.props.history.push('/explore');
         } else {
             const pack = new PackageClass();
             const result = await pack.readOne(id);
-            const imageNames = await pack.getImageNames(id);
-            const imageArray = imageNames.substr(1, imageNames.length - 2).split(',');
-            let images = [];
-            let count = 0;
-            imageArray.forEach(async img => {
-                const image = await pack.getImage(img.trim());
-                images.push(image);
-                count++;
-                if (count === imageArray.length - 1) {
-                    this.callback(result[0], images);
-                }
-            });
+            const { name, resortName, location, details, price, from, to, image, guests, capacity, isReserved, resortId } = result[0];
+
+            this.setState({ name, resortName, location, details, price, from, to, guests, capacity, isReserved, resortId });
         }
     }
 

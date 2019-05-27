@@ -87,10 +87,9 @@ class Package {
             if (response.ok) {
                 const imageNames = await response.text();
                 // console.log(`response is ok for ${id}`, imageNames);
-                
+
                 return imageNames;
             } else {
-                console.log('response is NULL');
                 return null;
             }
         } catch (err) {
@@ -104,10 +103,8 @@ class Package {
 
             if (response.ok) {
                 const imageNames = await response.text();
-                // console.log(`response is ok for ${id}`, imageNames);
                 return imageNames;
             } else {
-                console.log('response is NULL');
                 return null;
             }
         } catch (err) {
@@ -119,7 +116,7 @@ class Package {
         console.log('name', name)
         if (name) {
             try {
-                const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?imageName=${name}`);
+                let response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?imageName=${name}`);
 
                 if (response.ok) {
                     let objUrl = await response.blob();
@@ -138,7 +135,7 @@ class Package {
             let formData = new FormData();
             formData.append('fileName', fileName);
 
-            const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?packageId=${id}`, {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/UploadDownloadFileServlet?packageId=${id}&type=package`, {
                 method: 'POST',
                 body: formData
             });
@@ -172,6 +169,22 @@ class Package {
                 return true;
             } else {
                 return false;
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async deleteImage(packId, imageName) {
+        const id = localStorage.getItem('id');
+        const token = localStorage.getItem('auth');
+        try {
+            const response = await fetch(`http://localhost:8080/cocoon-resort/PackageServlet?action=deleteImage&id=${id}&token=${token}&packageId=${packId}&imageName=${imageName}`);
+
+            if (response.ok) {
+                alert('Image successfully deleted!');
+            } else {
+                alert('Oops! Something went wrong...');
             }
         } catch (err) {
             throw err;

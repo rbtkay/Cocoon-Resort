@@ -77,6 +77,7 @@ public class Resort {
                 builder.add(Json.createObjectBuilder()
                         .add("id", id)
                         .add("name", result.getString("resort_name"))
+                        .add("image", result.getString("resort_image"))
                         .add("jwt", jwt)
                 );
             }
@@ -175,6 +176,7 @@ public class Resort {
                         .add("name", result.getString("resort_name"))
                         .add("location", result.getString("resort_location"))
                         .add("category", result.getString("resort_category"))
+                        .add("image", result.getString("resort_image"))
                         .add("count", result.getString("packCount"))
                 );
             }

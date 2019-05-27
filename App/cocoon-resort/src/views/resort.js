@@ -6,9 +6,9 @@ import ResortComp from '../components/ResortComp';
 
 import ResortClass from '../classes/resort';
 
-import Mountains from '../static/Mountains.jpg'
-import Beaches from '../static/Beaches.jpg'
-import Forests from '../static/Forests.jpg'
+import Mountains from '../static/Mountains.jpg';
+import Beaches from '../static/Beaches.jpg';
+import Bungalows from '../static/Forests.jpg';
 
 const ListResorts = (props) => {
     if (props.resorts.length < 1) {
@@ -17,6 +17,7 @@ const ListResorts = (props) => {
         )
     } else {
         return props.resorts.map(item => {
+            console.log(item);
             return (
                 <ResortComp key={item.toString()} info={item} redirect={props.redirect} />
             )
@@ -40,7 +41,7 @@ class Resort extends Component {
     }
 
     render() {
-        const images = { Mountains: Mountains, Beaches: Beaches, Forests: Forests };
+        const images = { Mountains: Mountains, Beaches: Beaches, Bungalow: Bungalows };
         const { category } = this.state;
         const image = category !== "World" ? images[category] : Mountains;
         return (
@@ -70,7 +71,6 @@ class Resort extends Component {
 
         this.setState({ resorts: result })
     }
-
 
     redirect = (id, resortName) => {
         this.props.history.push(`/viewResort?id=${id}&resortName=${resortName}`);

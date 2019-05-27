@@ -48,12 +48,14 @@ class EditPackage extends Component {
                                 onChange={event => this.setState({ name: event.target.value })} />
                             <Form.Input
                                 label='Capacity'
+                                type='number'
                                 value={this.state.capacity}
                                 placeholder={capacity}
                                 fluid
                                 onChange={event => this.setState({ capacity: event.target.value })} />
                             <Form.Input
                                 label='Price'
+                                type='number'
                                 value={this.state.price}
                                 placeholder={price}
                                 fluid
@@ -76,7 +78,6 @@ class EditPackage extends Component {
                                     placeholder='Additional Details...'
                                     value={this.state.details}
                                     onChange={event => this.setState({ details: event.target.value })} />
-
                             </Form.Field>
 
                             <Form.Field>
@@ -96,8 +97,12 @@ class EditPackage extends Component {
                                     </Grid>
                                 </Segment>
                                 <Form.Group widths='2'>
-                                    <Button negative content='Delete' floated='left' icon='times circle' onClick={this.deleteImage} size='tiny' />
-                                    <Input type='file' floated='right' icon='plus' onClick={this.uploadImage} size='mini' />
+                                    <Form.Field>
+                                        <Button negative content='Delete' floated='left' icon='times circle' onClick={this.deleteImage} />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <Input type='file' floated='right' icon='plus' onChange={this.uploadImage} size='mini' />
+                                    </Form.Field>
                                 </Form.Group>
                             </Form.Field>
                         </Form.Group>
@@ -126,7 +131,6 @@ class EditPackage extends Component {
         const pack = new PackageClass();
         let imageNames = await pack.getImageNames(this.state.id);
         let imageArray = imageNames.substr(1, imageNames.length - 2).split(',');
-        // console.log('imageNames', imageArray);
         imageArray = imageArray.map((imageName) => {
             return imageName.trim();
         });
@@ -138,8 +142,7 @@ class EditPackage extends Component {
                 })
             }
         });
-        console.log('imageArray', images)
-        this.setState({ images, imageNames: imageArray });
+        this.setState({ images, imageNames: imageArray.reverse() });
     }
 
     left = (event) => {
@@ -165,7 +168,6 @@ class EditPackage extends Component {
     }
 
     handleDateChange = (event, { name, value }) => {
-        console.log('les images!!!', this.state.images);
         if (this.state.hasOwnProperty(name)) {
             this.setState({
                 [name]: value
@@ -179,9 +181,14 @@ class EditPackage extends Component {
     }
 
     uploadImage = (event) => {
-        // event.preventDefault();
         const pack = new PackageClass();
         pack.updateImage(this.state.id, event.target.files[0]);
+    }
+
+    deleteImage = async () => {
+        const { id, imageNames, imageIndex } = this.state;
+        const pack = new PackageClass();
+        pack.deleteImage(id, imageNames[imageIndex]);
     }
 }
 

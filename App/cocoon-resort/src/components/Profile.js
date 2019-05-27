@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Image, List, Card } from 'semantic-ui-react';
-
-import comingSoonPng from '../static/default_product_image.jpg';
+import { Image, List, Card, Input } from 'semantic-ui-react';
+import ResortClass from '../classes/resort';
+import PackageClass from '../classes/package';
 
 const Reservation = (props) => {
     const { name, reservations } = props;
@@ -40,18 +40,19 @@ class Profile extends Component {
         this.state = {
             name: name ? name : '',
             reservations: reservations ? reservations : undefined,
-            today: today ? today : 'no one is comming today'
+            today: today ? today : 'No Reservations for Today',
+            src: ''
         }
     }
 
     render() {
         const { reservations, name } = this.props;
-        
+        const resortName = localStorage.getItem('resortName');
         return (
             <Card raised>
-                <Image src={comingSoonPng} />
+                <Image src={this.state.src} onClick={this.imageClick} />
                 <Card.Content>
-                    <Card.Header><h1>Resort Name</h1></Card.Header>
+                    <Card.Header><h1>{resortName}</h1></Card.Header>
                     <Card.Description>
                         <h6>{this.state.today}</h6>
                         <h3>Reservations</h3>
@@ -60,9 +61,27 @@ class Profile extends Component {
                         </List>
                     </Card.Description>
                 </Card.Content>
+                <Input id='imageInput' type='file' style={{visibility: 'hidden'}} onChange={this.updateImage}/>
             </Card>
-
         )
+    }
+
+    imageClick = () => {
+        const imageInput = document.getElementById('imageInput');
+        imageInput.click();
+    }
+
+    updateImage = (event) => {
+        const resort = new ResortClass();
+        resort.updateImage(event.target.files[0]);
+        localStorage.setItem('image', event.target.files[0].name);
+    }
+
+    async componentWillMount() {
+        const imageName = localStorage.getItem('image');
+        const pack = new PackageClass();
+        const image = await pack.getImage(imageName);
+        this.setState({ src: image });
     }
 }
 
