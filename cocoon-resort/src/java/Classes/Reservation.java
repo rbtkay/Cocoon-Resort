@@ -61,7 +61,7 @@ public class Reservation {
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/resort", "root", "");
             prepStmt = con.prepareStatement("select reservations_t.*, clients_t.client_name, packages_t.package_name, resorts_t.resort_name "
                     + "from reservations_t, clients_t, packages_t,resorts_t "
-                    + "where reservations_t.client_id = clients_t.client_id and reservations_t.package_id = packages_t.package_id and reservations_t.resort_id = ?");
+                    + "where reservations_t.client_id = clients_t.client_id and reservations_t.package_id = packages_t.package_id and reservations_t.resort_id = ? and resorts_t.resort_id = reservations_t.resort_id");
 
             prepStmt.setInt(1, id);
             result = prepStmt.executeQuery();

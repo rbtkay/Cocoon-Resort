@@ -72,8 +72,8 @@ class Resort extends Component {
         this.setState({ resorts: result })
     }
 
-    redirect = (id) => {
-        this.props.history.push(`/viewResort?id=${id}`);
+    redirect = (id, resortName) => {
+        this.props.history.push(`/viewResort?id=${id}&resortName=${resortName}`);
     }
 }
 

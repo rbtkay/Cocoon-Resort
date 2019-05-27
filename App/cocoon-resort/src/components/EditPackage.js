@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Form, Icon, TextArea, Input, Image, Grid, Button, Segment } from 'semantic-ui-react';
-import { DateInput } from 'semantic-ui-calendar-react';
+import { DateInput, DatesRangeInput } from 'semantic-ui-calendar-react';
 import PackageClass from '../classes/package';
 
 
@@ -10,6 +10,10 @@ class EditPackage extends Component {
 
         let { id, name, details, price, from, to, capacity, isOpen } = this.props.info;
 
+        const dates = from + ' - ' + to;
+
+        console.log(dates)
+
         this.state = {
             id: id || '',
             name: name || '',
@@ -17,6 +21,7 @@ class EditPackage extends Component {
             price: price || '',
             from: from || '',
             to: to || '',
+            dates: dates,
             capacity: capacity || '',
             images: [],
             imageNames: [],
@@ -27,7 +32,8 @@ class EditPackage extends Component {
 
     render() {
         const { name, details, price, from, to, capacity } = this.props.info
-
+        const dates = from + ' - ' + to
+        console.log(dates)
         return (
             <Modal open={this.props.isOpen} onClose={this.props.handleClose} size='fullscreen'>
                 <Modal.Header><Icon name='edit' /> Edit {name}</Modal.Header>
@@ -56,28 +62,16 @@ class EditPackage extends Component {
                                 onChange={event => this.setState({ price: event.target.value })} />
                         </Form.Group>
 
-                        <Form.Group widths='2' inline>
-                            <DateInput
-                                name='from'
-                                label='Starting Date'
-                                placeholder={from}
-                                iconPosition='left'
-                                fluid
-                                value={this.state.from}
-                                onChange={this.handleDateChange}
-                                dateFormat='YYYY-MM-DD' />
-                            <DateInput
-                                name='to'
-                                label='Ending Date'
-                                placeholder={to}
-                                value={this.state.to}
-                                fluid
-                                onChange={this.handleDateChange}
-                                dateFormat='YYYY-MM-DD' />
-                        </Form.Group>
+                        <DatesRangeInput
+                            name="dates"
+                            placeholder="From - To"
+                            value={this.state.dates}
+                            iconPosition="left"
+                            onChange={this.handleDateChange}
+                            dateFormat='YYYY-MM-DD'
+                        />
 
                         <Form.Group widths='2'>
-
                             <Form.Field>
                                 <label>Description</label>
                                 <TextArea

@@ -23,6 +23,7 @@ class Explore extends Component {
             from: localStorage.getItem("from") || '',
             to: localStorage.getItem("to") || '',
             guests: localStorage.getItem("guests") || 1,
+            dates: localStorage.getItem("dates") || '',
             category: ''
         }
 

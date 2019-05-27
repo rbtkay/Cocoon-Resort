@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Segment, Container, Form, Message, TextArea } from 'semantic-ui-react';
-import { DateInput } from 'semantic-ui-calendar-react';
+import { DateInput, DatesRangeInput } from 'semantic-ui-calendar-react';
 import Package from '../../classes/package';
 
 class newPackage extends Component {
@@ -26,6 +26,7 @@ class newPackage extends Component {
             price: 0,
             from: d,
             to: d,
+            dates: '',
             capacity: 0,
             image: '',
             now: d
@@ -73,8 +74,16 @@ class newPackage extends Component {
                             </Form.Group>
 
                             <Form.Group widths={2}>
-
-                                <Form.Field>
+                                <DatesRangeInput
+                                    name="dates"
+                                    minDate={this.state.now}
+                                    placeholder="From - To"
+                                    value={this.state.dates}
+                                    iconPosition="left"
+                                    onChange={this.handleChange}
+                                    dateFormat='YYYY-MM-DD'
+                                />
+                                {/* <Form.Field>
                                     <DateInput
                                         name='from'
                                         label='from'
@@ -97,7 +106,7 @@ class newPackage extends Component {
                                         onChange={this.handleChange}
                                         dateFormat='YYYY-MM-DD'
                                     />
-                                </Form.Field>
+                                </Form.Field> */}
                             </Form.Group>
                             <span>this will help to promote your resort to customers</span>
 
@@ -126,8 +135,14 @@ class newPackage extends Component {
     }
 
     handleForm = () => {
-        let { name, details, price, from, to, capacity, image } = this.state;
-        
+        let { name, details, price, dates, capacity, image, now } = this.state;
+
+        let from = '';
+        let to = '';
+        if (dates) {
+            from = dates.split(' ')[0];
+            to = dates.split(' ')[2];
+        }
         const fromDate = new Date(from);
         const toDate = new Date(to);
 
@@ -145,8 +160,8 @@ class newPackage extends Component {
             })
         }
         else {
-            from = from === '' ? this.state.now : from;
-            to = to === '' ? this.state.now : to;
+            from = from === '' ? now : from;
+            to = to === '' ? now : to;
             capacity = capacity === 0 ? 1 : capacity;
 
             const resortId = localStorage.getItem("id");

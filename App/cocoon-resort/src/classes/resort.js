@@ -1,3 +1,5 @@
+import sha256 from 'sha256';
+
 class Resort {
     async getLocations() {
         try {
@@ -18,8 +20,11 @@ class Resort {
     }
 
     async create(name, password, location, category) {
+
+        const encryptPassword = sha256(password);
+
         try {
-            const response = await fetch(`http://localhost:8080/cocoon-resort/ResortServlet?action=create&name=${name}&password=${password}&location=${location}&category=${category}`);
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ResortServlet?action=create&name=${name}&password=${encryptPassword}&location=${location}&category=${category}`);
 
             if (response.status === 201) {
                 const result = await response.json();
