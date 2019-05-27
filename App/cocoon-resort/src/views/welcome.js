@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Segment, Image, Grid, Form, Card, Button, Message, Dropdown } from 'semantic-ui-react';
-import { DateInput } from 'semantic-ui-calendar-react';
+import { DateInput, DatesRangeInput } from 'semantic-ui-calendar-react';
 
 import Navigation from '../components/NavigationBar'
 
@@ -34,8 +34,9 @@ class Welcome extends Component {
             location: { text: 'Anywhere', value: '' },
             isErrorSearch: false,
             forError: '',
-            from: '',
-            to: '',
+            // from: '',
+            // to: '',
+            dates: '',
             guests: 1,
             now: d
         }
@@ -56,45 +57,36 @@ class Welcome extends Component {
                                 <Segment raised>
                                     <h1>Book your Resort</h1>
                                     <Form error={this.state.isErrorSearch} onSubmit={this.search}>
-                                        <Dropdown
-                                            name="location"
-                                            value={this.state.location.value}
-                                            fluid
-                                            search
-                                            selection
-                                            text={this.state.location.text}
-                                            options={this.state.locationOptions}
-                                            placeholder='Select location'
-                                            onChange={(event, data) => this.setState(
-                                                (
-                                                    {
-                                                        location:
-                                                            { text: data.value, value: data.value }
-                                                    }
-                                                ))}
-                                        />
-                                        <Form.Group widths={2}>
-                                            <DateInput
-                                                name='from'
-                                                label='from'
-                                                placeholder='from'
+                                        <Form.Field>
+                                            <Dropdown
+                                                name="location"
+                                                value={this.state.location.value}
+                                                fluid
+                                                search
+                                                selection
+                                                text={this.state.location.text}
+                                                options={this.state.locationOptions}
+                                                placeholder='Select location'
+                                                onChange={(event, data) => this.setState(
+                                                    (
+                                                        {
+                                                            location:
+                                                                { text: data.value, value: data.value }
+                                                        }
+                                                    ))}
+                                            />
+                                        </Form.Field>
+                                        <Form.Field>
+                                            <DatesRangeInput
+                                                name="dates"
                                                 minDate={this.state.now}
-                                                value={this.state.from}
-                                                iconPosition='left'
+                                                placeholder="From - To"
+                                                value={this.state.dates}
+                                                iconPosition="left"
                                                 onChange={this.handleChange}
                                                 dateFormat='YYYY-MM-DD'
                                             />
-                                            <DateInput
-                                                name='to'
-                                                label='to'
-                                                placeholder='to'
-                                                minDate={this.state.from}
-                                                value={this.state.to}
-                                                iconPosition='left'
-                                                onChange={this.handleChange}
-                                                dateFormat='YYYY-MM-DD'
-                                            />
-                                        </Form.Group>
+                                        </Form.Field>
                                         <Form.Input
                                             type='number'
                                             label='# Guests'
@@ -212,12 +204,13 @@ class Welcome extends Component {
     }
 
     search = () => {
-        let { location, isErrorSearch, from, to, guests, formError } = this.state;
-        // console.log(this.state)
+        let { location, isErrorSearch, dates, guests, formError } = this.state;
 
+        const from = dates.split(' ')[0];
+        const to = dates.split(' ')[2];
 
-        const fromDate = new Date(from.split('-')[2], from.split('-')[1], from.split('-')[0]);
-        const toDate = new Date(to.split('-')[2], to.split('-')[1], to.split('-')[0]);
+        const fromDate = new Date(from);
+        const toDate = new Date(to);
 
         if (guests < 1) {
             isErrorSearch = true;
@@ -232,6 +225,7 @@ class Welcome extends Component {
             localStorage.setItem("from", from);
             localStorage.setItem("to", to);
             localStorage.setItem("guests", guests);
+            localStorage.setItem("dates", dates);
             this.props.history.push(`/explore`);
         }
     }

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Segment, Card } from 'semantic-ui-react';
+import { Segment, Card, Container } from 'semantic-ui-react';
+import NavigationBar from '../components/NavigationBar';
 
 import PackageClass from '../classes/package';
 import ListPackages from '../components/ListPackages';
 
 
+import image from '../static/image1.jpg';
 
 
 class ViewResort extends Component {
@@ -17,6 +19,7 @@ class ViewResort extends Component {
 
         this.state = {
             id: info['id'] ? info['id'] : -1,
+            name: info['resortName'] ? info['resortName'] : "not Found",
             packages: []
         }
 
@@ -25,11 +28,17 @@ class ViewResort extends Component {
     render() {
         return (
             <div>
-                <h1>Resort Name</h1>
-                <Segment>
-                    <Card.Group itemsPerRow='4'>
-                        <ListPackages packages={this.state.packages} isResort={false} viewPack={this.viewPack} />
-                    </Card.Group>
+                <NavigationBar />
+                <br />
+                <br />
+                <br />
+                <h1>{this.state.name}</h1>
+                <Segment style={{ backgroundImage: `url(${image})`, backgroundRepeat: 'no-repeat', backgroundSize: '100%', height: '100vh' }}>
+                    <Container>
+                        <Card.Group itemsPerRow='4'>
+                            <ListPackages packages={this.state.packages} isResort={false} viewPack={this.viewPack} />
+                        </Card.Group>
+                    </Container>
                 </Segment>
             </div>
         )

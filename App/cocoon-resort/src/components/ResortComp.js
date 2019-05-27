@@ -21,7 +21,7 @@ class ResortComp extends Component {
 
     render() {
         return (
-            <Card onClick={event => this.props.redirect(this.state.id)}>
+            <Card onClick={event => this.props.redirect(this.state.id, this.state.name)}>
                 <Image src={image}></Image>
                 <Card.Content>
                     <Card.Header>{this.state.name}</Card.Header>

@@ -3,6 +3,7 @@ import NavigationBar from '../../components/NavigationBar';
 import { Segment, Form, Button, Message, Icon } from 'semantic-ui-react';
 import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 import AuthClass from '../../classes/auth';
+import sha256 from 'sha256';
 
 class Settings extends Component {
     state = {
@@ -63,14 +64,14 @@ class Settings extends Component {
                                     floated='left'
                                     content='Discard Changes'
                                     onClick={event => this.props.history.push(`/explore`)}
-                                    />
+                                />
 
                                 <Form.Button
                                     floated='right'
                                     content='Submit Changes'
                                     positive
                                     type='submit'
-                                    />
+                                />
                             </Form.Group>
 
                             <Message error header="Oops!" content={this.state.errorMessage} />
@@ -80,11 +81,11 @@ class Settings extends Component {
                             <h3>Critical Section</h3>
                             <Icon name='times circle' /> Delete Account?
                                 <Button
-                                    floated='right'
-                                    negative
-                                    content='Delete'
-                                    onClick={this.deleteAccount} />
-                                <br /><br /><br />
+                                floated='right'
+                                negative
+                                content='Delete'
+                                onClick={this.deleteAccount} />
+                            <br /><br /><br />
                         </Segment>
                     </Segment>
                 </Segment>
@@ -102,8 +103,9 @@ class Settings extends Component {
 
     checkOld = () => {
         const { oldPassword } = this.state;
+        const encryptPassword = sha256(oldPassword);
         const storedPass = this.state.user.password;
-        if (oldPassword !== '' && oldPassword !== storedPass) {
+        if (oldPassword !== '' && encryptPassword !== storedPass) {
             this.setState({ errorMessage: 'Does not match old password', formError: true });
         } else {
             this.setState({ errorMessage: '', formError: false });
@@ -112,9 +114,10 @@ class Settings extends Component {
 
     compareToOld = () => {
         const { newPassword } = this.state;
+        const encryptNewPassword = sha256(newPassword);
         const storedPass = this.state.user.password;
 
-        if (newPassword === storedPass) {
+        if (encryptNewPassword === storedPass) {
             this.setState({ errorMessage: 'Choose a new password', formError: true });
         } else {
             this.setState({ errorMessage: '', formError: false });

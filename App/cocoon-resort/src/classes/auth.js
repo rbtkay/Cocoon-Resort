@@ -1,10 +1,14 @@
+import sha256 from 'sha256';
 class Auth {
 
     async signUp(state) {
         const { firstName, lastName, email, password, phone } = state;
+
+        const encryptPassword = sha256(password);
+
         const name = firstName + ' ' + lastName;
         try {
-            const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=create&name=${name}&email=${email}&password=${password}&phone=${phone}`);
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=create&name=${name}&email=${email}&password=${encryptPassword}&phone=${phone}`);
 
             if (response.status === 201) {
                 // const result = await response.json();
@@ -26,8 +30,11 @@ class Auth {
     }
 
     async updateUser(id, password, phone) {
+
+        const encryptPassword = sha256(password)
+        
         try {
-            const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=update&id=${id}&password=${password}&phone=${phone}`);
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=update&id=${id}&password=${encryptPassword}&phone=${phone}`);
 
             if (response.ok) {
                 return true;
@@ -40,8 +47,11 @@ class Auth {
     }
 
     async authUser(email, password) {
+
+        const encryptPassword = sha256(password);
+
         try {
-            const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=login&email=${email}&password=${password}`);
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ClientServlet?action=login&email=${email}&password=${encryptPassword}`);
 
             if (response.status === 200) {
                 const res = await response.json();
@@ -55,8 +65,11 @@ class Auth {
     }
 
     async authResort(resortName, password) {
+
+        const encryptPassword = sha256(password);
+
         try {
-            const response = await fetch(`http://localhost:8080/cocoon-resort/ResortServlet?action=login&resortName=${resortName}&password=${password}`);
+            const response = await fetch(`http://localhost:8080/cocoon-resort/ResortServlet?action=login&resortName=${resortName}&password=${encryptPassword}`);
 
             if (response.status === 200) {
                 const res = await response.json();

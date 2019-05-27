@@ -22,9 +22,6 @@ class ResortNavBar extends Component {
                             <Dropdown.Item>
                                 <Icon name='settings' /><a href='/settings' className='black'>Settings</a>
                             </Dropdown.Item>
-                            <Dropdown.Item>
-                                <Icon name='map signs' /><a href='/reservations'>Reservations</a>
-                            </Dropdown.Item>
                             <Dropdown.Item onClick={this.logout}>
                                 <Icon name='log out' />Logout
                             </Dropdown.Item>
