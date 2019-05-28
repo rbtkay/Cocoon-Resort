@@ -58,6 +58,7 @@ class NavigationBar extends Component {
                             name='search'
                             value={this.state.search}
                             onChange={event => this.setState({ search: event.target.value })}
+                            onKeyDown={event => this.searchResort(event)}
                             icon='search'
                             placeholder='Search Resorts'
                         />
@@ -87,13 +88,20 @@ class NavigationBar extends Component {
         window.location = '/resort/newResort';
     }
 
+    searchResort = (event) => {
+
+        console.log(event.key)
+        if (event.key === 'Enter') {
+            window.location = `/resort?resort=${this.state.search}`
+        }
+        this.setState({ search: event.target.value })
+    }
+
     renderMenu = () => {
         const token = this.state.isAuth;
 
         if (token) {
             const decodedToken = JWT.decode(token);
-
-
 
             if (decodedToken.iss === "client") {
                 return (
@@ -104,7 +112,7 @@ class NavigationBar extends Component {
                                     <Icon name='settings' /><a href='/customer/settings' className='black'>Settings</a>
                                 </Dropdown.Item>
                                 <Dropdown.Item>
-                                    <Icon name='map signs' /><a href='/reservations'>Reservations</a>
+                                    <Icon name='map signs' /><a href='/customer/viewReservation'>Reservations</a>
                                 </Dropdown.Item>
                                 <Dropdown.Item onClick={this.logout}>
                                     <Icon name='log out' />Logout

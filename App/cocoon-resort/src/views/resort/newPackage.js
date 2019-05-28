@@ -52,11 +52,13 @@ class newPackage extends Component {
                                     />
                                     <br />
                                     <Form.Input
+                                        type='number'
                                         label='price'
                                         value={this.state.price}
                                         onChange={event => this.setState({ price: event.target.value, isError: false, formError: '', isName: false })}
                                     />
                                     <Form.Input
+                                        type='number'
                                         label='capacity'
                                         value={this.state.capacity}
                                         onChange={event => this.setState({ capacity: event.target.value, isError: false, formError: '', isName: false })}

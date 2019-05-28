@@ -15,7 +15,7 @@ const ListPackages = (props) => {
     } else {
         return props.packages.map(item => {
             return (
-                <Package key={item.id} info={item} isResort={true} updatePackage={props.updatePackage} handleDelete={props.deletePackage}/>
+                <Package key={item.id} info={item} isResort={true} updatePackage={props.updatePackage} handleDelete={props.deletePackage} />
             )
         })
     }
@@ -41,7 +41,7 @@ class Home extends Component {
                     </Grid.Column>
                     <Grid.Column width={8}>
                         <Item.Group>
-                            <ListPackages packages={this.state.packages} updatePackage={this.updatePackage} deletePackage={this.deletePackage}/>
+                            <ListPackages packages={this.state.packages} updatePackage={this.updatePackage} deletePackage={this.deletePackage} />
                         </Item.Group>
 
                         <Segment textAlign='center'>
@@ -83,6 +83,7 @@ class Home extends Component {
     deletePackage = async (id) => {
         const pack = new PackageClass();
         const result = await pack.deletePackage(id);
+        this.componentDidMount();
     }
 }
 

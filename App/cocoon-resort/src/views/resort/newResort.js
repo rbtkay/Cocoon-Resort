@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Segment, Container, Message, Dropdown } from 'semantic-ui-react';
 import Resort from '../../classes/resort';
+import NavigationBar from '../../components/NavigationBar';
 
 class NewResort extends Component {
 
@@ -21,6 +22,9 @@ class NewResort extends Component {
 
     render() {
         return (
+            <div>
+            <NavigationBar />
+            <br /><br /><br />
             <Segment>
                 <Container>
                     <h1>Welcome to Cocoon!</h1>
@@ -100,10 +104,9 @@ class NewResort extends Component {
 
                     </Form>
                 </Container>
-                <br></br>
-                <br></br>
-                <br></br>
+                <br /><br /><br />
             </Segment>
+            </div>
         )
     }
 

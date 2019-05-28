@@ -13,13 +13,15 @@ import Bungalows from '../static/Forests.jpg';
 const ListResorts = (props) => {
     if (props.resorts.length < 1) {
         return (
-            <h3>No Resort</h3>
+            <Card>
+                <h3>No Resort Yet</h3>
+            </Card>
         )
     } else {
         return props.resorts.map(item => {
             console.log(item);
             return (
-                <ResortComp key={item.toString()} info={item} redirect={props.redirect} />
+                <ResortComp key={item.id} info={item} redirect={props.redirect} />
             )
         })
     }
@@ -33,8 +35,8 @@ class Resort extends Component {
         const queryString = require('query-string');
         const info = queryString.parse(this.props.location.search)
 
-
         this.state = {
+            searchResort: info['resort'] ? info['resort'] : '',
             category: info['category'] ? info['category'] : 'World',
             resorts: []
         }
@@ -64,12 +66,39 @@ class Resort extends Component {
         window.scroll(0, 0);
         const resort = new ResortClass();
 
-        const { category } = this.state;
+        const { category, searchResort } = this.state;
 
         const categorySend = category === "World" ? '' : category;
         const result = await resort.readAll(categorySend);
 
-        this.setState({ resorts: result })
+        console.log(searchResort);
+        const test = "vsvcookieesvf";
+
+        // if (test.includes(searchResort)) {
+        //     console.log("YES");
+        // } else {
+        //     console.log('NO');
+        // }
+
+        if (searchResort !== '') {
+            const filterResult = result.filter(resort => {
+                console.log(resort['name'])
+                var temp = resort['name'].toLowerCase();
+                if (temp.includes(searchResort)) {
+                    return resort['name'];
+                }
+            }).filter(value => {
+                if (value !== undefined) {
+                    return value;
+                }
+            });
+
+            console.log('filterResult');
+            console.log(filterResult);
+            this.setState({ resorts: filterResult })
+        } else {
+            this.setState({ resorts: result })
+        }
     }
 
     redirect = (id, resortName) => {

@@ -19,9 +19,6 @@ class ResortNavBar extends Component {
                 <Menu.Menu position='right'>
                     <Dropdown text={`Hello ${this.state.resortName}`} className='item'>
                         <Dropdown.Menu>
-                            <Dropdown.Item>
-                                <Icon name='settings' /><a href='/settings' className='black'>Settings</a>
-                            </Dropdown.Item>
                             <Dropdown.Item onClick={this.logout}>
                                 <Icon name='log out' />Logout
                             </Dropdown.Item>

@@ -61,7 +61,7 @@ class Profile extends Component {
                         </List>
                     </Card.Description>
                 </Card.Content>
-                <Input id='imageInput' type='file' style={{visibility: 'hidden'}} onChange={this.updateImage}/>
+                <Input id='imageInput' type='file' style={{ visibility: 'hidden' }} onChange={this.updateImage} />
             </Card>
         )
     }
@@ -75,6 +75,7 @@ class Profile extends Component {
         const resort = new ResortClass();
         resort.updateImage(event.target.files[0]);
         localStorage.setItem('image', event.target.files[0].name);
+        this.componentWillMount();
     }
 
     async componentWillMount() {
